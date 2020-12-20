@@ -1,0 +1,11 @@
+{
+  "name": "@recogito/firebase-storage-adapter",
+  "version": "0.1.0",
+  "description": "Google Firebase storage adapter for RecogitoJS, Annotorious and AnnotoriousOSD",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rainer Simon",
+  "license": "BSD-3-Clause"
+}
