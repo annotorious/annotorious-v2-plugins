@@ -1,12 +1,10 @@
 {
-  "name": "@recogito/firebase-storage",
+  "name": "@recogito/recogito-legacy-storage",
   "version": "0.1.0",
-  "description": "Google Firebase storage adapter for RecogitoJS, Annotorious and AnnotoriousOSD",
+  "description": "A storage adapator that works with the legacy Recogito v.3 annotation platform",
   "main": "src/index.js",
   "scripts": {
-    "pretest": "npm run build",
-    "test": "node test/test.js",
-    "build": "rollup --config"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rainer Simon",
   "license": "BSD-3-Clause",
