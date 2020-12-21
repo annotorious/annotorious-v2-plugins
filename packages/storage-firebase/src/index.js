@@ -1,56 +1,44 @@
-// Firebase will auto-generate this config for you when you 
-// create your app. Just paste your own settings in here.
-var firebaseConfig = {
-  apiKey: "-- your firebase api key here --",
-  authDomain: "-- your authdomain here --",
-  databaseURL: "-- your database url --",
-  projectId: "-- your project id --",
-  storageBucket: "-- your storage bucket --",
-  messagingSenderId: "...",
-  appId: "..."
-};
+const FirebaseStorage = (client, config) => {
 
-firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(config);
 
-var db = firebase.firestore();
+  const db = firebase.firestore();
 
-// Helper to find a Firebase doc by annotation ID
-var findById = function(id) {
-  var query = db.collection('annotations').where('id', '==', id);
-  return query.get().then(function(querySnapshot) {
-    return query.docs[0];
-  });
-}
-
-window.onload = function() {
-  var image = document.getElementById('my-image');
-  var anno = Annotorious.init({ image });
+  // Helper to find a Firebase doc by annotation ID
+  const findById = id => {
+    const query = db.collection('annotations').where('id', '==', id);
+    return query.get().then(querySnapshot => query.docs[0]);
+  }
 
   // Load annotations for this image
   db.collection('annotations').where('target.source', '==', image.src)
-    .get().then(function(querySnapshot) {
-      var annotations = querySnapshot.docs.map(function(doc) { 
+    .get().then(querySnapshot => {
+      const annotations = querySnapshot.docs.map(function(doc) { 
         return doc.data(); 
       });
 
-      anno.setAnnotations(annotations);
+      client.setAnnotations(annotations);
     });
 
-  anno.on('createAnnotation', function(a) {
-    db.collection('annotations').add(a).then(function() {
-      console.log('Stored annotation');
-    });
+  // Lifecycle event handlers
+  client.on('createAnnotation', a => {
+    db.collection('annotations')
+      .add(a).catch(error => 
+        console.error('Error storing annotation', error, a))
   });
 
-  anno.on('updateAnnotation', function(annotation, previous) {
-    findById(previous.id).then(function(doc) {
-      doc.ref.update(annotation);
-    });
+  client.on('updateAnnotation', (annotation, previous) => {
+    findById(previous.id)
+      .then(doc => doc.ref.update(annotation))
+      .catch(error => console.log('Error updating annotation', error, previous, annotation))
   });
 
-  anno.on('deleteAnnotation', function(annotation) {
-    findById(annotation.id).then(function(doc) {
-      doc.ref.delete();
-    });
+  client.on('deleteAnnotation', annotation => {
+    findById(annotation.id)
+      .then(doc => doc.ref.delete())
+      .catch(error => console.log('Error deleting annotation', error, annotation));
   });
+
 }
+
+export default FirebaseStorage;

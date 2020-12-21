@@ -1,0 +1,2 @@
+const FirebaseStorage = require('..');
+
