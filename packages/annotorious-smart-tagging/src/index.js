@@ -51,7 +51,7 @@ const getSnippet = (viewer, annotation) => {
 (async function() {
   const viewer = OpenSeadragon({
     id: "openseadragon",
-    prefixUrl: "/images/",
+    prefixUrl: "/osd/",
     tileSources: {
       type: "image",
 
