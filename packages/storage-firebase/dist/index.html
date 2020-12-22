@@ -26,7 +26,8 @@
         };
 
         var settings = {
-          collectionName: 'annotations'
+          annotationTarget: image.src,  // mandatory
+          collectionName: 'annotations' // optional (default = 'annotations')
         }
 
         var storage = recogito.FirebaseStorage(anno, firebaseConfig, settings);

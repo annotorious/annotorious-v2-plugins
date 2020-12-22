@@ -2,6 +2,8 @@ const FirebaseStorage = (client, firebaseConfig, settings) => {
 
   const collectionName = settings.collectionName || 'annotations';
 
+  const { annotationTarget } = settings;
+
   firebase.initializeApp(firebaseConfig);
 
   const db = firebase.firestore();
@@ -13,7 +15,7 @@ const FirebaseStorage = (client, firebaseConfig, settings) => {
   }
 
   // Load annotations for this image
-  db.collection(collectionName).where('target.source', '==', image.src)
+  db.collection(collectionName).where('target.source', '==', annotationTarget)
     .get().then(querySnapshot => {
       const annotations = querySnapshot.docs.map(function(doc) { 
         return doc.data(); 
