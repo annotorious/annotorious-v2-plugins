@@ -9,6 +9,7 @@
   },
   "author": "Rainer Simon",
   "license": "BSD-3-Clause",
+  "homepage": "https://github.com/recogito/recogito-plugins-common/tree/main/packages/storage-firebase",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
