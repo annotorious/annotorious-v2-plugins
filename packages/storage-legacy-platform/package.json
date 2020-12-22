@@ -4,7 +4,7 @@
   "description": "A storage adapator that works with the legacy Recogito v.3 annotation platform",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup --config"
   },
   "author": "Rainer Simon",
   "license": "BSD-3-Clause",
@@ -12,7 +12,14 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@rollup/plugin-babel": "^5.2.2",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
     "rollup": "^2.35.1",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "rollup-plugin-uglify": "^6.0.4"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
   }
 }

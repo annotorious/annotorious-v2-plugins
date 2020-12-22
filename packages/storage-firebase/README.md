@@ -1,6 +1,6 @@
-# Recogito/Annotorious Firebase Storage
+# Firebase Storage
 
-A storage plugin for RecogitoJS and Annotorious (incl. the OpenSeadragon plugin) that uses
+A storage plugin for RecogitoJS and Annotorious/AnnotoriousOSD that uses
 Google Firebase as annotation store.
 
 ## Installation
