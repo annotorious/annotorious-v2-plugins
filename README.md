@@ -2,8 +2,8 @@
 
 Plugins for the [RecogitoJS](https://github.com/recogito/recogito-js), 
 [Annotorious](https://github.com/recogito/annotorious) and 
-[Annotorious OpenSeadragon](https://github.com/recogito/annotorious-openseadragon) annotation
-libraries.
+[Annotorious OpenSeadragon](https://github.com/recogito/annotorious-openseadragon) text
+and image annotation libraries.
 
 ## Storage 
 
