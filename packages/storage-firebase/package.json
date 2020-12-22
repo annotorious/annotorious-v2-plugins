@@ -5,7 +5,6 @@
   "main": "src/index.js",
   "scripts": {
     "pretest": "npm run build",
-    "test": "node test/test.js",
     "build": "rollup --config"
   },
   "author": "Rainer Simon",
