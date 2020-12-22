@@ -1,17 +1,19 @@
-const FirebaseStorage = (client, config) => {
+const FirebaseStorage = (client, firebaseConfig, settings) => {
 
-  firebase.initializeApp(config);
+  const collectionName = settings.collectionName || 'annotations';
+
+  firebase.initializeApp(firebaseConfig);
 
   const db = firebase.firestore();
 
   // Helper to find a Firebase doc by annotation ID
   const findById = id => {
-    const query = db.collection('annotations').where('id', '==', id);
+    const query = db.collection(collectionName).where('id', '==', id);
     return query.get().then(querySnapshot => query.docs[0]);
   }
 
   // Load annotations for this image
-  db.collection('annotations').where('target.source', '==', image.src)
+  db.collection(collectionName).where('target.source', '==', image.src)
     .get().then(querySnapshot => {
       const annotations = querySnapshot.docs.map(function(doc) { 
         return doc.data(); 
@@ -22,7 +24,7 @@ const FirebaseStorage = (client, config) => {
 
   // Lifecycle event handlers
   client.on('createAnnotation', a => {
-    db.collection('annotations')
+    db.collection(collectionName)
       .add(a).catch(error => 
         console.error('Error storing annotation', error, a))
   });

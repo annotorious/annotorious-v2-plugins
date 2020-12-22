@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Firebase Storage Text</title>
+    <title>RecogitoJS/Annotorious Firebase Storage Adapter</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.1.6/dist/annotorious.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.1.6/dist/annotorious.min.js"></script>
     <script src="./recogito-firebase-storage.js"></script>
   </head>
   <body>
+    <img id="my-image" src="https://raw.githubusercontent.com/recogito/annotorious/master/public/640px-Hallstatt.jpg">
     <script>
-      // Firebase will auto-generate this config for you when you 
-      // create your app. Just paste your own settings in here.
-      var firebaseConfig = {
-        apiKey: "-- your firebase api key here --",
-        authDomain: "-- your authdomain here --",
-        databaseURL: "-- your database url --",
-        projectId: "-- your project id --",
-        storageBucket: "-- your storage bucket --",
-        messagingSenderId: "...",
-        appId: "..."
-      };
+      (function() {
+        var image = document.getElementById('my-image');
+        var anno = Annotorious.init({ image });
 
-      var storage = recogito.FirebaseStorage(firebaseConfig);
+        // Firebase will auto-generate this config for you when you 
+        // create your app. Just paste your own settings in here.
+        var firebaseConfig = {
+          apiKey: "-- your firebase api key here --",
+          authDomain: "-- your authdomain here --",
+          databaseURL: "-- your database url --",
+          projectId: "-- your project id --",
+          storageBucket: "-- your storage bucket --",
+          messagingSenderId: "...",
+          appId: "..."
+        };
+
+        var settings = {
+          collectionName: 'annotations'
+        }
+
+        var storage = recogito.FirebaseStorage(anno, firebaseConfig, settings);
+      })();
     </script>
   </body>
 </html>
