@@ -1,4 +1,4 @@
-# Recogito/Annotorious Plugins
+# Recogito Client Plugins
 
 Plugins for the [RecogitoJS](https://github.com/recogito/recogito-js), 
 [Annotorious](https://github.com/recogito/annotorious) and 
