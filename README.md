@@ -8,9 +8,9 @@ Plugins compatible with [RecogitoJS](https://github.com/recogito/recogito-js),
 
 - [Firebase Storage](https://github.com/recogito/recogito-plugins-common/tree/main/packages/storage-firebase). A storage plugin that
   uses Google Firebase as annotation store.
-- Recogito Legacy Platform Storage
+- __TODO__ Recogito Legacy Platform Storage
 
 ## Editor Widgets
 
-- Gazetteer Tagging
-- Tag Validation
+- __TODO__ Gazetteer Tagging
+- __TODO__ Tag Validation
