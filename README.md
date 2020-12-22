@@ -12,18 +12,19 @@ or AnnotoriousOSD.
 
 - [Firebase Storage](https://github.com/recogito/recogito-plugins-common/tree/main/packages/storage-firebase). 
   A storage plugin that uses Google Firebase as a cloud annotation store. 
-- __TODO__ Recogito Legacy Platform Storage. A storage plugin that enables RecogitoJS/Annotorious 
-  to work inside the legacy [Pelagios Recogito annotation platform](https://recogito.pelagios.org).
+- [Recogito Legacy Platform Storage](https://github.com/recogito/recogito-plugins-common/tree/main/packages/storage-legacy-platform). 
+  A storage plugin that enables RecogitoJS/Annotorious to work inside the legacy 
+  [Pelagios Recogito annotation platform](https://recogito.pelagios.org).
 
 <br>
 
-## Editor Widget Plugins
+## Editor Widgets
 
 Extend the editor popup with additional UI components, or replace the existing components. Compatible 
 with RecogitoJS, Annotorious and AnnotoriousOSD.
 
-- __TODO__ Gazetteer Resolution
-- __TODO__ Tag Validation
+- Gazetteer Resolution __work in progress__
+- Tag Validation __work in progress__
 
 <br>
 
@@ -31,6 +32,7 @@ with RecogitoJS, Annotorious and AnnotoriousOSD.
 
 Compatible with Annotorious and Annotorious OSD.
 
-- __TODO__ Smart Tagging
-- __TODO__ Select Contours
-- __TODO__ Smart Segmentation
+- Smart Tagging. An AI-based helper that assigns tags to image selections automatically, after learning
+  from a few manually assigned examples __work in progress__
+- Select Contours __work in progress__
+- Smart Segmentation __work in progress__

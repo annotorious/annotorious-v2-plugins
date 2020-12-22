@@ -4,7 +4,6 @@
   "description": "Google Firebase storage adapter for RecogitoJS, Annotorious and AnnotoriousOSD",
   "main": "src/index.js",
   "scripts": {
-    "pretest": "npm run build",
     "build": "rollup --config"
   },
   "author": "Rainer Simon",
