@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious Smart Tagging Example</title>
+    <style>
+      svg.a9s-annotationlayer .a9s-selection .a9s-outer, 
+      svg.a9s-annotationlayer .a9s-annotation .a9s-outer {
+        display:none;
+      }
+
+      svg.a9s-annotationlayer .a9s-handle .a9s-handle-outer {
+        display:none;
+      }
+
+      svg.a9s-annotationlayer .a9s-selection .a9s-inner,
+      svg.a9s-annotationlayer .a9s-annotation .a9s-inner  {
+        stroke-width:4;
+        stroke:red;
+        stroke-dasharray:5;
+      }
+
+      svg.a9s-annotationlayer .a9s-annotation.editable:hover .a9s-inner {
+        fill:transparent;
+      }
+
+      svg.a9s-annotationlayer .a9s-handle .a9s-handle-inner {
+        fill:white;
+        stroke:white;
+        stroke-width:3px;
+      }
+
+      svg.a9s-annotationlayer .a9s-selection-mask {
+        fill:rgba(0, 0, 0, 0.6);
+      }
+
+      html, body, #app, #openseadragon {
+        padding:0;
+        margin:0;
+        width:100%;
+        height:100%;
+      }
+
+      #previews {
+        position: absolute;
+        top:0;
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="openseadragon"></div>    
+    </div>
+    <div id="previews"></div>
+  </body>
+</html>
