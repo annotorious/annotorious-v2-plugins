@@ -33,6 +33,6 @@ with RecogitoJS, Annotorious and AnnotoriousOSD.
 Compatible with Annotorious and Annotorious OSD.
 
 - Smart Tagging. An AI-based helper that assigns tags to image selections automatically, after learning
-  from a few manually assigned examples __work in progress__
+  from a few manually assigned examples, using Transfer Learning and MobileNet. __work in progress__
 - Select Contours __work in progress__
 - Smart Segmentation __work in progress__
