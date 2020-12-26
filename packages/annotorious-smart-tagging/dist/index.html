@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious Smart Tagging Demo</title>
+    <script src="../../../public/openseadragon-bin-2.4.2/openseadragon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.1.4/dist/openseadragon-annotorious.min.js"></script>
+    <script src="./annotorious-smart-tagging.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.1.4/dist/annotorious.min.css">
+    <style>
+      html, body, #osd-image {
+        padding:0;
+        margin:0;
+        width:100%;
+        height:100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="osd-image"></div>
+
+    <script type="text/javascript">
+      (function() {
+        // Initialize OpenSeadragon
+        var viewer = OpenSeadragon({
+          id: "osd-image",
+          prefixUrl: "../../../public/openseadragon-bin-2.4.2/images/",
+          tileSources: {
+            type: "image",
+
+            // Attribution: Carta Marina by Olaus Magnus (1539)
+            // https://commons.wikimedia.org/wiki/File:Carta_Marina.jpeg
+            url: "../../../public/Carta_Marina.jpeg" 
+          }
+        });
+
+        // Initialize Annotorious
+        var anno = OpenSeadragon.Annotorious(viewer, {
+          widgets: [ 'TAG' ]
+        });
+
+        // Initialize the smart tagging plugin
+        recogito.AnnotoriousSmartTagging(anno);
+      })();
+    </script>
+  </body>
+</html>

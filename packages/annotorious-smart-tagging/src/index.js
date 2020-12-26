@@ -1,31 +1,11 @@
-import * as Annotorious from '@recogito/annotorious-openseadragon';
 import * as MobileNet from '@tensorflow-models/mobilenet';
 import * as KNNClassifier from '@tensorflow-models/knn-classifier';
-import OpenSeadragon from 'openseadragon';
 
 import '@tensorflow/tfjs';
 
 import '@recogito/annotorious-openseadragon/dist/annotorious.min.css';
 
-(async function() {
-  // Initialize OSD viewer
-  const viewer = OpenSeadragon({
-    id: "openseadragon",
-    prefixUrl: "/osd/",
-    tileSources: {
-      type: "image",
-
-      // Attribution: Carta Marina by Olaus Magnus (1539)
-      // https://commons.wikimedia.org/wiki/File:Carta_Marina.jpeg
-      url: "/Carta_Marina.jpeg" 
-    }
-  });
-
-  // Initialize the Annotorious plugin
-  var anno = Annotorious(viewer, {
-    widgets: [ 'TAG' ]
-  });
-
+const AnnotoriousSmartTagging = async anno => {
   console.log('Loading MobileNet');
   console.time('MobileNet loaded');
   const mnet = await MobileNet.load();
@@ -63,4 +43,6 @@ import '@recogito/annotorious-openseadragon/dist/annotorious.min.css';
     const activation = mnet.infer(snippet, true);
     classifier.addExample(activation, tag);
   });
-})();
+}
+
+export default AnnotoriousSmartTagging;
