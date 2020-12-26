@@ -3,8 +3,6 @@ import * as KNNClassifier from '@tensorflow-models/knn-classifier';
 
 import '@tensorflow/tfjs';
 
-import '@recogito/annotorious-openseadragon/dist/annotorious.min.css';
-
 const AnnotoriousSmartTagging = async anno => {
   console.log('Loading MobileNet');
   console.time('MobileNet loaded');
