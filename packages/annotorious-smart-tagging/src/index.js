@@ -25,7 +25,7 @@ const AnnotoriousSmartTagging = async anno => {
           type: 'TextualBody',
           purpose: 'tagging',
           value: result.label
-        }]
+        }];
 
         anno.updateSelected(selection);
       }
