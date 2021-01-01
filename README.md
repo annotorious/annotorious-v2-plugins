@@ -36,3 +36,7 @@ Compatible with Annotorious and Annotorious OSD.
   from a few manually assigned examples, using Transfer Learning and MobileNet. __work in progress__
 - Select Contours __work in progress__
 - Smart Segmentation __work in progress__
+
+# 3rd Party Plugins
+
+https://github.com/jankaszel/recogito-web-annotation-adapter#readme

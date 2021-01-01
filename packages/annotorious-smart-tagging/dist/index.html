@@ -3,7 +3,7 @@
   <head>
     <title>Annotorious Smart Tagging Demo</title>
     <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.1.4/dist/openseadragon-annotorious.min.js"></script>
+    <script src="openseadragon-annotorious.min.js"></script>
     <script src="annotorious-smart-tagging.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.1.4/dist/annotorious.min.css">
     <style>
@@ -12,6 +12,36 @@
         margin:0;
         width:100%;
         height:100%;
+      }
+
+      svg.a9s-annotationlayer .a9s-selection .a9s-outer, 
+      svg.a9s-annotationlayer .a9s-annotation .a9s-outer {
+        display:none;
+      }
+
+      svg.a9s-annotationlayer .a9s-selection .a9s-inner,
+      svg.a9s-annotationlayer .a9s-annotation .a9s-inner  {
+        stroke-width:4;
+        stroke:red;
+        stroke-dasharray:5;
+      }
+
+      svg.a9s-annotationlayer .a9s-annotation.editable:hover .a9s-inner {
+        fill:transparent;
+      }
+
+      svg.a9s-annotationlayer .a9s-handle .a9s-handle-inner {
+        fill:white;
+        stroke:none;
+      }
+
+      svg.a9s-annotationlayer .a9s-handle .a9s-handle-outer {
+        stroke:red;
+        stroke-width:3px;
+      }
+
+      svg.a9s-annotationlayer .a9s-selection-mask {
+        fill:rgba(0, 0, 0, 0.6);
       }
     </style>
   </head>

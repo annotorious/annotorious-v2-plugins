@@ -9,7 +9,7 @@ import serve from 'rollup-plugin-serve';
 const config = {
   input: 'src/index.js',
   output: {
-    file: 'dist/annotorious-smart-tagging.js',
+    file: 'dist/annotorious-smart-tagging.min.js',
     format: 'umd',
     name: 'recogito.AnnotoriousSmartTagging',
     compact: true,
