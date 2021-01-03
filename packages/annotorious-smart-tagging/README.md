@@ -6,6 +6,8 @@ After learning from at least two examples, the plugin provides tag suggestions a
 
 https://codelabs.developers.google.com/codelabs/tensorflowjs-teachablemachine-codelab/index.html#6
 
+![Animated screenshot](screenshot.gif)
+
 ## Installation
 
 Install via npm 
