@@ -3,7 +3,7 @@ import * as KNNClassifier from '@tensorflow-models/knn-classifier';
 
 import '@tensorflow/tfjs';
 
-const AnnotoriousSmartTagging = async anno => {
+const AnnotoriousSmartTagging = async (anno, onLoad) => {
   console.log('Loading MobileNet');
   console.time('MobileNet loaded');
   const mnet = await MobileNet.load();
@@ -41,6 +41,9 @@ const AnnotoriousSmartTagging = async anno => {
     const activation = mnet.infer(snippet, true);
     classifier.addExample(activation, tag);
   });
+
+  if (onLoad)
+    onLoad();
 }
 
 export default AnnotoriousSmartTagging;
