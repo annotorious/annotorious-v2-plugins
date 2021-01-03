@@ -1,6 +1,6 @@
 {
   "name": "@recogito/annotorious-smart-tagging",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An automated tagging plugin for Annotorious and AnnotoriousOSD using MobileNet and TensorflowJS",
   "main": "src/index.js",
   "scripts": {
