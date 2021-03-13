@@ -3,8 +3,7 @@
   <head>
     <title>Annotorious | Tilted Box</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
-    <script src="annotorious-tilted-box.min.js"></script>
+    <!-- script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script -->
     <style>
       html, body {
         padding:20px;
@@ -14,14 +13,20 @@
   </head>
   <body>
     <img id="hallstatt" src="640px-Hallstatt.jpg">
-    <script>
+    <script src="annotorious-tilted-box.min.js"></script>
+
+    <!-- script>
       (function() {
+        /*
         var anno = Annotorious.init({
           image: 'hallstatt'
         });
 
         Annotorious.TiltedBox(anno);
+
+        anno.setDrawingTool('tilted-box');
+        */
       })();
-    </script>
+    </script -->
   </body>
 </html>
