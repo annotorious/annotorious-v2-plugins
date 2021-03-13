@@ -1,4 +1,5 @@
 import EventEmitter from 'tiny-emitter';
+import RubberbandTiltedBox from './RubberbandTiltedBox';
 
 // Event Emitter could go into a base class
 export default class TiltedBoxTool extends EventEmitter {
@@ -46,7 +47,7 @@ export default class TiltedBoxTool extends EventEmitter {
   startDrawing = evt => {
     const { x, y } = this._toSVG(evt.layerX, evt.layerY);
     this._attachListeners();
-    this.rubberband = new RubberbandRect(x, y, this.g, this.env);
+    this.rubberband = new RubberbandTiltedBox(x, y, this.g, this.env);
   }
 
   stop = () => {
