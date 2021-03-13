@@ -1,7 +1,10 @@
-export default class TiltedBoxTool {
+import EventEmitter from 'tiny-emitter';
+
+// Event Emitter could go into a base class
+export default class TiltedBoxTool extends EventEmitter {
 
   constructor(g, config, env) {
-    console.log('sadfasdfsd');
+    super();
     
     // This could be moved into a base class
     this.svg = g.closest('svg');

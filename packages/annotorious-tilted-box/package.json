@@ -20,5 +20,7 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.11.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "tiny-emitter": "^2.1.0"
+  }
 }
