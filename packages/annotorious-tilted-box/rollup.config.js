@@ -1,4 +1,4 @@
-import { uglify } from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import babel from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -8,9 +8,9 @@ import serve from 'rollup-plugin-serve';
 const config = {
   input: 'src/index.js',
   output: {
-    file: 'dist/annotorious-smart-tagging.min.js',
+    file: 'dist/annotorious-tilted-box.min.js',
     format: 'umd',
-    name: 'recogito.AnnotoriousSmartTagging',
+    name: 'Annotorious.TiltedBox',
     compact: true,
   },
   plugins: [,
@@ -18,7 +18,7 @@ const config = {
     nodeResolve(),
     commonjs(),
     babel({ babelHelpers: 'bundled' }),
-    uglify(),
+    terser(),
     serve({
       open: true,
       contentBase: ['dist', '../../public']
