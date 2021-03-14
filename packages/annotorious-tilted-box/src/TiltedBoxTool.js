@@ -59,12 +59,19 @@ export default class TiltedBoxTool extends EventEmitter {
 
   onMouseMove = evt => {
     const { x , y } = this._toSVG(evt.layerX, evt.layerY);
-    this.rubberband.dragTo(x, y);
+    this.rubberband.onMouseMove(x, y);
   }
   
   onMouseUp = evt => {
-    this._detachListeners();
+    if (this.rubberband.isCollapsed) {
+      this.emit('cancel', evt);
+      this.stop();
+    } else {
+      const { x , y } = this._toSVG(evt.layerX, evt.layerY);
+      this.rubberband.onMouseUp([ x, y ]);
+    }
 
+    /*
     const { w } = this.rubberband.bbox;
 
     if (w > 3) {
@@ -79,6 +86,7 @@ export default class TiltedBoxTool extends EventEmitter {
     }
 
     this.stop();
+    */
   }
 
   createEditableShape = annotation =>
