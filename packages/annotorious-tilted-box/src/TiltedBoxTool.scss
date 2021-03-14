@@ -1,0 +1,24 @@
+.a9s-annotationlayer {
+
+  g.a9s-selection.tilted-box {
+
+    circle {
+      stroke:red;
+      stroke-width:2px;
+      fill:rgba(red, 0.7);
+    }
+
+    line {
+      stroke:red;
+      stroke-width:3px;
+    }
+
+    polygon {
+      fill:rgba(red, 0.2);
+      stroke:red;
+      stroke-width:1px;
+    }
+  
+  }
+
+}

@@ -1,6 +1,8 @@
 import EventEmitter from 'tiny-emitter';
 import RubberbandTiltedBox from './RubberbandTiltedBox';
 
+import './TiltedBoxTool.scss';
+
 // Event Emitter could go into a base class
 export default class TiltedBoxTool extends EventEmitter {
 
@@ -13,6 +15,8 @@ export default class TiltedBoxTool extends EventEmitter {
     this.g = g;
     this.config = config;
     this.env = env;
+
+    this.isDrawing = false;
   }
 
   /**
@@ -45,9 +49,13 @@ export default class TiltedBoxTool extends EventEmitter {
   }   
 
   startDrawing = evt => {
-    const { x, y } = this._toSVG(evt.layerX, evt.layerY);
-    this._attachListeners();
-    this.rubberband = new RubberbandTiltedBox(x, y, this.g, this.env);
+    if (!this.isDrawing) {
+      this.isDrawing = true;
+
+      const { x, y } = this._toSVG(evt.layerX, evt.layerY);
+      this._attachListeners();
+      this.rubberband = new RubberbandTiltedBox(x, y, this.g, this.env);
+    }
   }
 
   stop = () => {
@@ -66,35 +74,16 @@ export default class TiltedBoxTool extends EventEmitter {
     if (this.rubberband.isCollapsed) {
       this.emit('cancel', evt);
       this.stop();
+    } else if (this.rubberband.isComplete) {
+      this.rubberband.destroy();
     } else {
       const { x , y } = this._toSVG(evt.layerX, evt.layerY);
       this.rubberband.onMouseUp([ x, y ]);
     }
-
-    /*
-    const { w } = this.rubberband.bbox;
-
-    if (w > 3) {
-      // Emit the SVG shape with selection attached    
-      const { element } = this.rubberband;
-      element.annotation = this.rubberband.toSelection();
-
-      // Emit the completed shape...
-      this.emit('complete', element);
-    } else {
-      this.emit('cancel', evt);
-    }
-
-    this.stop();
-    */
   }
 
   createEditableShape = annotation =>
     new EditableRect(annotation, this.g, this.config, this.env);
-
-  get isDrawing() {
-    return this.rubberband != null;
-  }
 
   get supportsModify() {
     return true;
