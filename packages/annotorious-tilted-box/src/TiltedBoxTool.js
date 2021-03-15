@@ -1,5 +1,6 @@
 import EventEmitter from 'tiny-emitter';
-import RubberbandTiltedBox from './RubberbandTiltedBox';
+import { addClass } from '@recogito/annotorious/src/util/SVG';
+import TiltedBox from './TiltedBox';
 
 import './TiltedBoxTool.scss';
 
@@ -16,7 +17,8 @@ export default class TiltedBoxTool extends EventEmitter {
     this.config = config;
     this.env = env;
 
-    this.isDrawing = false;
+    this.drawingState = null;
+    this.rubberbandShape = null;
   }
 
   /**
@@ -48,45 +50,66 @@ export default class TiltedBoxTool extends EventEmitter {
     return pt.matrixTransform(this.g.getScreenCTM().inverse());
   }   
 
-  startDrawing = evt => {
-    if (!this.isDrawing) {
-      this.isDrawing = true;
-
-      const { x, y } = this._toSVG(evt.layerX, evt.layerY);
-      this._attachListeners();
-      this.rubberband = new RubberbandTiltedBox(x, y, this.g, this.env);
-    }
+  get isDrawing() {
+    return this.drawingState != null;
   }
 
-  stop = () => {
-    if (this.rubberband) {
-      this.rubberband.destroy();
-      this.rubberband = null;
-    }
+  startDrawing = evt => {
+    this._attachListeners();
+
+    this.drawingState = 'BASELINE';
+
+    const { x, y } = this._toSVG(evt.layerX, evt.layerY);
+    this.rubberbandShape = new TiltedBox([
+      [ x, y ],
+      [ x, y ],
+      [ x, y ],
+      [ x, y ]
+    ]);
+
+    addClass(this.rubberbandShape.element, 'a9s-selection');
+
+    this.g.appendChild(this.rubberbandShape.element);
   }
 
   onMouseMove = evt => {
     const { x , y } = this._toSVG(evt.layerX, evt.layerY);
-    this.rubberband.onMouseMove(x, y);
+
+    if (this.drawingState === 'BASELINE')
+      this.rubberbandShape.setBaseEnd(x, y);
+    else if (this.drawingState === 'EXTRUDE')
+      this.rubberbandShape.extrude(x, y);
   }
   
   onMouseUp = evt => {
-    if (this.rubberband.isCollapsed) {
-      this.emit('cancel', evt);
-      this.stop();
-    } else if (this.rubberband.isComplete) {
-      this.rubberband.destroy();
-    } else {
-      const { x , y } = this._toSVG(evt.layerX, evt.layerY);
-      this.rubberband.onMouseUp([ x, y ]);
+    if (this.drawingState === 'BASELINE') {
+      if (this.rubberbandShape.isCollapsed) {
+        this.emit('cancel');
+        this.stop();
+      } else {
+        this.drawingState = 'EXTRUDE'
+      }
+    } else if (this.drawingState === 'EXTRUDE') {
+      const shape = this.rubberbandShape.element;
+      shape.annotation = this.rubberbandShape.toSelection(this.env.image.src);
+      this.emit('complete', shape);
     }
   }
 
+  stop = () => {
+    if (this.rubberbandShape) {
+      this.rubberbandShape.destroy();
+      this.rubberbandShape = null;
+    }
+  }
+
+  /*
   createEditableShape = annotation =>
     new EditableRect(annotation, this.g, this.config, this.env);
 
   get supportsModify() {
     return true;
   }
+  */
 
 }

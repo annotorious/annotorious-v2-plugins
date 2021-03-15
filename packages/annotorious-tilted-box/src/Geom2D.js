@@ -23,6 +23,9 @@ export const angleBetween = (a, b) => {
   return Math.acos(dotProduct);
 }
 
+export const angleOf = xy =>
+  Math.atan2(xy[1], xy[0]);
+
 /** Adds two vectors */
 export const add = (a, b) =>
   [ a[0] + b[0], a[1] + b[1]  ];
