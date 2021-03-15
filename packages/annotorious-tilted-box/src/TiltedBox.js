@@ -96,7 +96,7 @@ export default class TiltedBox {
     source,
     selector: {
       type: 'SvgSelector',
-      value: `<svg><polygon points="${this.tiltedbox.getAttribute('points')}" /></svg>`
+      value: `<svg><polygon data-tool-hint="tilted-box" points="${this.tiltedbox.getAttribute('points')}" /></svg>`
     }
   });
 
