@@ -1,65 +1,30 @@
-import EventEmitter from 'tiny-emitter';
+import Tool from '@recogito/annotorious/src/tools/Tool';
 import { addClass } from '@recogito/annotorious/src/util/SVG';
 import TiltedBox from './TiltedBox';
 
 import './TiltedBoxTool.scss';
 
-// Event Emitter could go into a base class
-export default class TiltedBoxTool extends EventEmitter {
+export default class TiltedBoxTool extends Tool {
 
   constructor(g, config, env) {
-    super();
+    super(g, config, env);
     
-    // This could be moved into a base class
-    this.svg = g.closest('svg');
-
-    this.g = g;
-    this.config = config;
-    this.env = env;
-
     this.drawingState = null;
     this.rubberbandShape = null;
   }
-
-  /**
-   * This could be moved into a base class
-   */
-  _attachListeners = () => {
-    this.svg.addEventListener('mousemove', this.onMouseMove);    
-    document.addEventListener('mouseup', this.onMouseUp);
-  }
-
-  /**
-   * This could be moved into a base class
-   */
-  _detachListeners = () => {
-    this.svg.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener('mouseup', this.onMouseUp);
-  }
-
-  /**
-   * This could be moved into a base class
-   */
-  _toSVG = (x, y) => {
-    const pt = this.svg.createSVGPoint();
-
-    const { left, top } = this.svg.getBoundingClientRect();
-    pt.x = x + left;
-    pt.y = y + top;
-
-    return pt.matrixTransform(this.g.getScreenCTM().inverse());
-  }   
 
   get isDrawing() {
     return this.drawingState != null;
   }
 
-  startDrawing = evt => {
-    this._attachListeners();
+  startDrawing = (x, y) => {
+    this.attachListeners({
+      mouseMove: this.onMouseMove,
+      mouseUp: this.onMouseUp
+    });
 
     this.drawingState = 'BASELINE';
 
-    const { x, y } = this._toSVG(evt.layerX, evt.layerY);
     this.rubberbandShape = new TiltedBox([
       [ x, y ],
       [ x, y ],
@@ -72,16 +37,14 @@ export default class TiltedBoxTool extends EventEmitter {
     this.g.appendChild(this.rubberbandShape.element);
   }
 
-  onMouseMove = evt => {
-    const { x , y } = this._toSVG(evt.layerX, evt.layerY);
-
+  onMouseMove = (x, y) => {
     if (this.drawingState === 'BASELINE')
       this.rubberbandShape.setBaseEnd(x, y);
     else if (this.drawingState === 'EXTRUDE')
       this.rubberbandShape.extrude(x, y);
   }
   
-  onMouseUp = evt => {
+  onMouseUp = () => {
     if (this.drawingState === 'BASELINE') {
       if (this.rubberbandShape.isCollapsed) {
         this.emit('cancel');
@@ -92,11 +55,16 @@ export default class TiltedBoxTool extends EventEmitter {
     } else if (this.drawingState === 'EXTRUDE') {
       const shape = this.rubberbandShape.element;
       shape.annotation = this.rubberbandShape.toSelection(this.env.image.src);
+
       this.emit('complete', shape);
+
+      stop();
     }
   }
 
   stop = () => {
+    this.detachListeners();
+    
     if (this.rubberbandShape) {
       this.rubberbandShape.destroy();
       this.rubberbandShape = null;
@@ -106,10 +74,16 @@ export default class TiltedBoxTool extends EventEmitter {
   /*
   createEditableShape = annotation =>
     new EditableRect(annotation, this.g, this.config, this.env);
-
-  get supportsModify() {
-    return true;
-  }
   */
 
+  get supportsModify() {
+    return false;
+  }
+
+}
+
+TiltedBoxTool.identifier = 'annotorious-tilted-box';
+
+TiltedBoxTool.supports = annotation => {
+  return false;
 }
