@@ -97,9 +97,9 @@ export default class TiltedBox {
     selector: {
       type: 'SvgSelector',
       value: `<svg><polygon points="${this.tiltedbox.getAttribute('points')}" /></svg>`,
-      renderedVia: {
-        name: 'annotorious-tilted-box'
-      }
+    },
+    renderedVia: {
+      name: 'annotorious-tilted-box'
     }
   });
 
