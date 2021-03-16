@@ -1,4 +1,4 @@
-import Selection from '@recogito/recogito-client-core/src/Selection';
+import { Selection } from '@recogito/annotorious/src/tools/Tool';
 import * as Geom2D from './Geom2D';
 
 // TODO move into tool base class?

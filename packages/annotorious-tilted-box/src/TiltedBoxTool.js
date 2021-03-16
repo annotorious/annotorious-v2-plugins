@@ -58,7 +58,7 @@ export default class TiltedBoxTool extends Tool {
 
       this.emit('complete', shape);
 
-      stop();
+      this.stop();
     }
   }
 

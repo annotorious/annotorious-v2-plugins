@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@recogito/annotorious": "^2.2.4",
-    "@recogito/recogito-client-core": "^1.0.1",
     "tiny-emitter": "^2.1.0"
   }
 }
