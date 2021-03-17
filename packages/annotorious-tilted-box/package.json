@@ -25,7 +25,6 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "@recogito/annotorious": "^2.2.4",
-    "tiny-emitter": "^2.1.0"
+    "@recogito/annotorious": "^2.2.4"
   }
 }

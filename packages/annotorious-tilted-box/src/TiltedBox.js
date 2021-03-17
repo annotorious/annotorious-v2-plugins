@@ -1,9 +1,7 @@
 import { Selection } from '@recogito/annotorious/src/tools/Tool';
 import { polygonBounds } from '@recogito/annotorious/src/selectors';
+import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import * as Geom2D from './Geom2D';
-
-// TODO move into tool base class?
-const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
 export default class TiltedBox {
 
@@ -46,7 +44,7 @@ export default class TiltedBox {
     this.baseline.setAttribute('x2', b[0]);
     this.baseline.setAttribute('y2', b[1]);
 
-    const attr = points.map(xy => xy.join(', ')).join(' ');
+    const attr = points.map(xy => xy.join(',')).join(' ');
     this.tiltedbox.setAttribute('points', attr);
 
     this.pivot.setAttribute('cx', a[0]);
