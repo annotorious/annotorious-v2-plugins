@@ -3,7 +3,9 @@
   "version": "0.1.1",
   "description": "The Tilted Box selection tool from Recogito - now for Annotorious",
   "main": "src/index.js",
-  "files": [ "dist" ],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "webpack-dev-server --open --mode=development -d",
     "build": "webpack --mode=production"
@@ -26,6 +28,6 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "@recogito/annotorious": "^2.2.4"
+    "@recogito/annotorious": "^2.2.5"
   }
 }
