@@ -59,7 +59,6 @@ export default class TiltedBoxTool extends Tool {
 
   stop = () => {
     this.detachListeners();
-    
     this.drawingState = null;
     
     if (this.rubberbandShape) {

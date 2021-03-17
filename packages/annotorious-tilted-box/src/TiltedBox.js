@@ -1,4 +1,5 @@
 import { Selection } from '@recogito/annotorious/src/tools/Tool';
+import { polygonBounds } from '@recogito/annotorious/src/selectors';
 import * as Geom2D from './Geom2D';
 
 // TODO move into tool base class?
@@ -31,8 +32,8 @@ export default class TiltedBox {
   }
 
   get isCollapsed() {
-    // TODO
-    return false;
+    const { w, h } = polygonBounds(this.points);
+    return w * h < 9;
   }
 
   setPoints = points => {
@@ -104,7 +105,8 @@ export default class TiltedBox {
   });
 
   destroy = () => {
-    // this.element.parentNode.removeChild(this.element);
+    if (this.element.parentNode)
+      this.element.parentNode.removeChild(this.element);
   }
 
 }

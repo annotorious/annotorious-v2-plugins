@@ -7,7 +7,7 @@ export default class EditableTiltedBox extends EditableShape {
     super(annotation, g, config, env);
 
     this._element = drawEmbeddedSVG(annotation);
-    this._element.setAttribute('class', `a9s-annotation selected`);
+    this._element.setAttribute('class', 'a9s-annotation selected');
 
     g.appendChild(this._element);
   }
