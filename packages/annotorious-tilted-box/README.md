@@ -1,6 +1,6 @@
 # Annotorious Tilted Box Plugin
 
-This plugin for [Annotorious](https://github.com/recogito/annotorious) that adds a new 
+This plugin for [Annotorious](https://github.com/recogito/annotorious) adds a new 
 selection tool: the __Tilted Box__.
 
 ![Example screen capture](screencap.gif)
