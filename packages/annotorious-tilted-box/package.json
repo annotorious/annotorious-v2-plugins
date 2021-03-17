@@ -1,8 +1,9 @@
 {
   "name": "@recogito/annotorious-tilted-box",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Tilted Box selection tool from Recogito - now for Annotorious",
   "main": "src/index.js",
+  "files": [ "dist" ],
   "scripts": {
     "start": "webpack-dev-server --open --mode=development -d",
     "build": "webpack --mode=production"
