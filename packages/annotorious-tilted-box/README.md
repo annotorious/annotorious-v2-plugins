@@ -2,6 +2,8 @@
 
 This plugin adds a new selection tool: the __Tilted Box__.
 
+![Example screen capture](screencap.gif)
+
 ## Install
 
 ```html
