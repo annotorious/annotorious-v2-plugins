@@ -1,5 +1,6 @@
 import Tool from '@recogito/annotorious/src/tools/Tool';
 import { addClass } from '@recogito/annotorious/src/util/SVG';
+import EditableTiltedBox from './EditableTiltedBox';
 import TiltedBox from './TiltedBox';
 
 import './TiltedBoxTool.scss';
@@ -11,10 +12,6 @@ export default class TiltedBoxTool extends Tool {
     
     this.drawingState = null;
     this.rubberbandShape = null;
-  }
-
-  get isDrawing() {
-    return this.drawingState != null;
   }
 
   startDrawing = (x, y) => {
@@ -55,9 +52,7 @@ export default class TiltedBoxTool extends Tool {
     } else if (this.drawingState === 'EXTRUDE') {
       const shape = this.rubberbandShape.element;
       shape.annotation = this.rubberbandShape.toSelection(this.env.image.src);
-
       this.emit('complete', shape);
-
       this.stop();
     }
   }
@@ -65,20 +60,20 @@ export default class TiltedBoxTool extends Tool {
   stop = () => {
     this.detachListeners();
     
+    this.drawingState = null;
+    
     if (this.rubberbandShape) {
       this.rubberbandShape.destroy();
       this.rubberbandShape = null;
     }
   }
 
-  /*
-  createEditableShape = annotation =>
-    new EditableRect(annotation, this.g, this.config, this.env);
-  */
-
-  get supportsModify() {
-    return false;
+  get isDrawing() {
+    return this.drawingState != null;
   }
+
+  createEditableShape = annotation =>
+    new EditableTiltedBox(annotation, this.g, this.config, this.env);
 
 }
 

@@ -104,7 +104,7 @@ export default class TiltedBox {
   });
 
   destroy = () => {
-    this.element.parentNode.removeChild(this.element);
+    // this.element.parentNode.removeChild(this.element);
   }
 
 }

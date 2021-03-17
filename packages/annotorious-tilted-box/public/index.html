@@ -23,6 +23,10 @@
         Annotorious.TiltedBox(anno);
 
         anno.setDrawingTool('annotorious-tilted-box');
+
+        anno.on('createAnnotation', function(a) {
+          console.log(a);
+        });
       })();
     </script>
   </body>
