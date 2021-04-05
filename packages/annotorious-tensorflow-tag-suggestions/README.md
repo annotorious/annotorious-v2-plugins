@@ -1,4 +1,4 @@
-# Annotorious Smart Tagging
+# Annotorious Tensorflow Tag Suggestions
 
 A plugin that adds AI-powered automatic tag suggestions to Annotorious and Annotorious OpenSeadragon. Tag image regions manually first. 
 After learning from at least two examples, the plugin provides tag suggestions automatically. Uses Transfer Learning in 
