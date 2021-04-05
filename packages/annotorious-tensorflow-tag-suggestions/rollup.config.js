@@ -8,9 +8,9 @@ import serve from 'rollup-plugin-serve';
 const config = {
   input: 'src/index.js',
   output: {
-    file: 'dist/annotorious-smart-tagging.min.js',
+    file: 'dist/annotorious-tf-tag-suggestions.min.js',
     format: 'umd',
-    name: 'recogito.AnnotoriousSmartTagging',
+    name: 'recogito.AnnotoriousTFSuggestions',
     compact: true,
   },
   plugins: [,

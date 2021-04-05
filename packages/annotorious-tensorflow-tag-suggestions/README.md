@@ -13,13 +13,13 @@ https://codelabs.developers.google.com/codelabs/tensorflowjs-teachablemachine-co
 Install via npm 
 
 ```sh
-npm install @recogito/annotorious-smart-tagging
+npm install @recogito/annotorious-tensorflow-tag-suggestions
 ```
 
 or include in the page
 
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-smart-tagging@latest/dist/annotorious-smart-tagging.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-tensorflow-tag-suggestions@latest/dist/annotorious-tf-tag-suggestions.min.js"></script>
 ```
 
 ## Example
@@ -31,7 +31,7 @@ or include in the page
     <title>Annotorious Smart Tagging Demo</title>
     <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
     <script src="openseadragon-annotorious.min.js"></script>
-    <script src="annotorious-smart-tagging.js"></script>
+    <script src="annotorious-tf-tag-suggestions.min.js"></script>
     <link rel="stylesheet" href="annotorious.min.css">
   </head>
   <body>
@@ -54,7 +54,7 @@ or include in the page
         });
 
         // Initialize the smart tagging plugin
-        recogito.AnnotoriousSmartTagging(anno);
+        recogito.AnnotoriousTFSuggestions(anno);
       })();
     </script>
   </body>

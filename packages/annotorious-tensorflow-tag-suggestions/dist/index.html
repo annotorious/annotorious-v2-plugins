@@ -4,7 +4,7 @@
     <title>Annotorious Smart Tagging Demo</title>
     <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.2.0/dist/openseadragon-annotorious.min.js"></script>
-    <script src="annotorious-smart-tagging.min.js"></script>
+    <script src="annotorious-tf-tag-suggestions.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.2.0/dist/annotorious.min.css">
     <style>
       html, body, #osd-image {
@@ -69,7 +69,7 @@
         });
 
         // Initialize the smart tagging plugin
-        recogito.AnnotoriousSmartTagging(anno);
+        recogito.AnnotoriousTFSuggestions(anno);
       })();
     </script>
   </body>
