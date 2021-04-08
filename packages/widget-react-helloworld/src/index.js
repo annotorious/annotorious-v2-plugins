@@ -23,7 +23,7 @@ const HelloWorldWidget = props => {
       // Set color value as CSS background
       style={{ backgroundColor: value }}
 
-      // On click add (or replace) the current hihglight body
+      // On click add (or replace) the current highlight body
       onClick={setHighlightBody(value)}></button>
 
   return (

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>React Hello World Plugin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
+    <script src="recogito-helloworld-widget.js"></script>
+  </head>
+  <body>
+    <img id="hallstatt" src="../../../public/640px-Hallstatt.jpg" />
+
+    <script type="text/javascript">
+      (function() {
+        var anno = Annotorious.init({
+          image: 'hallstatt',
+          widgets: [ 
+            recogito.HelloWorldWidget,
+            'COMMENT',
+            'TAG'
+          ]
+        });
+      })();
+    </script>
+  </body>
+</html>
