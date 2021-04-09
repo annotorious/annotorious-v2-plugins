@@ -1,0 +1,21 @@
+.helloworld-widget {
+  padding:5px;
+  border-bottom:1px solid #e5e5e5;
+}
+
+.helloworld-widget button {
+  outline:none;
+  border:none;
+  display:inline-block;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  cursor:pointer;
+  opacity:0.5;
+  margin:4px;
+}
+
+.helloworld-widget button.selected,
+.helloworld-widget button:hover {
+  opacity:1;
+}

@@ -1,5 +1,7 @@
 import React from 'preact/compat';
 
+import './index.css';
+
 const HelloWorldWidget = props => {
 
   const { annotation } = props;

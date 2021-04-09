@@ -2,6 +2,17 @@
 
 The example React widget from the [guide](https://recogito.github.io/guides/editor-widgets/).
 
+## Build
+
+A built, minified version is in the [dist folder](https://github.com/recogito/recogito-client-plugins/tree/main/packages/widget-react-helloworld/dist).
+
+To build from source, run
+
+```sh
+$ npm install
+$ npm run build
+```
+
 ## Usage
 
 ```html
