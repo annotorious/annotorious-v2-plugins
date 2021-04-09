@@ -1,6 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 
+const TerserPlugin = require('terser-webpack-plugin');
+
 const APP_DIR = fs.realpathSync(process.cwd());
 
 const resolveAppPath = relativePath => path.resolve(APP_DIR, relativePath);
@@ -15,6 +17,10 @@ module.exports = {
   },
   performance: {
     hints: false
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
   resolve: {
     extensions: ['.js', '.jsx'],

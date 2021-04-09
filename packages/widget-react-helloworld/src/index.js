@@ -12,27 +12,27 @@ const HelloWorldWidget = props => {
     annotation.bodies.find(b => b.purpose === 'highlighting') : null;
 
   // This function handles body updates as the user presses buttons
-  const setHighlightBody = value => evt => {
+  const setHighlightBody = value => () => {
     props.onUpsertBody(currentHighlight, { value, purpose: 'highlighting' });
   }
 
-  // Just a helper to create the color buttons
-  const createButton = value =>
-    <button 
-      // Set class to 'selected' if this button value equals current highlight
-      className={currentHighlight?.value === value ? 'selected' : null}
-
-      // Set color value as CSS background
-      style={{ backgroundColor: value }}
-
-      // On click add (or replace) the current highlight body
-      onClick={setHighlightBody(value)}></button>
-
   return (
     <div className="helloworld-widget">
-      { createButton('red') }
-      { createButton('green') }
-      { createButton('blue') }
+      { [ 'red', 'green', 'blue' ].map(color => 
+
+        <button 
+          key={color}
+    
+          // Set class to 'selected' if this button value equals current highlight
+          className={currentHighlight?.value === color ? 'selected' : null}
+
+          // Set color value as CSS background
+          style={{ backgroundColor: color }}
+
+          // On click add (or replace) the current highlight body
+          onClick={setHighlightBody(color)} />
+
+    )}
     </div>
   )
 
