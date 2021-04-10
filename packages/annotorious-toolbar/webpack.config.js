@@ -11,7 +11,7 @@ const resolveAppPath = relativePath => path.resolve(APP_DIR, relativePath);
 module.exports = {
   entry: resolveAppPath('src'),
   output: {
-    filename: 'annotorious-toolbar.js',
+    filename: 'annotorious-toolbar.min.js',
     library: ['Annotorious', 'Toolbar'],
     libraryTarget: 'umd',
     libraryExport: 'default'

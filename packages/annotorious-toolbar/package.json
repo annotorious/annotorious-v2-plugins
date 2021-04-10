@@ -1,8 +1,8 @@
 {
   "name": "@recogito/annotorious-toolbar",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple toolbar for switching Annotorious drawing tools",
-  "main": "src/index.js",
+  "main": "dist/annotorious-toolbar.min.js",
   "scripts": {
     "start": "webpack-dev-server --open --mode=development -d",
     "build": "webpack --mode=production"
