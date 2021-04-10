@@ -1,0 +1,50 @@
+.a9s-toolbar-btn {
+  margin:4px 4px 4px 0;
+  outline:0;
+  border:none;
+  cursor:pointer;
+  background-color:transparent;
+  border-radius:4px;
+  padding:8px;
+  width:45px;
+  height:45px;
+}
+
+.a9s-toolbar-btn:hover {
+  background-color:rgba(0,0,0,0.05);
+}
+
+.a9s-toolbar-btn-inner {
+  display:flex;
+}
+
+.a9s-toolbar-btn svg {
+  overflow:visible;
+}
+
+.a9s-toolbar-btn svg rect,
+.a9s-toolbar-btn svg path {
+  stroke-width:5px;
+  fill:none;
+  stroke:rgba(0,0,0,0.5);
+}
+
+.a9s-toolbar-btn svg circle {
+  stroke-width:4px;
+  fill:#fff;
+  stroke:#000;
+}
+
+.a9s-toolbar-btn.active {
+  background-color:rgba(0,0,0,0.3);
+}
+
+.a9s-toolbar-btn.active svg rect,
+.a9s-toolbar-btn.active svg path {
+  stroke:rgba(255,255,255,0.6);
+}
+
+.a9s-toolbar-btn.active svg circle {
+  stroke:#fff;
+  fill:rgba(0,0,0,0.2);
+}
