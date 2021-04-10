@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious | Tilted Box</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
+  </head>
+  <body>
+    <div id="toolbar-container"></div>
+    <img id="hallstatt" src="640px-Hallstatt.jpg">
+    <script>
+      window.onload = function() {
+        var anno = Annotorious.init({
+          image: 'hallstatt'
+        });
+
+        Annotorious.Toolbar(anno, document.getElementById('toolbar-container'));
+      }
+    </script>
+  </body>
+</html>
