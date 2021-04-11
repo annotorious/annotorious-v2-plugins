@@ -2,18 +2,51 @@
 <html>
   <head>
     <title>Annotorious | Tilted Box</title>
+    <!-- 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
+    -->
+
+    <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/openseadragon-annotorious.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/annotorious.min.css">
+
+    <style>
+      html, body, #osd-image {
+        padding:0;
+        margin:0;
+        width:100%;
+        height:100%;
+      }
+    </style>
   </head>
   <body>
     <div id="toolbar-container"></div>
-    <img id="hallstatt" src="640px-Hallstatt.jpg">
+    <!-- img id="hallstatt" src="640px-Hallstatt.jpg" -->
+    <div id="osd-image"></div>
     <script>
       window.onload = function() {
+        /*
         var anno = Annotorious.init({
           image: 'hallstatt'
         });
+        */
 
+        // Initialize OpenSeadragon
+        var viewer = OpenSeadragon({
+          id: "osd-image",
+          prefixUrl: "openseadragon-bin-2.4.2/images/",
+          tileSources: {
+            type: "image",
+
+            // Attribution: Carta Marina by Olaus Magnus (1539)
+            // https://commons.wikimedia.org/wiki/File:Carta_Marina.jpeg
+            url: "Carta_Marina.jpeg" 
+          }
+        });
+
+        // Initialize Annotorious
+        var anno = OpenSeadragon.Annotorious(viewer);
         Annotorious.Toolbar(anno, document.getElementById('toolbar-container'));
       }
     </script>

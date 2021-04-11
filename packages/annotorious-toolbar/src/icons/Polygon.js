@@ -12,8 +12,6 @@ export default () => {
       <circle cx="18" cy="38" r="5" />
     </g>
   `;
-
-  console.log(svg);
   
   return svg;
 }

@@ -1,7 +1,12 @@
-import Rectangle from './icons/Rectangle';
-import Polygon from './icons/Polygon';
+import createRectangle from './icons/Rectangle';
+import createPolygon from './icons/Polygon';
 
 import './index.css';
+
+const ICONS = {
+  'rect': createRectangle(),
+  'polygon': createPolygon()
+}
 
 // IE11 doesn't support adding/removing classes to SVG elements except 
 // via .setAttribute
@@ -16,48 +21,64 @@ const removeClass = (el, className) => {
   el.setAttribute('class', classNames.join(' '));
 }
 
-const Toolbar = (anno, opt_container) => {
+const Toolbar = (anno, container) => {
+  // Bit of a hack...
+  const isOSDPlugin = !!anno.fitBounds;
 
-  const container = document.createElement('div');
-  container.className = 'a9s-toolbar';
+  const toolbar = document.createElement('div');
+  toolbar.className = 'a9s-toolbar';
 
-  const clearSelected = () => {
-    const selected = container.querySelector('.a9s-toolbar-btn.active');
-    removeClass(selected, 'active');
+  const clearActive = () => {
+    const currentActive = toolbar.querySelector('.a9s-toolbar-btn.active');
+    if (currentActive)
+      removeClass(currentActive, 'active');
   }
 
-  const createButton = (toolId, icon, container) => {
+  const setActive = button => {
+    clearActive();
+    addClass(button, 'active');
+  }
 
-    const button = document.createElement('button');
-    button.className = `a9s-toolbar-btn ${toolId}`;
+  // Helper to create one tool button 
+  const createButton = (toolId, isActive) => {
+    const icon = ICONS[toolId];
 
-    const inner = document.createElement('span');
-    inner.className = 'a9s-toolbar-btn-inner';
+    if (icon) {
+      const button = document.createElement('button');
 
-    button.appendChild(inner);
-    inner.appendChild(icon);
-  
-    button.addEventListener('click', () => {
-      clearSelected();
-      addClass(button, 'active');
-      anno.setDrawingTool(toolId);
-    });
-  
-    container.appendChild(button);
-  
-    return button;
+      if (isActive)
+        button.className = `a9s-toolbar-btn ${toolId} active`;
+      else
+        button.className = `a9s-toolbar-btn ${toolId}`;
+
+      const inner = document.createElement('span');
+      inner.className = 'a9s-toolbar-btn-inner';
+
+      inner.appendChild(icon);
+
+      button.addEventListener('click', () => {
+        setActive(button);
+        anno.setDrawingTool(toolId);
+
+        if (isOSDPlugin)
+          anno.setDrawingEnabled(true);
+      });
+
+      button.appendChild(inner);
+      toolbar.appendChild(button);
+    }
   }
   
-  // TODO sniff drawing tools
+  anno.listDrawingTools().forEach((toolId, idx) => {
+    // In standard version, activate first button
+    const activateFirst = !isOSDPlugin && idx === 0; 
+    createButton(toolId, activateFirst);        
+  });
 
-  const initial = createButton('rect', Rectangle(), container);
-  addClass(initial, 'active');
+  if (isOSDPlugin)
+    anno.on('createSelection', clearActive);
 
-  createButton('polygon', Polygon(), container);
-
-  // TODO what if null?
-  opt_container.appendChild(container);
-
+  container.appendChild(toolbar);
 }
 
 export default Toolbar;
