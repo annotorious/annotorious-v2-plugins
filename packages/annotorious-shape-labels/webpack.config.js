@@ -12,7 +12,7 @@ module.exports = {
   entry: resolveAppPath('src'),
   output: {
     filename: 'annotorious-shape-labels.min.js',
-    library: ['Annotorious', 'ShapeLabels'],
+    library: ['Annotorious', 'ShapeLabelsFormatter'],
     libraryTarget: 'umd',
     libraryExport: 'default'
   },
