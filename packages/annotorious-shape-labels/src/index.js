@@ -1,8 +1,11 @@
-import WebAnnotation from '@recogito/recogito-client-core/src/WebAnnotation';
+import './index.css';
 
 const ShapeLabelsFormatter = annotation => {
-  const a = new WebAnnotation(annotation);
-  const firstTag = a.bodies.find(b => b.purpose == 'tagging');
+
+  const bodies = Array.isArray(annotation.body) ?
+    annotation.body : [ annotation.body ];
+
+  const firstTag = bodies.find(b => b.purpose == 'tagging');
 
   if (firstTag) {
     const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
@@ -16,7 +19,10 @@ const ShapeLabelsFormatter = annotation => {
         ${firstTag.value}
       </div>`;
 
-    return foreignObject;
+    return {
+      element: foreignObject,
+      className: firstTag.value
+    };
   }
 }
 
