@@ -31,6 +31,12 @@ to the  annotation shape.
 </html>
 ```
 
+or
+
+```sh
+$ npm install @recogito/annotorious-shape-labels
+```
+
 ## CSS Styling
 
 The label is inserted into the SVG annotation group as a `foreignObject` element. In addition, 
