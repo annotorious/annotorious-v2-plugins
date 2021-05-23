@@ -34,7 +34,7 @@ to the  annotation shape.
 or
 
 ```sh
-$ npm install @recogito/annotorious-shape-labels
+npm install @recogito/annotorious-shape-labels
 ```
 
 ## CSS Styling
