@@ -3,6 +3,8 @@
 A plugin for Annotorious and Annotorious OpenSeadragon that adds a the first tag as a label
 to the  annotation shape.
 
+![Example screenshot](screenshot.jpg)
+
 ## Use
 
 ```html
@@ -21,7 +23,7 @@ to the  annotation shape.
           image: 'hallstatt',
 
           // Add the formatter provided by the plugin
-          formatter: Annotorious.ShapeLabelsFormatter
+          formatter: Annotorious.ShapeLabelsFormatter()
         });
       })();
     </script>
