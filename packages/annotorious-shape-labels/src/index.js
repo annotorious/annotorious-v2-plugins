@@ -1,6 +1,6 @@
 import './index.css';
 
-const ShapeLabelsFormatter = annotation => {
+const ShapeLabelsFormatter = config => annotation => {
 
   const bodies = Array.isArray(annotation.body) ?
     annotation.body : [ annotation.body ];
