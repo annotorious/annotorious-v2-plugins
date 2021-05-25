@@ -5,6 +5,20 @@ to the  annotation shape.
 
 ![Example screenshot](screenshot.jpg)
 
+## Install
+
+Download the [latest minified release](https://github.com/recogito/recogito-client-plugins/blob/main/packages/annotorious-shape-labels/dist/annotorious-shape-labels.min.js) or include directly via CDN.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-shape-labels@latest/dist/annotorious-shape-labels.min.js"></script>
+```
+
+Import via npm:
+
+```sh
+npm install @recogito/annotorious-shape-labels
+```
+
 ## Use
 
 ```html
@@ -29,12 +43,6 @@ to the  annotation shape.
     </script>
   </body>
 </html>
-```
-
-or
-
-```sh
-npm install @recogito/annotorious-shape-labels
 ```
 
 ## CSS Styling
