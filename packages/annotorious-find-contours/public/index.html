@@ -13,7 +13,8 @@
     </style>
   </head>
   <body>
-    <img id="hallstatt" src="Recahorts_plan_cadastral_1809.png">
+    <img id="hallstatt" src="vasques_07.jpg">
+    <div id="debug"></div>
     <script src="annotorious-find-contours.min.js"></script>
     <script>
       (function() {
@@ -21,7 +22,7 @@
           image: 'hallstatt'
         });
 
-        Annotorious.FindContours(anno);
+        Annotorious.FindContours(anno, document.getElementById('debug'));
       })();
     </script>
   </body>
