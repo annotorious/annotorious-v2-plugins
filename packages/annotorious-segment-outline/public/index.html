@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious | TFSegment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
+    <style>
+      html, body {
+        padding:20px;
+        margin:0;
+      }
+    </style>
+  </head>
+  <body>
+    <img id="hallstatt" src="hallstatt.jpg">
+    <div id="debug"></div>
+    <script src="annotorious-tf-segment.min.js"></script>
+    <script>
+      (function() {
+        var anno = Annotorious.init({
+          image: 'hallstatt'
+        });
+
+        Annotorious.TFSegment(anno, document.getElementById('debug'));
+      })();
+    </script>
+  </body>
+</html>
