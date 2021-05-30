@@ -1,8 +1,3 @@
-import OpenSeadragon from 'openseadragon';
-import * as Annotorious from '@recogito/annotorious-openseadragon';
-
-import '@recogito/annotorious-openseadragon/dist/annotorious.min.css';
-
 /*************************************************************************
  * 
  * Basic concept for this is from the official OpenCV docs: 
@@ -143,22 +138,7 @@ const findContourPolygon = canvasInput => {
   return chunk(largestAreaPolygon.polygon.data32S, 2);
 }
 
-(function() {
-  // Init OpenSeadragon
-  const viewer = OpenSeadragon({
-    id: "openseadragon",
-    prefixUrl: "/images/",
-    tileSources: {
-      type: "image",
-
-      // Attribution: Grundriss der Kaiserl. Königl. Haupt und Residenzstadt Wien, Max von Grimm
-      // http://sammlung.woldan.oeaw.ac.at/layers/geonode:ac04382777_grimm_wien_1806
-      url: "/ac04382777_grimm_wien_1806.jpg" 
-    }
-  });
-
-  // Init Annotorious
-  const anno = Annotorious(viewer, { widgets: [ 'TAG' ] });
+const FindContours = anno => {
 
   // On selection: cut snippet, find contours, update the annotation
   anno.on('createSelection', async function(selection) {
@@ -191,4 +171,7 @@ const findContourPolygon = canvasInput => {
       anno.selectAnnotation(annotation);  
     }, 10);
   });
-})();
+
+}
+
+export default FindContours;

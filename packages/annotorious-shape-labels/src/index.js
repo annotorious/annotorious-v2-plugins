@@ -26,5 +26,4 @@ const ShapeLabelsFormatter = config => annotation => {
   }
 }
 
-
 export default ShapeLabelsFormatter;
