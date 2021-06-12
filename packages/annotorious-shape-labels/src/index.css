@@ -4,10 +4,13 @@
   pointer-events:none;
 }
 
-.a9s-annotationlayer .a9s-formatter-el foreignObject .a9s-shape-label {
+.a9s-annotationlayer .a9s-formatter-el foreignObject .a9s-shape-label-wrapper {
   position:relative;
-  top:-2em;
-  left:-2px;
+  transform:translateY(-100%);
+  padding-bottom:4px;
+}
+
+.a9s-annotationlayer .a9s-formatter-el foreignObject .a9s-shape-label-wrapper .a9s-shape-label {
   display:table;
   padding:3px 5px;
   white-space:nowrap;
