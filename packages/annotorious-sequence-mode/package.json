@@ -1,0 +1,31 @@
+{
+  "name": "@recogito/annotorious-sequence-mode",
+  "version": "0.1.0",
+  "description": "Adds support for annotation pagination in OpenSeadragon sequence mode.",
+  "main": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "webpack-dev-server --open --mode=development -d",
+    "build": "webpack --mode=production"
+  },
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^4.2.3",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+  }
+}
