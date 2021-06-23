@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Annotorious | Sequence Mode Example</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.4.2/dist/annotorious.min.css">
+    <style>
+      html, body {
+        margin:0;
+        padding:0;
+        background-color:#e2e2e2;
+        height:100%;
+        font-family:Lato;
+        line-height:160%;
+      }
+
+      .column {
+        max-width:700px;
+        padding:20px;
+        margin:0 auto;
+        background-color:#fff;
+        height:100%;
+        box-sizing:border-box;
+      }
+
+      h1 {
+        font-size:21px;
+        font-weight:normal;
+        margin:0;
+        padding:0;
+      }
+
+      p.instructions {
+        padding:10px 0 30px 0;
+      }
+
+      .openseadragon-canvas {
+        outline:none;
+        background-color:#efefef !important;
+      }
+
+      .a9s-selection-mask {
+        fill:rgba(0,0,0,0.6) !important;
+        pointer-events:none;
+      }
+    </style>
+    <script>
+      const tileSources = [
+        {
+          type: 'image',
+          url: '640px-Hallstatt.jpg'
+        },
+        {
+          type: 'image',
+          url: 'wadirum.jpg'
+        }
+      ];
+
+      window.onload = function() {
+        var viewer = OpenSeadragon({
+          id: "openseadragon",
+          prefixUrl: "openseadragon-bin-2.4.2/images/",
+          tileSources: tileSources,
+          gestureSettingsTouch: {
+            pinchRotate: true
+          },
+          showRotationControl: true,
+          showFlipControl: true,
+          constrainDuringPan: true,
+          sequenceMode: true
+        });
+
+        var anno = OpenSeadragon.Annotorious(viewer, {
+          locale: 'auto'
+        });
+
+        Annotorious.SequenceMode(anno, viewer);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="column">
+      <h1>Annotorious | Sequence Mode Example</h1>
+      <p class="instructions">
+        In Sequence Mode, on page change ,the annotation layer is cleared and all the annotations
+        are removed, its upto the client application to handle pagination. This page contains a
+        simple example of handling pagination.
+      </p>
+      <div id="openseadragon" style="width: 640px; height: 480px;"></div>
+    </div>
+    <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.4.2/dist/openseadragon-annotorious.min.js"></script>
+  </body>
+</html>

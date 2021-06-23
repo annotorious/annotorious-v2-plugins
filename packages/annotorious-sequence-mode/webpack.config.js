@@ -12,7 +12,7 @@ module.exports = {
   entry: resolveAppPath('src'),
   output: {
     filename: 'annotorious-sequence-mode.min.js',
-    library: ['OpenSeadragon', 'AnnotoriousSequenceMode'],
+    library: ['Annotorious', 'SequenceMode'],
     libraryTarget: 'umd',
     libraryExport: 'default',
     pathinfo: true
