@@ -75,17 +75,69 @@
           locale: 'auto'
         });
 
-        Annotorious.SequenceMode(anno, viewer);
+        const initialAnnotations = {
+          "640px-Hallstatt.jpg": [
+            {
+              "type": "Annotation",
+              "body": [
+                {
+                  "type": "TextualBody",
+                  "value": "ChurchTower",
+                  "purpose": "tagging"
+                }
+              ],
+              "target": {
+                "source": "http://localhost:3000/640px-Hallstatt.jpg",
+                "selector": {
+                  "type": "FragmentSelector",
+                  "conformsTo": "http://www.w3.org/TR/media-frags/",
+                  "value": "xywh=pixel:180,10.5,66,280"
+                }
+              },
+              "@context": "http://www.w3.org/ns/anno.jsonld",
+              "id": "#bd970b23-231e-4535-b50d-ef183f5e6c10"
+            }
+          ],
+          "wadirum.jpg": [
+            {
+              "type": "Annotation",
+              "body": [
+                {
+                  "type": "TextualBody",
+                  "value": "FadedStone",
+                  "purpose": "tagging"
+                }
+              ],
+              "target": {
+                "source": "http://localhost:3000/wadirum.jpg",
+                "selector": {
+                  "type": "FragmentSelector",
+                  "conformsTo": "http://www.w3.org/TR/media-frags/",
+                  "value": "xywh=pixel:524.2874755859375,281.10626220703125,75.1265869140625,39.9609375"
+                }
+              },
+              "@context": "http://www.w3.org/ns/anno.jsonld",
+              "id": "#ca9edde7-9e9f-4c0e-9edc-8c71e8b1aab6"
+            }
+          ]
+        };
+
+        Annotorious.SequenceMode(anno, viewer, {initialAnnotations});
+
+        viewer.addHandler('open', () => {
+          console.log("All Annotations:", anno.getAllAnnotations());
+        });
       }
     </script>
   </head>
   <body>
     <div class="column">
-      <h1>Annotorious | Sequence Mode Example</h1>
+      <h1>Annotorious-OpenSeadragon | Sequence Mode Plugin</h1>
       <p class="instructions">
-        In Sequence Mode, on page change ,the annotation layer is cleared and all the annotations
-        are removed, its upto the client application to handle pagination. This page contains a
-        simple example of handling pagination.
+        When this plugin is used with OpenSeadragon and the osd viewer is in sequence mode,
+        the annotation layer is cleared and all the annotations are removed, this plugin implements
+        a simple pagination. The function <code>getAllAnnotations</code> is also added to the
+        annotator which can be used to get all the annotations pages.
       </p>
       <div id="openseadragon" style="width: 640px; height: 480px;"></div>
     </div>
