@@ -31,7 +31,7 @@ const SequenceModePlugin = (anno, viewer, opts={}) => {
         pagedAnnotations[currentPage][annotation.id] = annotation;
       });
     }
-    anno.setAnnotations(Object.values(pagedAnnotations[currentPage]));
+    anno.setAnnotations(Object.values(pagedAnnotations[currentPage]||{}));
   });
 
 
