@@ -1,6 +1,7 @@
-const SequenceModePlugin = (anno, viewer) => {
+const SequenceModePlugin = (anno, viewer, opts={}) => {
 
   const pagedAnnotations = [];
+  const {initialAnnotations} = opts;
 
   const addOrUpdateAnnotationPages = (annotation) => {
     const currentPage = viewer.currentPage();
@@ -21,16 +22,30 @@ const SequenceModePlugin = (anno, viewer) => {
   anno.on('updateAnnotation', addOrUpdateAnnotationPages);
   anno.on('deleteAnnotation', removePagedAnnotation);
 
-
-  viewer.addHandler('page', ({page}) => {
-    if (pagedAnnotations[page]) {
-      anno.setAnnotations(Object.values(pagedAnnotations[page]))
-    } else {
-      anno.cancelSelected();
-      anno.clearAnnotations();
+  viewer.addHandler('open', () => {
+    const tileSourceURL = viewer.world.getItemAt(0).source.url;
+    const currentPage = viewer.currentPage();
+    if(!pagedAnnotations[currentPage] && initialAnnotations?.[tileSourceURL]) {
+      pagedAnnotations[currentPage] = {};
+      initialAnnotations[tileSourceURL].forEach(annotation => {
+        pagedAnnotations[currentPage][annotation.id] = annotation;
+      });
     }
+    anno.setAnnotations(Object.values(pagedAnnotations[currentPage]||{}));
   });
 
-}
+
+  viewer.addHandler('page', () => {
+      anno.cancelSelected();
+      anno.clearAnnotations();
+  });
+
+  anno.getAllAnnotations = () => {
+    return pagedAnnotations
+      .filter(val => !!val)
+      .map(Object.values)
+      .flat();
+  };
+};
 
 export default SequenceModePlugin;
