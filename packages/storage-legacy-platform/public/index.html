@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious | Legacy Storage</title>
+    <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.5.0/dist/openseadragon-annotorious.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/annotorious.min.css">
+
+    <style>
+      html, body, #osd-image {
+        padding:0;
+        margin:0;
+        width:100%;
+        height:100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="toolbar-container"></div>
+    <div id="osd-image"></div>
+    <script>
+      window.onload = function() {
+        // Initialize OpenSeadragon
+        var viewer = OpenSeadragon({
+          id: "osd-image",
+          prefixUrl: "openseadragon-bin-2.4.2/images/",
+          tileSources: {
+            type: "image",
+
+            // Attribution: Carta Marina by Olaus Magnus (1539)
+            // https://commons.wikimedia.org/wiki/File:Carta_Marina.jpeg
+            url: "Carta_Marina.jpeg" 
+          }
+        });
+
+        // Initialize Annotorious
+        var anno = OpenSeadragon.Annotorious(viewer);
+
+        anno.setAuthInfo({
+          id: 'rainer',
+          displayName: 'rainer'
+        });
+
+        var config = {
+          documentId: 'u7iyermrio1tph',
+          partSequenceNumber: 1,
+          contentType: 'IMAGE_UPLOAD',
+          filepartId: 'b7e08a88-6645-42c7-addf-81f81fea1f1b'
+        };
+
+        recogito.LegacyStorage(anno, config);
+      }
+    </script>
+  </body>
+</html>

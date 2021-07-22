@@ -6,7 +6,7 @@ import axios from 'axios';
  * 
  * TODO support text annotations
  */
-const toLegacyAnnotation = (webanno, keepId) => {
+const toLegacyAnnotation = (webanno, config, keepId) => {
   const fragment = webanno.target.selector.value;
 
   if (!fragment.startsWith('xywh=pixel:'))
@@ -34,11 +34,11 @@ const toLegacyAnnotation = (webanno, keepId) => {
 
   const legacy = {
     annotates: {
-      document_id: this.config.documentId,
-      filepart_id: this.config.filepartId,
-      content_type: this.config.contentType
+      document_id: config.documentId,
+      filepart_id: config.filepartId,
+      content_type: config.contentType
     },
-    anchor: `rect:x=${x},y=${y},w=${w},h=${h}`, 
+    anchor: `rect:x=${Math.round(x)},y=${Math.round(y)},w=${Math.round(w)},h=${Math.round(h)}`, 
     bodies: webanno.body.map(toLegacyBody)
   };
 
@@ -99,12 +99,6 @@ const fromLegacyAnnotation = legacy => {
 }
 
 const LegacyStoragePlugin = (client, config) => {
-
-  // Attach lifecycle handlers
-  client.on('createAnnotation', onCreateAnnotation);
-  client.on('updateAnnotation', onUpdateAnnotation);
-  client.on('deleteAnnotation', onDeleteAnnotation);
-
   // Fetch annotations
   const url = `/api/document/${config.documentId}/part/${config.partSequenceNumber}/annotations`;
 
@@ -114,7 +108,9 @@ const LegacyStoragePlugin = (client, config) => {
   });
 
   const onCreateAnnotation = (annotation, overrideId) => {
-    axios.post('/api/annotation', toLegacyAnnotation(annotation)).then(response => {
+    console.log('converted', toLegacyAnnotation(annotation, config));
+
+    axios.post('/api/annotation', toLegacyAnnotation(annotation, config)).then(response => {
       const { annotation_id } = response.data;
       overrideId(annotation_id);
     });
@@ -130,6 +126,11 @@ const LegacyStoragePlugin = (client, config) => {
 
   const onDeleteAnnotation = annotation =>
     axios.delete(`/api/annotation/${annotation.id}`);
+
+  // Attach lifecycle handlers
+  client.on('createAnnotation', onCreateAnnotation);
+  client.on('updateAnnotation', onUpdateAnnotation);
+  client.on('deleteAnnotation', onDeleteAnnotation);
 
 }
 
