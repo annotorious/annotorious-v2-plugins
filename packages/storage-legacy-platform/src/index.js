@@ -108,8 +108,6 @@ const LegacyStoragePlugin = (client, config) => {
   });
 
   const onCreateAnnotation = (annotation, overrideId) => {
-    console.log('converted', toLegacyAnnotation(annotation, config));
-
     axios.post('/api/annotation', toLegacyAnnotation(annotation, config)).then(response => {
       const { annotation_id } = response.data;
       overrideId(annotation_id);
@@ -122,7 +120,7 @@ const LegacyStoragePlugin = (client, config) => {
    * is that we don't need ot update the ID.
    */
   const onUpdateAnnotation = annotation =>
-    axios.post('/api/annotation', toLegacyAnnotation(annotation, true));
+    axios.post('/api/annotation', toLegacyAnnotation(annotation, config, true));
 
   const onDeleteAnnotation = annotation =>
     axios.delete(`/api/annotation/${annotation.id}`);
