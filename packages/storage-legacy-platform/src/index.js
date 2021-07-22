@@ -100,7 +100,7 @@ const fromLegacyAnnotation = legacy => {
 
 const LegacyStoragePlugin = (client, config) => {
   // Fetch annotations
-  const url = `/api/document/${config.documentId}/part/${config.partSequenceNumber}/annotations`;
+  const url = `/api/document/${config.documentId}/part/${config.partSequenceNo}/annotations`;
 
   axios.get(url).then(response => {
     const annotations = response.data.map(fromLegacyAnnotation);
