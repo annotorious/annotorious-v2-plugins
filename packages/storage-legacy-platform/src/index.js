@@ -35,7 +35,7 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
   const legacy = {
     annotates: {
       document_id: config.documentId,
-      filepart_id: config.filepartId,
+      filepart_id: config.partId,
       content_type: config.contentType
     },
     anchor: `rect:x=${Math.round(x)},y=${Math.round(y)},w=${Math.round(w)},h=${Math.round(h)}`, 
