@@ -1,7 +1,10 @@
 import { Selection } from '@recogito/annotorious/src/tools/Tool';
-import { polygonBounds } from '@recogito/annotorious/src/selectors';
 import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import * as Geom2D from './Geom2D';
+
+const polygonBounds = points => {
+  return { w: 100, h: 100 };
+}
 
 export default class TiltedBox {
 
