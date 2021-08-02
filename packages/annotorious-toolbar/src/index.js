@@ -1,11 +1,13 @@
 import createRectangle from './icons/Rectangle';
 import createPolygon from './icons/Polygon';
+import createTiltedBox from './icons/TiltedBox';
 
 import './index.css';
 
 const ICONS = {
   'rect': createRectangle(),
-  'polygon': createPolygon()
+  'polygon': createPolygon(),
+  'annotorious-tilted-box': createTiltedBox()
 }
 
 // IE11 doesn't support adding/removing classes to SVG elements except 
@@ -25,8 +27,6 @@ const Toolbar = (anno, container) => {
   // Bit of a hack...
   const isOSDPlugin = !!anno.fitBounds;
 
-  console.log('tools', anno.listDrawingTools());
-
   const toolbar = document.createElement('div');
   toolbar.className = 'a9s-toolbar';
 
@@ -43,6 +43,8 @@ const Toolbar = (anno, container) => {
 
   // Helper to create one tool button 
   const createButton = (toolId, isActive) => {
+    console.log('tool', toolId);
+
     const icon = ICONS[toolId];
 
     if (icon) {
