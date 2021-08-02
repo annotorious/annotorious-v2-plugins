@@ -25,6 +25,8 @@ const Toolbar = (anno, container) => {
   // Bit of a hack...
   const isOSDPlugin = !!anno.fitBounds;
 
+  console.log('tools', anno.listDrawingTools());
+
   const toolbar = document.createElement('div');
   toolbar.className = 'a9s-toolbar';
 
