@@ -1,21 +1,12 @@
 import axios from 'axios';
+import { rectFragmentToLegacy, legacyRectToSelector } from './FragmentSelector';
+import { svgPolygonToLegacy, legacyPolygonToSelector } from './SvgSelector';
 
 /** 
  * Legacy Recogito has a "W3C WebAnno-like", but proprietary, annotation
  * format. This function performs the crosswalk from WebAnno to legacy format.
- * 
- * TODO support text annotations
  */
 const toLegacyAnnotation = (webanno, config, keepId) => {
-  const fragment = webanno.target.selector.value;
-
-  if (!fragment.startsWith('xywh=pixel:'))
-    throw new Error('Recogito legacy storage supports rectangles only');
-
-  // Convert media fragment syntax (xywh=pixel:292,69,137,125) to 
-  // proprietary Recogito syntax (rect:x=292,y=69,w=137,h=125)
-  const [ _, coords ] = fragment.split(':');
-  const [ x, y, w, h] = coords.split(',').map(parseFloat);
 
   const toLegacyBody = body => {
     const type = body.type === 'TextualBody' ? 
@@ -32,13 +23,25 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
     };
   }
 
+  const { selector } = webanno.target;
+
+  let anchor;
+
+  if (selector.value.startsWith('xywh=pixel:')) {
+    anchor = rectFragmentToLegacy(selector);
+  } else if (selector.value.startsWith('<svg>')) {
+    anchor = svgPolygonToLegacy(selector);
+  } else {
+    throw "Unsupported selector: " + selector.value;
+  }
+
   const legacy = {
     annotates: {
       document_id: config.documentId,
       filepart_id: config.partId,
       content_type: config.contentType
     },
-    anchor: `rect:x=${Math.round(x)},y=${Math.round(y)},w=${Math.round(w)},h=${Math.round(h)}`, 
+    anchor, 
     bodies: webanno.body.map(toLegacyBody)
   };
 
@@ -55,12 +58,6 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
  * Vice versa, this function crosswalks from legacy to WebAnno.
  */
 const fromLegacyAnnotation = legacy => {
-  // Reminder: proprietary Recogito syntax is rect:x=292,y=69,w=137,h=125
-  if (!legacy.anchor.startsWith('rect:x='))
-    throw new Error('Recogito legacy storage supports rectangles only');
-  
-  const [ _, tuples ] = legacy.anchor.split(':');
-  const [ x, y, w, h ] = tuples.split(',').map(t => parseFloat(t.split('=')[1]))
 
   const toWebAnnoBody = body => {
     let purpose = null;
@@ -83,17 +80,23 @@ const fromLegacyAnnotation = legacy => {
     };
   };
 
+  let selector = null;
+
+  if (legacy.anchor.startsWith('rect:x=')) {
+    selector = legacyRectToSelector(legacy.anchor);
+  } else if (legacy.anchor.startsWith('svg.polygon:')) {
+    selector = legacyPolygonToSelector(legacy.anchor);
+  } else {
+    throw "Unsupported anchor type: " + legacy.anchor;
+  }
+
   return { 
     '@context': 'http://www.w3.org/ns/anno.jsonld',
     id: legacy.annotation_id,
     type: 'Annotation',
     body: legacy.bodies.map(toWebAnnoBody),
     target: {
-      selector: {
-        type: 'FragmentSelector',
-        conformsTo: 'http://www.w3.org/TR/media-frags/',
-        value: `xywh=pixel:${x},${y},${w},${h}`
-      }
+      selector
     }
   }
 }
