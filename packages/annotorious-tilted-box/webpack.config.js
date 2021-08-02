@@ -6,7 +6,6 @@ const APP_DIR = fs.realpathSync(process.cwd());
 const resolveAppPath = relativePath => path.resolve(APP_DIR, relativePath);
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: resolveAppPath('src'),
@@ -22,8 +21,7 @@ module.exports = {
   },
   devtool: 'source-map',
   optimization: {
-    minimize: true,
-    minimizer: [ new TerserPlugin() ]
+    minimize: true
   },
   resolve: {
     extensions: ['.js' ]
