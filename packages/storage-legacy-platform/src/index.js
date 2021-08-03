@@ -11,7 +11,7 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
   const toLegacyBody = body => {
     let type = null;
     let value = null;
-    
+
     switch(body.purpose) {
       case 'tagging':
         type = 'TAG';
@@ -20,6 +20,11 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
       
       case 'classifying':
         type = body.value;
+        break;
+
+      case 'transcribing':
+        type = 'TRANSCRIPTION';
+        value = body.value;
         break;
       
       case 'commenting':
@@ -89,6 +94,9 @@ const fromLegacyAnnotation = legacy => {
     } else if (body.type === 'ENTITY' || body.type === 'LABEL' || body.type === 'SYMBOL') {
       purpose = 'classifying';
       value = body.type;
+    } else if (body.type === 'TRANSCRIPTION') {
+      purpose = 'transcribing';
+      value = body.value;
     } else if (body.type === 'COMMENT') {
       purpose = 'commenting';
       value = body.value;
