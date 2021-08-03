@@ -1,5 +1,8 @@
 import createRectangle from './icons/Rectangle';
 import createPolygon from './icons/Polygon';
+import createCircle from './icons/Circle';
+import createEllipse from './icons/Ellipse';
+import createFreehand from './icons/Freehand';
 import createTiltedBox from './icons/TiltedBox';
 
 import './index.css';
@@ -7,6 +10,9 @@ import './index.css';
 const ICONS = {
   'rect': createRectangle(),
   'polygon': createPolygon(),
+  'circle': createCircle(),
+  'ellipse': createEllipse(),
+  'freehand': createFreehand(),
   'annotorious-tilted-box': createTiltedBox()
 }
 
@@ -43,6 +49,8 @@ const Toolbar = (anno, container) => {
 
   // Helper to create one tool button 
   const createButton = (toolId, isActive) => {
+    console.log(toolId);
+
     const icon = ICONS[toolId];
 
     if (icon) {
