@@ -9,17 +9,37 @@ import { svgPolygonToLegacy, legacyPolygonToSelector } from './SvgSelector';
 const toLegacyAnnotation = (webanno, config, keepId) => {
 
   const toLegacyBody = body => {
-    const type = body.type === 'TextualBody' ? 
-      body.purpose === 'tagging' ? 'TAG' : 'COMMENT' :
-      null;
+    let type = null;
+    let value = null;
+    
+    switch(body.purpose) {
+      case 'tagging':
+        type = 'TAG';
+        value = body.value;
+        break;
+      
+      case 'classifying':
+        type = body.value;
+        break;
+      
+      case 'commenting':
+        type = 'COMMENT';
+        value = body.value;
+        break;
+
+      case 'replying':
+        type = 'COMMENT';
+        value = body.value;
+        break;  
+    }
 
     if (type === null) 
       throw new Error(`Unsupported body type: ${body.type}`);
 
     return { 
       type, 
-      last_modified_by: body.creator.id, 
-      value: body.value 
+      value, 
+      last_modified_by: body.creator.id
     };
   }
 
@@ -61,18 +81,25 @@ const fromLegacyAnnotation = legacy => {
 
   const toWebAnnoBody = body => {
     let purpose = null;
+    let value = null;
     
-    if (body.type === 'TAG')
+    if (body.type === 'TAG') {
       purpose = 'tagging';
-    else if (body.type === 'COMMENT')
+      value = body.value;
+    } else if (body.type === 'ENTITY' || body.type === 'LABEL' || body.type === 'SYMBOL') {
+      purpose = 'classifying';
+      value = body.type;
+    } else if (body.type === 'COMMENT') {
       purpose = 'commenting';
-    else
+      value = body.value;
+    } else {
       throw new Error(`Body type ${body.type} not supported`); 
+    }
 
     return {
       type: 'TextualBody',
       purpose,
-      value: body.value,
+      value,
       creator: {
         id: body.last_modified_by
       },
