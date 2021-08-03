@@ -1,5 +1,4 @@
 import Tool from '@recogito/annotorious/src/tools/Tool';
-import { addClass } from '@recogito/annotorious/src/util/SVG';
 import EditableTiltedBox from './EditableTiltedBox';
 import TiltedBox from './TiltedBox';
 
@@ -27,11 +26,7 @@ export default class TiltedBoxTool extends Tool {
       [ x, y ],
       [ x, y ],
       [ x, y ]
-    ]);
-
-    addClass(this.rubberbandShape.element, 'a9s-selection');
-
-    this.g.appendChild(this.rubberbandShape.element);
+    ], this.g, this.env);
   }
 
   onMouseMove = (x, y) => {

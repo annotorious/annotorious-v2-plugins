@@ -8,13 +8,15 @@ const polygonBounds = points => {
 
 export default class TiltedBox {
 
-  constructor(points) {
+  constructor(points, g) {
     this.points = points;
 
     const [ a, b, ..._ ] = points;
 
+    this.group = document.createElementNS(SVG_NAMESPACE, 'g');
+
     this.element = document.createElementNS(SVG_NAMESPACE, 'g');
-    this.element.setAttribute('class', 'tilted-box');
+    this.element.setAttribute('class', 'a9s-selection tilted-box');
     
     this.baseline = document.createElementNS(SVG_NAMESPACE, 'line');
     this.tiltedbox = document.createElementNS(SVG_NAMESPACE, 'polygon');
@@ -30,6 +32,10 @@ export default class TiltedBox {
     this.element.appendChild(this.tiltedbox);
     this.element.appendChild(this.baseline);
     this.element.appendChild(this.pivot);
+
+    this.group.appendChild(this.element);
+
+    g.appendChild(this.group);
   }
 
   get isCollapsed() {
@@ -106,8 +112,10 @@ export default class TiltedBox {
   });
 
   destroy = () => {
-    if (this.element.parentNode)
-      this.element.parentNode.removeChild(this.element);
+    this.group.parentNode.removeChild(this.group);
+
+    this.element = null;
+    this.group = null;
   }
 
 }
