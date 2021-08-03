@@ -49,8 +49,6 @@ const Toolbar = (anno, container) => {
 
   // Helper to create one tool button 
   const createButton = (toolId, isActive) => {
-    console.log(toolId);
-
     const icon = ICONS[toolId];
 
     if (icon) {
