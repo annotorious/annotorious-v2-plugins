@@ -102,6 +102,9 @@ const fromLegacyAnnotation = legacy => {
     } else if (body.type === 'TRANSCRIPTION') {
       purpose = 'transcribing';
       value = body.value;
+    } else if (body.type === 'GROUPING') {
+      purpose = 'grouping';
+      value = body.value;
     } else if (body.type === 'COMMENT') {
       purpose = 'commenting';
       value = body.value;
