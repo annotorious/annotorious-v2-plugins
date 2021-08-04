@@ -26,7 +26,11 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
         type = 'TRANSCRIPTION';
         value = body.value;
         break;
-      
+
+      case 'grouping':
+        type = 'GROUPING';
+        value = body.value;
+              
       case 'commenting':
         type = 'COMMENT';
         value = body.value;
