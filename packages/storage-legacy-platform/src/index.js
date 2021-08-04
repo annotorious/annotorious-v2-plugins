@@ -48,7 +48,7 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
     return { 
       type, 
       value, 
-      last_modified_by: body.creator.id
+      last_modified_by: body.creator?.id
     };
   }
 
