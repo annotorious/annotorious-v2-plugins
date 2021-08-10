@@ -1,121 +1,50 @@
-import { Selection } from '@recogito/annotorious/src/tools/Tool';
 import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
-import * as Geom2D from './Geom2D';
 
-const polygonBounds = points => {
-  return { w: 100, h: 100 };
+/** Common to all SVG shapes: draw group with inner + outer **/
+const createElement = elem => {
+  const g = document.createElementNS(SVG_NAMESPACE, 'g');
+
+  const outer = document.createElementNS(SVG_NAMESPACE, elem);
+  outer.setAttribute('class', 'a9s-outer');
+
+  const inner =  document.createElementNS(SVG_NAMESPACE, elem);
+  inner.setAttribute('class', 'a9s-inner');
+
+  g.appendChild(outer);
+  g.appendChild(inner);
+
+  return g;
 }
 
-export default class TiltedBox {
+export const createBaseline = () => createElement('line');
 
-  constructor(points, g) {
-    this.points = points;
+export const createBox = () => createElement('polygon');
 
-    const [ a, b, ..._ ] = points;
+export const setBaseline = (g, from, to) => {
 
-    this.group = document.createElementNS(SVG_NAMESPACE, 'g');
-
-    this.element = document.createElementNS(SVG_NAMESPACE, 'g');
-    this.element.setAttribute('class', 'a9s-selection tilted-box');
-    
-    this.baseline = document.createElementNS(SVG_NAMESPACE, 'line');
-    this.tiltedbox = document.createElementNS(SVG_NAMESPACE, 'polygon');
-    this.pivot = document.createElementNS(SVG_NAMESPACE, 'circle');
-
-    this.setPoints(points);
-
-    // We make the selection transparent to 
-    // pointer events because it would interfere with the 
-    // rendered annotations' mouseleave/enter events
-    this.element.style.pointerEvents = 'none';
-
-    this.element.appendChild(this.tiltedbox);
-    this.element.appendChild(this.baseline);
-    this.element.appendChild(this.pivot);
-
-    this.group.appendChild(this.element);
-
-    g.appendChild(this.group);
+  const setCoords = line => {
+    line.setAttribute('x1', from[0]);
+    line.setAttribute('y1', from[1]);
+    line.setAttribute('x2', to[0]);
+    line.setAttribute('y2', to[1]);  
   }
 
-  get isCollapsed() {
-    const { w, h } = polygonBounds(this.points);
-    return w * h < 9;
-  }
+  const inner = g.querySelector('.a9s-inner');
+  setCoords(inner);
 
-  setPoints = points => {
-    this.points = points; 
-
-    const [ a, b, ..._ ] = points;
-
-    this.baseline.setAttribute('x1', a[0]);
-    this.baseline.setAttribute('y1', a[1]);
-    this.baseline.setAttribute('x2', b[0]);
-    this.baseline.setAttribute('y2', b[1]);
-
-    const attr = points.map(xy => xy.join(',')).join(' ');
-    this.tiltedbox.setAttribute('points', attr);
-
-    this.pivot.setAttribute('cx', a[0]);
-    this.pivot.setAttribute('cy', a[1]);
-    this.pivot.setAttribute('r', 6);
-  } 
-  
-  setBaseEnd = (x, y) => {
-    const a = this.points[0];
-    const b = [ x, y ];
-    
-    // Box height
-    const h = Geom2D.len(this.points[2], this.points[1]);
-
-    if (h == 0) {
-      this.setPoints([ a, b, b, a ]);
-    } else {
-      // TODO
-      // Baseline normal (len = 1)
-      // const baseline = Geom2D.vec(b, a);
-      // const normal = Geom2D.normalize([ - baseline[1], baseline[0] ]);
-    }
-  }
-
-  extrude = (pointerX, pointerY) => {
-    const [ a, b, ..._] = this.points;
-
-    // Baseline normal (len = 1)
-    const baseline = Geom2D.vec(b, a);
-    const normal = Geom2D.normalize([ - baseline[1], baseline[0] ]);
-
-    // Vector baseline end -> mouse
-    const toMouse = Geom2D.vec([ pointerX, pointerY ], b);
-
-    // Projection of toMouse onto normal
-    const f = [
-      normal[0] * Geom2D.len(toMouse) * Math.cos(Geom2D.angleBetween(normal, Geom2D.normalize(toMouse))),
-      normal[1] * Geom2D.len(toMouse) * Math.cos(Geom2D.angleBetween(normal, Geom2D.normalize(toMouse)))
-    ];
-
-    const c = Geom2D.add(b, f);
-    const d = Geom2D.add(a, f);
-
-    this.setPoints([ a, b, c, d ]);
-  }
-
-  toSelection = source => new Selection({ 
-    source,
-    selector: {
-      type: 'SvgSelector',
-      value: `<svg><polygon points="${this.tiltedbox.getAttribute('points')}" /></svg>`,
-    },
-    renderedVia: {
-      name: 'annotorious-tilted-box'
-    }
-  });
-
-  destroy = () => {
-    this.group.parentNode.removeChild(this.group);
-
-    this.element = null;
-    this.group = null;
-  }
-
+  const outer = g.querySelector('.a9s-outer');
+  setCoords(outer);
 }
+
+export const setBox = (g, points) => {
+  const attr = points.map(xy => xy.join(',')).join(' ');
+
+  const inner = g.querySelector('.a9s-inner');
+  inner.setAttribute('points', attr);
+
+  const outer = g.querySelector('.a9s-outer');
+  outer.setAttribute('points', attr);
+}
+
+export const getBoxPoints = g =>
+  g.querySelector('.a9s-inner').getAttribute('points');

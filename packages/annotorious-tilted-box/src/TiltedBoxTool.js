@@ -1,6 +1,6 @@
 import Tool from '@recogito/annotorious/src/tools/Tool';
 import EditableTiltedBox from './EditableTiltedBox';
-import TiltedBox from './TiltedBox';
+import RubberbandTiltedBox from './RubberbandTiltedBox';
 
 import './TiltedBoxTool.scss';
 
@@ -10,10 +10,14 @@ export default class TiltedBoxTool extends Tool {
     super(g, config, env);
     
     this.drawingState = null;
+
     this.rubberbandShape = null;
   }
 
-  startDrawing = (x, y) => {
+  scaleHandles = scale =>
+    this.rubberbandShape?.scalePivot(scale);
+
+  startDrawing = (x, y, _, scale) => {
     this.attachListeners({
       mouseMove: this.onMouseMove,
       mouseUp: this.onMouseUp
@@ -21,12 +25,14 @@ export default class TiltedBoxTool extends Tool {
 
     this.drawingState = 'BASELINE';
 
-    this.rubberbandShape = new TiltedBox([
+    this.rubberbandShape = new RubberbandTiltedBox([
       [ x, y ],
       [ x, y ],
       [ x, y ],
       [ x, y ]
-    ], this.g, this.env);
+    ], this.g, this.config, this.env);
+
+    this.rubberbandShape.scalePivot(scale);
   }
 
   onMouseMove = (x, y) => {

@@ -2,32 +2,35 @@
 <html>
   <head>
     <title>Annotorious | Tilted Box</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
-    <script src="annotorious.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/annotorious.min.css">
+    <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
+    <script src="openseadragon-annotorious.min.js"></script>
     <style>
-      html, body {
-        padding:20px;
-        margin:0;
+      #osd {
+        width:800px;
+        height:600px;
       }
     </style>
   </head>
   <body>
-    <img id="hallstatt" src="640px-Hallstatt.jpg">
-    <script src="annotorious-tilted-box.min.js"></script>
-    <script>
-      (function() {
-        var anno = Annotorious.init({
-          image: 'hallstatt'
+    <div id="osd"></div>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        var viewer = OpenSeadragon({
+          id: "osd",
+          prefixUrl: "openseadragon-bin-2.4.2/images/",
+          tileSources: {
+            type: "image",
+            url: "Carta_Marina.jpeg"
+          }
         });
 
+        var anno = OpenSeadragon.Annotorious(viewer);
+        
         Annotorious.TiltedBox(anno);
 
-        anno.setDrawingTool('annotorious-tilted-box');
-
-        anno.on('createAnnotation', function(a) {
-          console.log(a);
-        });
-      })();
+        anno.setDrawingTool('annotorious-tilted-box');      }
     </script>
   </body>
 </html>
