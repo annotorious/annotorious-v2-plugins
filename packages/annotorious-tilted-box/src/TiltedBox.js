@@ -16,9 +16,23 @@ const createElement = elem => {
   return g;
 }
 
-export const createBaseline = () => createElement('line');
+export const createBaseline = (optA, optB) => {
+  const g = createElement('line');
 
-export const createBox = () => createElement('polygon');
+  if (optA && optB) 
+    setBaseline(g, optA, optB);
+
+  return g;
+}
+
+export const createBox = optPoints => {
+  const g = createElement('polygon');
+  
+  if (optPoints)
+    setBox(g, optPoints);
+
+  return g;
+}
 
 export const setBaseline = (g, from, to) => {
 
@@ -48,3 +62,15 @@ export const setBox = (g, points) => {
 
 export const getBoxPoints = g =>
   g.querySelector('.a9s-inner').getAttribute('points');
+
+export const createMinorHandle = (xy, handleRadius) => {
+  // Make this 80% smaller than the configured handle radius
+  const radius = Math.round((handleRadius || 6) * 0.8);
+
+  const c = document.createElementNS(SVG_NAMESPACE, 'circle');
+  c.setAttribute('class', 'a9s-minor-handle');
+  c.setAttribute('cx', xy[0]);
+  c.setAttribute('cy', xy[1]);
+  c.setAttribute('r', radius);
+  return c;
+}
