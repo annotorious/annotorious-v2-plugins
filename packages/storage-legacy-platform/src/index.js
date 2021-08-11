@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { rectFragmentToLegacy, legacyRectToSelector } from './FragmentSelector';
-import { svgPolygonToLegacy, legacyPolygonToSelector } from './SvgSelector';
+import { 
+  svgPolygonToLegacy, 
+  legacyPolygonToSelector,
+  tiltedBoxToLegacy
+} from './SvgSelector';
 
 /** 
  * Legacy Recogito has a "W3C WebAnno-like", but proprietary, annotation
@@ -59,6 +63,8 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
 
   if (selector.value.startsWith('xywh=pixel:')) {
     anchor = rectFragmentToLegacy(selector);
+  } else if (webanno.target.renderedVia?.name === 'annotorious-tilted-box') {
+    anchor = tiltedBoxToLegacy(selector);
   } else if (selector.value.startsWith('<svg>')) {
     anchor = svgPolygonToLegacy(selector);
   } else {
@@ -123,12 +129,17 @@ const fromLegacyAnnotation = legacy => {
     };
   };
 
-  let selector = null;
+  let target = null;
 
   if (legacy.anchor.startsWith('rect:x=')) {
-    selector = legacyRectToSelector(legacy.anchor);
+    target = { selector: legacyRectToSelector(legacy.anchor) };
+  } else if (legacy.anchor.startsWith('svg.tbox:')) {
+    target = { 
+      selector: legacyPolygonToSelector(legacy.anchor),
+      renderedVia: { name: 'annotorious-tilted-box'}
+    };
   } else if (legacy.anchor.startsWith('svg.polygon:')) {
-    selector = legacyPolygonToSelector(legacy.anchor);
+    target = { selector: legacyPolygonToSelector(legacy.anchor) }
   } else {
     throw "Unsupported anchor type: " + legacy.anchor;
   }
@@ -138,9 +149,7 @@ const fromLegacyAnnotation = legacy => {
     id: legacy.annotation_id,
     type: 'Annotation',
     body: legacy.bodies.map(toWebAnnoBody),
-    target: {
-      selector
-    }
+    target
   }
 }
 
