@@ -29,3 +29,6 @@ export const angleOf = xy =>
 /** Adds two vectors */
 export const add = (a, b) =>
   [ a[0] + b[0], a[1] + b[1]  ];
+
+export const mult = (vec, factor) =>
+  [ factor * vec[0], factor * vec[1] ];

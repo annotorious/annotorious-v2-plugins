@@ -2,6 +2,7 @@ import EditableShape from '@recogito/annotorious/src/tools/EditableShape';
 import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import { svgFragmentToShape, toSVGTarget } from '@recogito/annotorious/src/selectors';
 
+import * as Geom2D from './Geom2D';
 import {
   createBaseline,
   createBox,
@@ -81,6 +82,46 @@ export default class EditableTiltedBox extends EditableShape {
     this.setHandleXY(this.pivotHandle, points[0][0], points[0][1]);
   }
 
+  setBaseEnd = xy => {
+    const [ a, b, currentC, _ ] = getBoxPoints(this.box);
+
+    // Current box height
+    const height = Geom2D.len(b, currentC);
+    
+    const updatedBaseline = Geom2D.vec(xy, a);
+    const updatedNormal = Geom2D.mult(
+      Geom2D.normalize([ updatedBaseline[1], -updatedBaseline[0] ]), 
+      height
+    );
+
+    const c = Geom2D.add(xy, updatedNormal)
+    const d = Geom2D.add(a, updatedNormal);
+
+    this.setShape([ a, xy, c, d ]);
+  }
+
+  setOppositeCorner = xy => {
+    const [ a, b, ..._ ] = getBoxPoints(this.box);
+
+    // Baseline normal (len = 1)
+    const baseline = Geom2D.vec(b, a);
+    const normal = Geom2D.normalize([ - baseline[1], baseline[0] ]);
+
+    // Vector baseline end -> mouse
+    const toMouse = Geom2D.vec(xy, b);
+
+    // Projection of toMouse onto normal
+    const f = [
+      normal[0] * Geom2D.len(toMouse) * Math.cos(Geom2D.angleBetween(normal, Geom2D.normalize(toMouse))),
+      normal[1] * Geom2D.len(toMouse) * Math.cos(Geom2D.angleBetween(normal, Geom2D.normalize(toMouse)))
+    ];
+
+    const c = Geom2D.add(b, f);
+    const d = Geom2D.add(a, f);
+
+    this.setShape([ a, b, c, d ]);
+  }
+
   scaleHandles = scale => {
     // Pivot
     const inner = this.pivotHandle.querySelector('.a9s-handle-inner');
@@ -119,30 +160,22 @@ export default class EditableTiltedBox extends EditableShape {
         const dy = constrain(y, pos.y - this.grabbedAt.y, naturalHeight - height);
 
         const updatedPoints = getBoxPoints(this.box).map(pt => [ pt[0] + dx, pt[1] + dy ]);
-        this.setShape(updatedPoints);
 
-        this.grabbedAt = pos;
-        this.emit('update', {
-          ...toSVGTarget(this.box, this.env.image),
-          renderedVia: {
-            name: 'annotorious-tilted-box'
-          }
-        });
+        this.setShape(updatedPoints);        
       } else if (this.grabbedElem === this.baseEndHandle) {
-
+        this.setBaseEnd([ pos.x, pos.y ]);
       } else if (this.grabbedElem === this.oppositeHandle) {
-        /*
-        const handleIdx = this.handles.indexOf(this.grabbedElem);
-
-        const updatedPoints = getPoints(this.shape).map((pt, idx) =>
-          (idx === handleIdx) ? pos : pt);
-
-        this.setPoints(updatedPoints);
-        this.setHandleXY(this.handles[handleIdx], pos.x, pos.y);
-
-        this.emit('update', toSVGTarget(this.shape, this.env.image));
-        */
+        this.setOppositeCorner([ pos.x, pos.y ]);
       }
+
+      this.grabbedAt = pos;
+
+      this.emit('update', {
+        ...toSVGTarget(this.box, this.env.image),
+        renderedVia: {
+          name: 'annotorious-tilted-box'
+        }
+      });
     }
   }
 
