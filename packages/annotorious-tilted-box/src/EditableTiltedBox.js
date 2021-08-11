@@ -85,17 +85,22 @@ export default class EditableTiltedBox extends EditableShape {
   setBaseEnd = xy => {
     const [ a, b, currentC, _ ] = getBoxPoints(this.box);
 
+    const isClockwise = () => {
+      const base = Geom2D.round(Geom2D.normalize(Geom2D.vec(b, a)), 5);
+      const height = Geom2D.round(Geom2D.normalize(Geom2D.vec(currentC, b)), 5);
+  
+      return Geom2D.eq([ -base[1], base[0] ], height);
+    }
+
     // Current box height
     const height = Geom2D.len(b, currentC);
     
-    const updatedBaseline = Geom2D.vec(xy, a);
-    const updatedNormal = Geom2D.mult(
-      Geom2D.normalize([ updatedBaseline[1], -updatedBaseline[0] ]), 
-      height
-    );
+    const updatedBase = Geom2D.vec(xy, a);
+    const updatedNorm = Geom2D.normalize([ -updatedBase[1], updatedBase[0] ]);
+    const updatedHeight = isClockwise() ? Geom2D.mult(updatedNorm, height) : Geom2D.mult(updatedNorm, -height);
 
-    const c = Geom2D.add(xy, updatedNormal)
-    const d = Geom2D.add(a, updatedNormal);
+    const c = Geom2D.add(xy, updatedHeight)
+    const d = Geom2D.add(a, updatedHeight);
 
     this.setShape([ a, xy, c, d ]);
   }

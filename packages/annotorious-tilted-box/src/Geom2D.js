@@ -11,6 +11,18 @@ export const len = (xy1, xy2) =>
 export const vec = (terminal, starting) => 
   [ terminal[0] - starting[0], terminal[1] - starting [1] ];
 
+/** Rounds the vector coordinates to the given decimal placs **/
+export const round = (vec, decimalPlaces) => {
+  const factor = Math.pow(10, decimalPlaces || 0);
+  return [
+    Math.round(vec[0] * factor) / factor,
+    Math.round(vec[1] * factor) / factor
+  ];
+}
+/** Returns true if the vectors are equal **/
+export const eq = (xy1, xy2) => 
+  xy1[0] === xy2[0] && xy1[1] === xy2[1];
+
 /** Normalizes a vector to length = 1 **/
 export const normalize = xy => {
   var l = len(xy);
