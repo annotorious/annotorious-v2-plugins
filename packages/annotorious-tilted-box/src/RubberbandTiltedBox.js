@@ -6,8 +6,7 @@ import {
   createBaseline, 
   createBox,
   setBaseline,
-  setBox,
-  getBoxPoints
+  setBoxPoints
 } from './TiltedBox';
 
 const polygonBounds = points => {
@@ -70,7 +69,7 @@ export default class TiltedBox extends ToolLike {
     const [ a, b, ..._ ] = points;
 
     setBaseline(this.baseline, a, b);
-    setBox(this.tiltedbox, points);
+    setBoxPoints(this.tiltedbox, points);
 
     this.setHandleXY(this.pivot, a[0], a[1]);
   } 
@@ -103,16 +102,20 @@ export default class TiltedBox extends ToolLike {
     this.setPoints([ a, b, c, d ]);
   }
 
-  toSelection = source => new Selection({ 
-    source,
-    selector: {
-      type: 'SvgSelector',
-      value: `<svg><polygon points="${getBoxPoints(this.tiltedbox)}" /></svg>`,
-    },
-    renderedVia: {
-      name: 'annotorious-tilted-box'
-    }
-  });
+  toSelection = source => {
+    const points = this.tiltedbox.querySelector('.a9s-inner').getAttribute('points');
+ 
+    return new Selection({ 
+      source,
+      selector: {
+        type: 'SvgSelector',
+        value: `<svg><polygon points="${points}" /></svg>`,
+      },
+      renderedVia: {
+        name: 'annotorious-tilted-box'
+      }
+    });
+  }
 
   destroy = () => {
     this.group.parentNode.removeChild(this.group);

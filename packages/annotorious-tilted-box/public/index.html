@@ -26,11 +26,18 @@
           }
         });
 
-        var anno = OpenSeadragon.Annotorious(viewer);
+        var anno = OpenSeadragon.Annotorious(viewer, {
+          allowEmpty: true
+        });
         
         Annotorious.TiltedBox(anno);
 
-        anno.setDrawingTool('annotorious-tilted-box');      }
+        anno.setDrawingTool('annotorious-tilted-box'); 
+        
+        anno.on('createAnnotation', function(a) {
+          console.log('created', a);
+        });
+      }
     </script>
   </body>
 </html>

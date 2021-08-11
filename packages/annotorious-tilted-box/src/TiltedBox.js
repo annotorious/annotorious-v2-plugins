@@ -18,6 +18,7 @@ const createElement = elem => {
 
 export const createBaseline = (optA, optB) => {
   const g = createElement('line');
+  g.setAttribute('class', 'a9s-tilted-box-baseline');
 
   if (optA && optB) 
     setBaseline(g, optA, optB);
@@ -29,7 +30,7 @@ export const createBox = optPoints => {
   const g = createElement('polygon');
   
   if (optPoints)
-    setBox(g, optPoints);
+    setBoxPoints(g, optPoints);
 
   return g;
 }
@@ -50,7 +51,7 @@ export const setBaseline = (g, from, to) => {
   setCoords(outer);
 }
 
-export const setBox = (g, points) => {
+export const setBoxPoints = (g, points) => {
   const attr = points.map(xy => xy.join(',')).join(' ');
 
   const inner = g.querySelector('.a9s-inner');
@@ -61,7 +62,9 @@ export const setBox = (g, points) => {
 }
 
 export const getBoxPoints = g =>
-  g.querySelector('.a9s-inner').getAttribute('points');
+  g.querySelector('.a9s-inner').getAttribute('points')
+    .split(' ')
+    .map(t => t.split(',').map(num => parseFloat(num)));
 
 export const createMinorHandle = (xy, handleRadius) => {
   // Make this 80% smaller than the configured handle radius

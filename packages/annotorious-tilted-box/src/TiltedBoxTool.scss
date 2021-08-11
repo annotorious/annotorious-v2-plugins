@@ -1,6 +1,34 @@
 .a9s-annotationlayer {
 
-  g.a9s-selection.tilted-box {
+  g.a9s-annotation.tilted-box,
+  g.a9s-selection.tilted-box  {
+
+    .a9s-tilted-box-baseline {
+
+      * {
+        vector-effect:non-scaling-stroke;
+      }
+
+      .a9s-inner {
+        stroke-width:3px;
+        stroke:#fff;
+      }
+
+      .a9s-outer {
+        stroke-width:5px;
+      }
+
+    }
+
+    .a9s-minor-handle {
+      stroke:#fff000;
+      fill:#000;
+    }
+
+    .a9s-minor-handle:hover {
+      stroke:#000;
+      fill:#fff000;
+    }
   
   }
 

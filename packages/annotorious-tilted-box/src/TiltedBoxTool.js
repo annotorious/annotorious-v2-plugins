@@ -17,7 +17,7 @@ export default class TiltedBoxTool extends Tool {
   scaleHandles = scale =>
     this.rubberbandShape?.scalePivot(scale);
 
-  startDrawing = (x, y, _, scale) => {
+  startDrawing = (x, y, _) => {
     this.attachListeners({
       mouseMove: this.onMouseMove,
       mouseUp: this.onMouseUp
@@ -31,8 +31,6 @@ export default class TiltedBoxTool extends Tool {
       [ x, y ],
       [ x, y ]
     ], this.g, this.config, this.env);
-
-    this.rubberbandShape.scalePivot(scale);
   }
 
   onMouseMove = (x, y) => {
@@ -80,5 +78,6 @@ export default class TiltedBoxTool extends Tool {
 TiltedBoxTool.identifier = 'annotorious-tilted-box';
 
 TiltedBoxTool.supports = annotation => {
+  console.log('supports', annotation);
   return false;
 }
