@@ -193,6 +193,15 @@ export default class EditableTiltedBox extends EditableShape {
     return this._element;
   }
 
+  updateState = annotation => {
+    const points = svgFragmentToShape(annotation)
+      .getAttribute('points')
+      .split(' ')
+      .map(t => t.split(',').map(num => parseFloat(num)));
+    
+    this.setShape(points);
+  }
+
   destroy() {
     this.containerGroup.parentNode.removeChild(this.containerGroup);
     super.destroy();
