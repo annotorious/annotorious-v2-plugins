@@ -15,11 +15,13 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
   const toLegacyBody = body => {
     let type = null;
     let value = null;
+    let uri = null;
 
     switch(body.purpose) {
       case 'tagging':
         type = 'TAG';
         value = body.value;
+        uri = body.source;
         break;
       
       case 'classifying':
@@ -53,6 +55,7 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
     return { 
       type, 
       value, 
+      uri,
       last_modified_by: body.creator?.id
     };
   }
