@@ -3,6 +3,7 @@ import createPolygon from './icons/Polygon';
 import createCircle from './icons/Circle';
 import createEllipse from './icons/Ellipse';
 import createFreehand from './icons/Freehand';
+import createPoint from './icons/Point';
 import createTiltedBox from './icons/TiltedBox';
 
 import './index.css';
@@ -13,6 +14,7 @@ const ICONS = {
   'circle': createCircle(),
   'ellipse': createEllipse(),
   'freehand': createFreehand(),
+  'point': createPoint(), 
   'annotorious-tilted-box': createTiltedBox()
 }
 
