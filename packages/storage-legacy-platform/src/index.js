@@ -23,6 +23,10 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
         value = body.value;
         uri = body.source;
         break;
+
+      case 'geotagging':
+        type = 'PLACE';
+        uri = body.value;
       
       case 'classifying':
         type = body.value;
@@ -108,6 +112,9 @@ const fromLegacyAnnotation = legacy => {
     } else if (body.type === 'ENTITY' || body.type === 'LABEL' || body.type === 'SYMBOL') {
       purpose = 'classifying';
       value = body.type;
+    } else if (body.type === 'PLACE') {
+      purpose = 'geotagging';
+      value = body.value;
     } else if (body.type === 'TRANSCRIPTION') {
       purpose = 'transcribing';
       value = body.value;
