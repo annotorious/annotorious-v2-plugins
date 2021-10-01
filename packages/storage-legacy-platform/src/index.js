@@ -27,6 +27,7 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
       case 'geotagging':
         type = 'PLACE';
         uri = body.value;
+        break;
       
       case 'classifying':
         type = body.value;
