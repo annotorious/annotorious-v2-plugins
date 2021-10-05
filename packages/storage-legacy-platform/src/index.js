@@ -115,7 +115,7 @@ const fromLegacyAnnotation = legacy => {
       value = body.type;
     } else if (body.type === 'PLACE') {
       purpose = 'geotagging';
-      value = body.value;
+      value = body.uri;
     } else if (body.type === 'TRANSCRIPTION') {
       purpose = 'transcribing';
       value = body.value;
