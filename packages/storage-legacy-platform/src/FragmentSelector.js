@@ -3,8 +3,10 @@
  * proprietary Recogito rect syntax (rect:x=292,y=69,w=137,h=125)
  */
 export const rectFragmentToLegacy = selector => {
-  const [ _, coords ] = selector.value.split(':');
-  const [ x, y, w, h] = coords.split(',').map(parseFloat);
+  const [ _, coords ] = selector.value.includes(':') ? 
+    selector.value.split(':') : selector.value.split('=');
+
+    const [ x, y, w, h] = coords.split(',').map(parseFloat);
   return `rect:x=${Math.round(x)},y=${Math.round(y)},w=${Math.round(w)},h=${Math.round(h)}`;
 }
 

@@ -69,7 +69,7 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
 
   let anchor;
 
-  if (selector.value.startsWith('xywh=pixel:')) {
+  if (selector.value.startsWith('xywh=')) {
     anchor = rectFragmentToLegacy(selector);
   } else if (webanno.target.renderedVia?.name === 'annotorious-tilted-box') {
     anchor = tiltedBoxToLegacy(selector);
