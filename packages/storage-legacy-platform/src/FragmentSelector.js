@@ -7,7 +7,7 @@ export const rectFragmentToLegacy = selector => {
     selector.value.split(':') : selector.value.split('=');
 
     const [ x, y, w, h] = coords.split(',').map(parseFloat);
-  return `rect:x=${Math.round(x)},y=${Math.round(y)},w=${Math.round(w)},h=${Math.round(h)}`;
+  return `rect:x=${x},y=${y},w=${w},h=${h}`;
 }
 
 /**
