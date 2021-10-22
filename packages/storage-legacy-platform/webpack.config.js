@@ -46,12 +46,17 @@ module.exports = {
     ]
   },
 	devServer: {
-    contentBase: [ resolveAppPath('public'), resolveAppPath('../../public') ],
     compress: true,
     hot: true,
     host: process.env.HOST || 'localhost',
     port: 3000,
-    publicPath: '/',
+    static: [{
+      directory: resolveAppPath('public'),
+      publicPath: '/'
+    },{
+      directory: resolveAppPath('../../public'),
+      publicPath: '/'
+    }],
     proxy: {
       '/api': {
         target: 'http://localhost:9000',
