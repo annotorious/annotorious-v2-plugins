@@ -14,15 +14,15 @@
     "@babel/preset-env": "^7.14.7",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.6",
-    "html-webpack-plugin": "^4.5.2",
+    "html-webpack-plugin": "^5.4.0",
     "sass": "^1.35.2",
     "sass-loader": "^10.2.0",
     "style-loader": "^2.0.0",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack": "^5.59.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
-    "@recogito/annotorious": "^2.5.3"
+    "@recogito/annotorious": "^2.5.8"
   }
 }
