@@ -1,0 +1,39 @@
+[
+  {
+    "type": "Annotation",
+    "body": [
+      {
+        "type": "TextualBody",
+        "value": "York",
+        "purpose": "commenting"
+      }
+    ],
+    "target": {
+      "selector": {
+        "type": "SvgSelector",
+        "value": "<svg><polygon points=\"-1.1226475167990881,53.95905554749723 -1.07908822919288,53.93946676461363 -1.0548429653366285,53.953977857614255 -1.0470351685015404,53.97283473165753 -1.0601851421185182,53.97960178531906 -1.0955256962141109,53.980085104238185\"/></svg>"
+      }
+    },
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "id": "#4caa7cfa-fd21-4ec7-9213-be2f0ce57584"
+  },
+  {
+    "type": "Annotation",
+    "body": [
+      {
+        "type": "TextualBody",
+        "value": "Rectangle",
+        "purpose": "commenting"
+      }
+    ],
+    "target": {
+      "selector": {
+        "type": "FragmentSelector",
+        "conformsTo": "http://www.w3.org/TR/media-frags/",
+        "value": "xywh=-1.168770118761931,53.95607151237134,0.07807796835071201,0.028219233454784387"
+      }
+    },
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "id": "#f1e56eb9-de56-4134-b92b-ed28d8c6a175"
+  }
+]

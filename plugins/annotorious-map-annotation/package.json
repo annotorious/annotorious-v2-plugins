@@ -1,0 +1,39 @@
+{
+  "name": "@recogito/annotorious-map-annotation",
+  "version": "0.2.2",
+  "description": "An Annotorious plugin for annotating maps",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "webpack serve --open --mode=development",
+    "build": "webpack --mode=production",
+    "prepare": "webpack --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recogito/annotorious-map-annotation.git"
+  },
+  "keywords": [
+    "Annotation",
+    "Maps",
+    "WMTS",
+    "OpenSeadragon"
+  ],
+  "author": "Rainer Simon",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/recogito/annotorious-map-annotation/issues"
+  },
+  "homepage": "https://github.com/recogito/annotorious-map-annotation#readme",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/preset-env": "^7.15.8",
+    "babel-loader": "^8.2.3",
+    "html-webpack-plugin": "^5.4.0",
+    "webpack": "^5.59.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "tiny-emitter": "^2.1.0"
+  }
+}

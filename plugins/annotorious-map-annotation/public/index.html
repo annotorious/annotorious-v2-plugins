@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious Map Annotation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/annotorious.min.css">
+    <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/openseadragon-wmts@0.3.1/dist/openseadragon-wmts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/openseadragon-annotorious.min.js"></script>
+    <script>
+      window.onload = async function() {
+        var viewer = OpenSeadragon({
+          id: "openseadragon",
+          prefixUrl: "openseadragon-bin-2.4.2/images/"
+        });
+
+        var map = await OpenSeadragon.WMTS(viewer, {
+          url: 'https://wmts.maptiler.com/aHR0cDovL3dtdHMubWFwdGlsZXIuY29tL2FIUjBjSE02THk5dFlYQnpaWEpwWlhNdGRHbHNaWE5sZEhNdWN6TXVZVzFoZW05dVlYZHpMbU52YlM4eU5WOXBibU5vTDNsdmNtdHphR2x5WlM5dFpYUmhaR0YwWVM1cWMyOXUvanNvbg/wmts'
+        });
+
+        var anno = OpenSeadragon.Annotorious(viewer, {
+          gigapixelMode: true
+        });
+        
+        Annotorious.MapAnnotation(anno, map);
+
+        anno.loadAnnotations('sample-annotations.json');
+        
+        anno.on('createAnnotation', function(a) {
+          console.log('created', a);
+        });
+
+        anno.on('updateAnnotation', function(a, p) {
+          console.log('updated', a, p);
+        });
+
+        anno.on('deleteAnnotation', function(a) {
+          console.log(a);
+        });
+
+        anno.on('clickAnnotation', function(a) {
+          console.log('clicked', a);
+        });
+      }
+    </script>
+
+    <style>
+      html, body {
+        padding:0;
+        margin:0;
+        width:100%;
+        height:100%;
+      }
+
+      #openseadragon {
+        width:100%;
+        height:100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="openseadragon"></div>
+  </body>
+</html>
