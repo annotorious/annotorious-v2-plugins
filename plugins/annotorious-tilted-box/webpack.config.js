@@ -56,7 +56,7 @@ module.exports = {
       directory: resolveAppPath('public'),
       publicPath: '/'
     }, {
-      directory: resolveAppPath('../../public'),
+      directory: resolveAppPath('../../assets'),
       publicPath: '/'
     }]
   },

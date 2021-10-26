@@ -25,7 +25,7 @@ export const eq = (xy1, xy2) =>
 
 /** Normalizes a vector to length = 1 **/
 export const normalize = xy => {
-  var l = len(xy);
+  var l = Math.max(len(xy), 0.00001); // Prevent div by zero
   return [ xy[0] / l, xy[1] / l ];
 }
 
