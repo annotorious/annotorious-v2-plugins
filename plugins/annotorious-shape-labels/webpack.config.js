@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 
 const APP_DIR = fs.realpathSync(process.cwd());
 
@@ -20,8 +19,7 @@ module.exports = {
     hints: false
   },
   optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimize: true
   },
   resolve: {
     extensions: ['.js']
@@ -48,12 +46,17 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: [ resolveAppPath('public'), resolveAppPath('../../public') ],
     compress: true,
     hot: true,
     host: process.env.HOST || 'localhost',
     port: 3000,
-    publicPath: '/'
+    static: [{
+      directory: resolveAppPath('public'),
+      publicPath: '/'
+    },{
+      directory: resolveAppPath('../../assets'),
+      publicPath: '/'
+    }]
   },
   plugins: [
     new HtmlWebpackPlugin ({

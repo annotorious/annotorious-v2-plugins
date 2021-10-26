@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>Shape Labels Plugin</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.5.8/dist/annotorious.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.5.8/dist/annotorious.min.js"></script>
     <script src="annotorious-shape-labels.min.js"></script>
   </head>
   <body>
@@ -13,6 +13,7 @@
       (function() {
         var anno = Annotorious.init({
           image: 'hallstatt',
+          crosshair: true,
           formatter: Annotorious.ShapeLabelsFormatter(),
           widgets: [ 
             'TAG'
