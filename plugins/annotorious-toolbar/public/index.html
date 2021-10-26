@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Annotorious | Tilted Box</title>
-    <!-- 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
-    -->
-
+    <title>Annotorious | Toolbar</title>
     <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/openseadragon-annotorious.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/annotorious.min.css">
@@ -22,16 +17,9 @@
   </head>
   <body>
     <div id="toolbar-container"></div>
-    <!-- img id="hallstatt" src="640px-Hallstatt.jpg" -->
     <div id="osd-image"></div>
     <script>
       window.onload = function() {
-        /*
-        var anno = Annotorious.init({
-          image: 'hallstatt'
-        });
-        */
-
         // Initialize OpenSeadragon
         var viewer = OpenSeadragon({
           id: "osd-image",
