@@ -1,8 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const APP_DIR = fs.realpathSync(process.cwd());
 
 const resolveAppPath = relativePath => path.resolve(APP_DIR, relativePath);
@@ -10,8 +8,8 @@ const resolveAppPath = relativePath => path.resolve(APP_DIR, relativePath);
 module.exports = {
   entry: resolveAppPath('src'),
   output: {
-    filename: 'recogito-legacy-storage.js',
-    library: ['recogito', 'LegacyStorage'],
+    filename: 'recogito-firebase-storage.js',
+    library: ['recogito', 'FirebaseStorage'],
     libraryTarget: 'umd',
     libraryExport: 'default'
   },
@@ -44,30 +42,5 @@ module.exports = {
       },
       { test: /\.css$/,  use: [ 'style-loader', 'css-loader'] },
     ]
-  },
-	devServer: {
-    compress: true,
-    hot: true,
-    host: process.env.HOST || 'localhost',
-    port: 3000,
-    static: [{
-      directory: resolveAppPath('public'),
-      publicPath: '/'
-    },{
-      directory: resolveAppPath('../../assets'),
-      publicPath: '/'
-    }],
-    proxy: {
-      '/api': {
-        target: 'http://localhost:9000',
-        secure: false,
-        changeOrigin: true
-      }
-    }
-  },
-  plugins: [
-    new HtmlWebpackPlugin ({
-      template: resolveAppPath('public/index.html')
-    })
-  ]
+  }
 }

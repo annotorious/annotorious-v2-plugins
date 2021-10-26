@@ -14,7 +14,7 @@ npm install @recogito/firebase-storage
 or include in the page
 
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@recogito/firebase-storage@latest/dist/recogito-firebase-storage.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@recogito/firebase-storage@latest/dist/recogito-firebase-storage.js"></script>
 ```
 
 ## Example

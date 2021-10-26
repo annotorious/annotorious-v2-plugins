@@ -14,13 +14,13 @@
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.0.6",
-    "css-loader": "^3.2.0"
-  },
-  "dependencies": {
-    "axios": "^0.21.1",
     "html-webpack-plugin": "^5.4.0",
+    "css-loader": "^3.2.0",
     "webpack": "^5.59.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
   }
 }

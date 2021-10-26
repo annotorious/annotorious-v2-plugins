@@ -4,16 +4,17 @@
   "description": "Google Firebase storage adapter for RecogitoJS, Annotorious and AnnotoriousOSD",
   "main": "src/index.js",
   "scripts": {
-    "build": "rollup --config"
+    "build": "webpack --mode=production"
   },
   "author": "Rainer Simon",
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/recogito/recogito-plugins-common/tree/main/packages/storage-firebase",
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.12.11",
-    "@rollup/plugin-babel": "^5.2.2",
-    "rollup": "^2.35.1",
-    "rollup-plugin-uglify": "^6.0.4"
+    "babel-loader": "^8.2.3",
+    "webpack": "^5.60.0",
+    "webpack-cli": "^4.9.1"
   }
 }
