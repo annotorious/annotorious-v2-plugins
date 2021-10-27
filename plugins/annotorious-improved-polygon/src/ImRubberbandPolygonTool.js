@@ -11,11 +11,6 @@ export default class ImRubberbandPolygonTool extends Tool {
     this._isDrawing = false;
   }
 
-  scaleHandles = scale => {
-    if (this.rubberband)
-      this.rubberband.setScale(scale);
-  }
-
   get isDrawing() {
     return this._isDrawing;
   }
@@ -32,9 +27,6 @@ export default class ImRubberbandPolygonTool extends Tool {
       new ImRubberbandPolygon([x, y], this.g, this.config, this.env);
 
     this.rubberband.on('close', ({ shape, selection }) => {
-      
-      console.log('closed', shape, selection);
-
       shape.annotation = selection;
       this.emit('complete', shape);  
       this.stop();

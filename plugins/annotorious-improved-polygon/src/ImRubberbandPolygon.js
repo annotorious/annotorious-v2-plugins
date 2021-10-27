@@ -2,22 +2,13 @@ import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import { Selection, ToolLike } from '@recogito/annotorious/src/tools/Tool';
 import Mask from '@recogito/annotorious/src/tools/polygon/PolygonMask';
 
-export const toSVGTarget = (selection, image) => {
-  const polygon = selection.querySelector('.a9s-rubberband').cloneNode(true);
-  polygon.removeAttribute('class');
-  polygon.removeAttribute('xmlns');
-
-  let serialized = polygon.outerHTML || new XMLSerializer().serializeToString(polygon);
-  serialized = serialized.replace(` xmlns="${SVG_NAMESPACE}"`, '');
-
-  return {
-    source: image?.src,
-    selector: {
-      type: "SvgSelector",
-      value: `<svg>${serialized}</svg>`
-    }
+export const toSVGTarget = (points, image) => ({
+  source: image?.src,
+  selector: {
+    type: "SvgSelector",
+    value: `<svg><polygon points="${points.map(t => `${t[0]},${t[1]}`).join(' ')}" /></svg>`
   }
-}
+})
 
 export default class ImRubberbandPolygon extends ToolLike {
 
@@ -77,7 +68,7 @@ export default class ImRubberbandPolygon extends ToolLike {
   addPoint = () => {
     if (this.isClosable()) {
       // Close, don't add
-      const selection = new Selection(toSVGTarget(this.selection, this.env.image));
+      const selection = new Selection(toSVGTarget(this.points, this.env.image));
       this.emit('close', { shape: this.selection, selection });
     } else {
       // Don't add a new point if distance < 2 pixels
@@ -149,10 +140,6 @@ export default class ImRubberbandPolygon extends ToolLike {
 
     const points = arr.map(t => `${t[0]},${t[1]}`).join(' ');
     this.rubberband.setAttribute('points', points);
-  }
-
-  setScale = scale => {
-    this.scale = scale;
   }
 
 }
