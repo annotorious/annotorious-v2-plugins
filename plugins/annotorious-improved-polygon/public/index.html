@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious | Improved Polygon</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/annotorious.min.css">
+    <script src="openseadragon-bin-2.4.2/openseadragon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@latest/dist/openseadragon-annotorious.min.js"></script>
+    <style>
+      #osd {
+        width:800px;
+        height:600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="osd"></div>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        var viewer = OpenSeadragon({
+          id: "osd",
+          prefixUrl: "openseadragon-bin-2.4.2/images/",
+          tileSources: {
+            type: "image",
+            url: "Carta_Marina.jpeg"
+          }
+        });
+
+        var anno = OpenSeadragon.Annotorious(viewer, {
+          allowEmpty: true
+        });
+        
+        Annotorious.ImprovedPolygon(anno);
+
+        anno.setDrawingTool('polygon'); 
+        
+        anno.on('createAnnotation', function(a) {
+          console.log('created', a);
+        });
+      }
+    </script>
+  </body>
+</html>
