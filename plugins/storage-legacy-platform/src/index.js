@@ -10,7 +10,7 @@ import {
  * Legacy Recogito has a "W3C WebAnno-like", but proprietary, annotation
  * format. This function performs the crosswalk from WebAnno to legacy format.
  */
-const toLegacyAnnotation = (webanno, config, keepId) => {
+export const toLegacyAnnotation = (webanno, config, keepId) => {
 
   const toLegacyBody = body => {
     let type = null;
@@ -101,7 +101,7 @@ const toLegacyAnnotation = (webanno, config, keepId) => {
 /** 
  * Vice versa, this function crosswalks from legacy to WebAnno.
  */
-const fromLegacyAnnotation = legacy => {
+export const fromLegacyAnnotation = legacy => {
 
   const toWebAnnoBody = body => {
     let purpose = null;
