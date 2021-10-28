@@ -25,7 +25,7 @@ export default class ImEditablePolygon extends EditableShape {
 
     // The editable shape group
     this.shape = drawEmbeddedSVG(annotation);
-    this.shape.setAttribute('class', 'a9s-annotation editable selected');
+    this.shape.setAttribute('class', 'a9s-annotation editable selected improved-polygon');
 
     const innerPolygon = this.shape.querySelector('.a9s-inner');
     innerPolygon.addEventListener('mousedown', this.onGrab(this.shape));
@@ -39,9 +39,10 @@ export default class ImEditablePolygon extends EditableShape {
     const corners = getPoints(this.shape);
 
     // Corner handles
-    this.cornerHandles = corners.map(pt => {
+    this.cornerHandles = corners.map((pt, idx) => {
       const handle = this.drawHandle(pt.x, pt.y);
       handle.addEventListener('mousedown', this.onGrab(handle));
+      handle.addEventListener('click', this.onSelectCorner(idx));
 
       this.shape.appendChild(handle);
 
@@ -74,6 +75,9 @@ export default class ImEditablePolygon extends EditableShape {
     // Grabbed element and grab offset
     this.grabbedElement = null;
     this.grabbedAt = null;
+
+    // Selected corners
+    this.selected = [];
   }
 
   destroy = () => {
@@ -158,6 +162,10 @@ export default class ImEditablePolygon extends EditableShape {
 
   }
 
+  onSelectCorner = idx => evt => {
+    console.log('selecting corner', idx);
+  }
+
   setPoints = points => {
     // Not using .toFixed(1) because that will ALWAYS
     // return one decimal, e.g. "15.0" (when we want "15")
@@ -183,7 +191,7 @@ export default class ImEditablePolygon extends EditableShape {
 
       const x = (thisCorner.x + nextCorner.x) / 2;
       const y = (thisCorner.y + nextCorner.y) / 2;
-      
+
       const handle = this.midpointHandles[i];
       handle.setAttribute('cx', x);
       handle.setAttribute('cy', y);
