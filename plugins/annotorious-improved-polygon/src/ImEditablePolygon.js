@@ -178,8 +178,6 @@ export default class ImEditablePolygon extends EditableShape {
   onGrab = element => evt => {
     if (evt.button !== 0) return;  // left click
 
-    this.deselectCorners();
-
     this.grabbedElement = element;
     this.grabbedAt = this.getSVGPoint(evt);
   }
@@ -240,13 +238,27 @@ export default class ImEditablePolygon extends EditableShape {
     this.grabbedAt = null;
   }
 
-  onSelectCorner = handle => () => {
-    this.deselectCorners();
-
+  onSelectCorner = handle => evt => {
     const idx = this.cornerHandles.indexOf(handle);
-    this.selected = [ idx ];
 
-    addClass(handle, 'selected');
+    if (evt?.ctrlKey) {
+      // Toggle
+      if (this.selected.includes(idx))
+        this.selected = this.selected.filter(i => i !== idx);
+      else 
+        this.selected = [...this.selected, idx];
+    } else {
+      this.selected = [ idx ];
+    }
+
+    this.cornerHandles.forEach((handle, i) => {
+      const isSelected = this.selected.includes(i);
+      if (isSelected && !hasClass(handle, 'selected')) {
+        addClass(handle, 'selected');
+      } else if (!isSelected && hasClass(handle, 'selected')) {
+        removeClass(handle, 'selected');
+      }
+    });
   }
 
   setPoints = points => {
