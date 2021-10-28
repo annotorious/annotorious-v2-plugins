@@ -1,5 +1,5 @@
 import EditableShape from '@recogito/annotorious/src/tools/EditableShape';
-import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
+import { SVG_NAMESPACE, hasClass } from '@recogito/annotorious/src/util/SVG';
 import { drawEmbeddedSVG } from '@recogito/annotorious/src/selectors/EmbeddedSVG';
 import { format, setFormatterElSize } from '@recogito/annotorious/src/util/Formatting';
 import Mask from '@recogito/annotorious/src/tools/polygon/PolygonMask';
@@ -39,33 +39,10 @@ export default class ImEditablePolygon extends EditableShape {
     const corners = getPoints(this.shape);
 
     // Corner handles
-    this.cornerHandles = corners.map((pt, idx) => {
-      const handle = this.drawHandle(pt.x, pt.y);
-      handle.addEventListener('mousedown', this.onGrab(handle));
-      handle.addEventListener('click', this.onSelectCorner(idx));
-
-      this.shape.appendChild(handle);
-
-      return handle;
-    });
+    this.cornerHandles = corners.map(this.createCornerHandle);
 
     // Midpoint handles
-    this.midpointHandles = [];
-
-    for (let i=0; i<corners.length; i++) {
-      // Create point between this and previous corner
-      const thisCorner = corners[i];
-      const nextCorner = i === corners.length - 1 ? corners[0] : corners[i + 1];
-
-      const x = (thisCorner.x + nextCorner.x) / 2;
-      const y = (thisCorner.y + nextCorner.y) / 2;
-
-      const handle = this.drawMidpoint(x, y);
-      handle.addEventListener('click', this.onAddPoint({x, y}, i));
-
-      this.shape.appendChild(handle);
-      this.midpointHandles.push(handle);
-    }
+    this.midpoints = corners.map((_, idx) => this.createMidpoint(corners, idx));
 
     g.appendChild(this.container);
 
@@ -80,6 +57,29 @@ export default class ImEditablePolygon extends EditableShape {
     this.selected = [];
   }
 
+  createCornerHandle = pt => {
+    const handle = this.drawHandle(pt.x, pt.y);
+    handle.addEventListener('mousedown', this.onGrab(handle));
+
+    this.shape.appendChild(handle);
+    return handle;
+  }
+
+  createMidpoint = (corners, idx) => {
+    // Create point between this and previous corner
+    const thisCorner = corners[idx];
+    const nextCorner = idx === corners.length - 1 ? corners[0] : corners[idx + 1];
+
+    const x = (thisCorner.x + nextCorner.x) / 2;
+    const y = (thisCorner.y + nextCorner.y) / 2;
+
+    const handle = this.drawMidpoint(x, y);
+    handle.addEventListener('mousedown', this.onGrab(handle));
+
+    this.shape.appendChild(handle);
+    return handle;
+  }
+
   destroy = () => {
     this.container.parentNode.removeChild(this.container);
     super.destroy();
@@ -87,7 +87,7 @@ export default class ImEditablePolygon extends EditableShape {
 
   drawMidpoint = (x, y) => {
     const handle = document.createElementNS(SVG_NAMESPACE, 'circle');
-    handle.setAttribute('class', 'a9s-midpoint-handle');
+    handle.setAttribute('class', 'a9s-midpoint');
     
     handle.setAttribute('cx', x);
     handle.setAttribute('cy', y);
@@ -100,8 +100,45 @@ export default class ImEditablePolygon extends EditableShape {
     return this.shape;
   }
 
-  onAddPoint = (pt, idx) => {
+  onAddPoint = pos => {
+    const corners = getPoints(this.shape);
 
+    const idx = this.midpoints.indexOf(this.grabbedElement) + 1;
+
+    // Updated polygon points
+    const updatedCorners = [
+      ...corners.slice(0, idx),
+      pos,
+      ...corners.slice(idx)
+    ];
+
+    // New corner handle
+    const cornerHandle = this.createCornerHandle(pos);
+    this.cornerHandles = [
+      ...this.cornerHandles.slice(0, idx),
+      cornerHandle,
+      ...this.cornerHandles.slice(idx)
+    ];
+
+    // New midpoints left and right 
+    const midBefore = this.createMidpoint(updatedCorners, idx - 1);
+    const midAfter = this.createMidpoint(updatedCorners, idx);
+    this.midpoints = [
+      ...this.midpoints.slice(0, idx - 1),
+      midBefore,
+      midAfter,
+      ...this.midpoints.slice(idx)
+    ];
+
+
+    // Delete old midpoint
+    this.grabbedElement.parentNode.removeChild(this.grabbedElement);
+    
+    // Make the newly created corner the dragged element
+    this.grabbedElement = cornerHandle;
+
+    // Update shape
+    this.setPoints(updatedCorners);
   }
 
   onGrab = element => evt => {
@@ -144,8 +181,10 @@ export default class ImEditablePolygon extends EditableShape {
 
       if (this.grabbedElement === this.shape) {
         this.onMoveShape(pos);
-      } else {
+      } else if (hasClass(this.grabbedElement, 'a9s-handle')) {
         this.onMoveCornerHandle(pos);
+      } else if (hasClass(this.grabbedElement, 'a9s-midpoint')) {
+        this.onAddPoint(pos);
       }
 
       const points = getPoints(this.shape).map(({x, y}) => [x, y]);
@@ -192,7 +231,7 @@ export default class ImEditablePolygon extends EditableShape {
       const x = (thisCorner.x + nextCorner.x) / 2;
       const y = (thisCorner.y + nextCorner.y) / 2;
 
-      const handle = this.midpointHandles[i];
+      const handle = this.midpoints[i];
       handle.setAttribute('cx', x);
       handle.setAttribute('cy', y);
     }

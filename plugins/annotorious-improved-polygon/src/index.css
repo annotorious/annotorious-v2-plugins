@@ -39,14 +39,14 @@
   fill:#fff;
 }
 
-/** Midpoint handles **/
-.a9s-annotation.improved-polygon.editable .a9s-midpoint-handle {
+/** Midpoints **/
+.a9s-annotation.improved-polygon.editable .a9s-midpoint {
   fill:rgba(255,255,255,0.8);
   stroke-width:1;
   stroke:rgba(0,0,0,0.4);
 }
 
-.a9s-annotation.improved-polygon.editable .a9s-midpoint-handle:hover {
+.a9s-annotation.improved-polygon.editable .a9s-midpoint:hover {
   fill:#fff;
   stroke:#000;
 }
