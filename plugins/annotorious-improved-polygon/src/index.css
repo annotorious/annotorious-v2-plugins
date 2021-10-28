@@ -34,23 +34,27 @@
 .a9s-annotation.improved-polygon.editable .a9s-handle .a9s-handle-inner {
   stroke-width:2;
   stroke:#fff;
-  fill:#000;
+  fill:#fff;
 }
 
 .a9s-selection.improved-polygon .a9s-handle .a9s-handle-inner:hover,
 .a9s-annotation.improved-polygon.editable .a9s-handle.selected .a9s-handle-inner, 
 .a9s-annotation.improved-polygon.editable .a9s-handle .a9s-handle-inner:hover {
-  fill:#fff;
+  fill:#000;
 }
 
 /** Midpoints **/
 .a9s-annotation.improved-polygon.editable .a9s-midpoint {
-  fill:rgba(255,255,255,0.8);
+  display:none;
+  fill:rgba(255,255,255,0.65);
   stroke-width:1;
-  stroke:rgba(0,0,0,0.4);
+  stroke:rgba(0,0,0,0.65);
+}
+
+.a9s-annotation.improved-polygon.editable:hover .a9s-midpoint {
+  display:block;
 }
 
 .a9s-annotation.improved-polygon.editable .a9s-midpoint:hover {
   fill:#fff;
-  stroke:#000;
 }
