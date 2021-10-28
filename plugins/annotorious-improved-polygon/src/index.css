@@ -1,3 +1,7 @@
 .a9s-selection.improved-polygon .a9s-rubberband {
   fill:rgba(255,255,255,0.3);
 }
+
+.a9s-annotation .a9s-midpoint-handle {
+  fill:#000;
+}

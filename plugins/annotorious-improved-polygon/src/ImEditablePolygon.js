@@ -48,7 +48,23 @@ export default class ImEditablePolygon extends EditableShape {
       return handle;
     });
 
-    // TODO midpoint handles
+    // Midpoint handles
+    this.midpointHandles = [];
+
+    for (let i=0; i<corners.length; i++) {
+      // Create point between this and previous corner
+      const thisCorner = corners[i];
+      const nextCorner = i === corners.length - 1 ? corners[0] : corners[i + 1];
+
+      const x = (thisCorner.x + nextCorner.x) / 2;
+      const y = (thisCorner.y + nextCorner.y) / 2;
+
+      const handle = this.drawMidpoint(x, y);
+      handle.addEventListener('click', this.onAddPoint({x, y}, i));
+
+      this.shape.appendChild(handle);
+      this.midpointHandles.push(handle);
+    }
 
     g.appendChild(this.container);
 
@@ -65,8 +81,23 @@ export default class ImEditablePolygon extends EditableShape {
     super.destroy();
   }
 
+  drawMidpoint = (x, y) => {
+    const handle = document.createElementNS(SVG_NAMESPACE, 'circle');
+    handle.setAttribute('class', 'a9s-midpoint-handle');
+    
+    handle.setAttribute('cx', x);
+    handle.setAttribute('cy', y);
+    handle.setAttribute('r', 5);
+
+    return handle;
+  }
+
   get element() {
     return this.shape;
+  }
+
+  onAddPoint = (pt, idx) => {
+
   }
 
   onGrab = element => evt => {
@@ -92,9 +123,6 @@ export default class ImEditablePolygon extends EditableShape {
 
     // Update shape
     this.setPoints(updatedPoints);
-    
-    // Update handles
-    updatedPoints.forEach((pt, idx) => this.setHandleXY(this.cornerHandles[idx], pt.x, pt.y));
   }
 
   onMoveCornerHandle = pos => {
@@ -104,7 +132,6 @@ export default class ImEditablePolygon extends EditableShape {
       (idx === handleIdx) ? pos : pt);
 
     this.setPoints(updatedPoints);
-    this.setHandleXY(this.cornerHandles[handleIdx], pos.x, pos.y);
   }
 
   onMouseMove = evt => {
@@ -127,12 +154,17 @@ export default class ImEditablePolygon extends EditableShape {
     this.grabbedAt = null;
   }
 
+  onRemovePoint = idx => {
+
+  }
+
   setPoints = points => {
     // Not using .toFixed(1) because that will ALWAYS
     // return one decimal, e.g. "15.0" (when we want "15")
     const round = num =>
       Math.round(10 * num) / 10;
 
+    // Set polygon points
     const str = points.map(pt => `${round(pt.x)},${round(pt.y)}`).join(' ');
 
     const inner = this.shape.querySelector('.a9s-inner');
@@ -141,8 +173,26 @@ export default class ImEditablePolygon extends EditableShape {
     const outer = this.shape.querySelector('.a9s-outer');
     outer.setAttribute('points', str);
 
+    // Corner handles
+    points.forEach((pt, idx) => this.setHandleXY(this.cornerHandles[idx], pt.x, pt.y));
+
+    // Midpoints 
+    for (let i=0; i<points.length; i++) {
+      const thisCorner = points[i];
+      const nextCorner = i === points.length - 1 ? points[0] : points[i + 1];
+
+      const x = (thisCorner.x + nextCorner.x) / 2;
+      const y = (thisCorner.y + nextCorner.y) / 2;
+      
+      const handle = this.midpointHandles[i];
+      handle.setAttribute('cx', x);
+      handle.setAttribute('cy', y);
+    }
+
+    // Mask
     this.mask.redraw();
 
+    // Resize formatter elements
     const { x, y, width, height } = outer.getBBox();
     setFormatterElSize(this.shape, x, y, width, height);
   }
