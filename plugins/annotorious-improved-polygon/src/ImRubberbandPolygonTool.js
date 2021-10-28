@@ -3,6 +3,14 @@ import Tool from '@recogito/annotorious/src/tools/Tool';
 import ImEditablePolygon from './ImEditablePolygon';
 import ImRubberbandPolygon from './ImRubberbandPolygon';
 
+export const toSVGTarget = (points, image) => ({
+  source: image?.src,
+  selector: {
+    type: "SvgSelector",
+    value: `<svg><polygon points="${points.map(t => `${t[0]},${t[1]}`).join(' ')}" /></svg>`
+  }
+});
+
 export default class ImRubberbandPolygonTool extends Tool {
 
   constructor(g, config, env) {
@@ -66,7 +74,7 @@ export default class ImRubberbandPolygonTool extends Tool {
 
 }
 
-ImRubberbandPolygonTool.identifier = 'im-polygon';
+ImRubberbandPolygonTool.identifier = 'polygon';
 
 ImRubberbandPolygonTool.supports = annotation => {
   const selector = annotation.selector('SvgSelector');

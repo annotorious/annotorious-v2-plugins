@@ -2,13 +2,7 @@ import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import { Selection, ToolLike } from '@recogito/annotorious/src/tools/Tool';
 import Mask from '@recogito/annotorious/src/tools/polygon/PolygonMask';
 
-export const toSVGTarget = (points, image) => ({
-  source: image?.src,
-  selector: {
-    type: "SvgSelector",
-    value: `<svg><polygon points="${points.map(t => `${t[0]},${t[1]}`).join(' ')}" /></svg>`
-  }
-})
+import { toSVGTarget } from './ImRubberbandPolygonTool';
 
 export default class ImRubberbandPolygon extends ToolLike {
 

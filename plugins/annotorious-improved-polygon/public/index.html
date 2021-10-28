@@ -23,11 +23,12 @@
       window.onload = function() {
         var anno = Annotorious.init({
           image: 'hallstatt',
+          crosshair: true,
           allowEmpty: true
         });
 
         Annotorious.ImprovedPolygon(anno);
-        anno.setDrawingTool('im-polygon'); 
+        anno.setDrawingTool('polygon'); 
 
         anno.on('createAnnotation', function(a) {
           console.log('created', a);
