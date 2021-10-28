@@ -1,5 +1,5 @@
 import EditableShape from '@recogito/annotorious/src/tools/EditableShape';
-import { SVG_NAMESPACE, hasClass } from '@recogito/annotorious/src/util/SVG';
+import { SVG_NAMESPACE, addClass, hasClass, removeClass } from '@recogito/annotorious/src/util/SVG';
 import { drawEmbeddedSVG } from '@recogito/annotorious/src/selectors/EmbeddedSVG';
 import { format, setFormatterElSize } from '@recogito/annotorious/src/util/Formatting';
 import Mask from '@recogito/annotorious/src/tools/polygon/PolygonMask';
@@ -19,6 +19,8 @@ export default class ImEditablePolygon extends EditableShape {
 
     this.svg.addEventListener('mousemove', this.onMouseMove);
     this.svg.addEventListener('mouseup', this.onMouseUp);
+
+    document.body.addEventListener('keydown', this.onKeyDown);
 
     // Container wraps the mask + editable shape
     this.container = document.createElementNS(SVG_NAMESPACE, 'g');
@@ -60,6 +62,7 @@ export default class ImEditablePolygon extends EditableShape {
   createCornerHandle = pt => {
     const handle = this.drawHandle(pt.x, pt.y);
     handle.addEventListener('mousedown', this.onGrab(handle));
+    handle.addEventListener('click', this.onSelectCorner(handle));
 
     this.shape.appendChild(handle);
     return handle;
@@ -80,8 +83,39 @@ export default class ImEditablePolygon extends EditableShape {
     return handle;
   }
 
+  deleteSelected = () => {
+    const points = getPoints(this.shape);
+    
+    if (this.selected.length > 0 && (points.length - this.selected.length > 2)) {
+      const updatedPoints = points.filter((_, idx) => !this.selected.includes(idx));
+      
+      // Update corner handles
+      const handlesToDelete = this.cornerHandles.filter((_, idx) => this.selected.includes(idx));
+      handlesToDelete.forEach(h => h.parentNode.removeChild(h));
+
+      this.cornerHandles = this.cornerHandles.filter((_, idx) => !this.selected.includes(idx));
+      
+      // Update midpoints
+      const midpointsToDelete = this.midpoints.filter((_, idx) => this.selected.includes(idx));
+      midpointsToDelete.forEach(m => m.parentNode.removeChild(m));
+
+      this.midpoints = this.midpoints.filter((_, idx) => !this.selected.includes(idx));
+
+      this.setPoints(updatedPoints);
+    }
+  }
+
+  deselectCorners = () =>
+    this.cornerHandles.forEach(h => removeClass(h, 'selected'));
+
   destroy = () => {
     this.container.parentNode.removeChild(this.container);
+
+    this.svg.removeEventListener('mousemove', this.onMouseMove);
+    this.svg.removeEventListener('mouseup', this.onMouseUp);
+
+    document.body.removeEventListener('keydown', this.onKeyDown);
+
     super.destroy();
   }
 
@@ -130,12 +164,12 @@ export default class ImEditablePolygon extends EditableShape {
       ...this.midpoints.slice(idx)
     ];
 
-
     // Delete old midpoint
     this.grabbedElement.parentNode.removeChild(this.grabbedElement);
     
-    // Make the newly created corner the dragged element
+    // Make the newly created corner dragged element + selection
     this.grabbedElement = cornerHandle;
+    this.onSelectCorner(cornerHandle)();
 
     // Update shape
     this.setPoints(updatedCorners);
@@ -143,8 +177,17 @@ export default class ImEditablePolygon extends EditableShape {
 
   onGrab = element => evt => {
     if (evt.button !== 0) return;  // left click
+
+    this.deselectCorners();
+
     this.grabbedElement = element;
     this.grabbedAt = this.getSVGPoint(evt);
+  }
+
+  onKeyDown = ({ which }) => {
+    if (which === 46) {
+      this.deleteSelected();
+    }
   }
 
   onMoveShape = pos => {
@@ -197,12 +240,13 @@ export default class ImEditablePolygon extends EditableShape {
     this.grabbedAt = null;
   }
 
-  onRemovePoint = idx => {
+  onSelectCorner = handle => () => {
+    this.deselectCorners();
 
-  }
+    const idx = this.cornerHandles.indexOf(handle);
+    this.selected = [ idx ];
 
-  onSelectCorner = idx => evt => {
-    console.log('selecting corner', idx);
+    addClass(handle, 'selected');
   }
 
   setPoints = points => {

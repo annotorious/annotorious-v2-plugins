@@ -24,17 +24,21 @@
 }
 
 /** Corner handles **/
+.a9s-selection.improved-polygon .a9s-handle .a9s-handle-outer,
 .a9s-annotation.improved-polygon.editable .a9s-handle .a9s-handle-outer {
   stroke-width:1;
   stroke:#000;  
 }
 
+.a9s-selection.improved-polygon .a9s-handle .a9s-handle-inner,
 .a9s-annotation.improved-polygon.editable .a9s-handle .a9s-handle-inner {
   stroke-width:2;
   stroke:#fff;
   fill:#000;
 }
 
+.a9s-selection.improved-polygon .a9s-handle .a9s-handle-inner:hover,
+.a9s-annotation.improved-polygon.editable .a9s-handle.selected .a9s-handle-inner, 
 .a9s-annotation.improved-polygon.editable .a9s-handle .a9s-handle-inner:hover {
   fill:#fff;
 }
