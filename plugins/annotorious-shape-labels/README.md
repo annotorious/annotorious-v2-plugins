@@ -3,11 +3,11 @@
 A plugin for Annotorious and Annotorious OpenSeadragon that adds a the first tag as a label
 to the  annotation shape.
 
-![Example screenshot](https://raw.githubusercontent.com/recogito/recogito-client-plugins/main/packages/annotorious-shape-labels/screenshot.jpg)
+![Example screenshot](https://raw.githubusercontent.com/recogito/recogito-client-plugins/main/plugins/annotorious-shape-labels/screenshot.jpg)
 
 ## Install
 
-Download the [latest minified release](https://github.com/recogito/recogito-client-plugins/blob/main/packages/annotorious-shape-labels/dist/annotorious-shape-labels.min.js) or include directly via CDN.
+Download the [latest minified release](https://github.com/recogito/recogito-client-plugins/blob/main/plugins/annotorious-shape-labels/dist/annotorious-shape-labels.min.js) or include directly via CDN.
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-shape-labels@latest/dist/annotorious-shape-labels.min.js"></script>
