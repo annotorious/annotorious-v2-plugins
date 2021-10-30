@@ -62,8 +62,7 @@ export default class ImRubberbandPolygon extends ToolLike {
   addPoint = () => {
     if (this.isClosable()) {
       // Close, don't add
-      const selection = new Selection(toSVGTarget(this.points, this.env.image));
-      this.emit('close', { shape: this.selection, selection });
+      this.close();
     } else {
       // Don't add a new point if distance < 2 pixels
       const [x, y] = this.mousepos;
@@ -76,6 +75,11 @@ export default class ImRubberbandPolygon extends ToolLike {
         this.mask.redraw();
       }
     }
+  }
+
+  close = () => {
+    const selection = new Selection(toSVGTarget(this.points, this.env.image));
+    this.emit('close', { shape: this.selection, selection });
   }
 
   destroy = () => {
@@ -122,8 +126,15 @@ export default class ImRubberbandPolygon extends ToolLike {
     return dist < 6 * this.scale;
   }
 
+  /** Removes last corner **/
+  pop = () => {
+    this.points.pop();
+    this.setPoints(this.points);
+    this.mask.redraw();
+  }
+
   setPoints = arr => {
-    const [head, ...tail] = arr;
+    const [head, ...tail]= arr;
 
     const path = 
       `M ${head[0]} ${head[1]} ` + 

@@ -28,7 +28,8 @@ export default class ImRubberbandPolygonTool extends Tool {
 
     this.attachListeners({
       mouseMove: this.onMouseMove,
-      mouseUp: this.onMouseUp
+      mouseUp: this.onMouseUp,
+      dblClick: this.onDblClick
     });
 
     this.rubberband =
@@ -49,6 +50,14 @@ export default class ImRubberbandPolygonTool extends Tool {
     if (this.rubberband) {
       this.rubberband.destroy();
       this.rubberband = null;
+    }
+  }
+
+  onDblClick = () => {
+    if (this.rubberband) {
+      this.rubberband.pop();
+      this.rubberband.close();
+      this.stop();
     }
   }
 
