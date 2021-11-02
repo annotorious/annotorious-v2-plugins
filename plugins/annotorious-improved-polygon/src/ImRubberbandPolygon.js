@@ -120,12 +120,12 @@ export default class ImRubberbandPolygon extends ToolLike {
 
   getDistanceToStart = () => {
     if (this.points.length < 3)
-      return; // Just return if not at least 3 points
+      return Infinity; // Just return if not at least 3 points
 
     const dx = Math.abs(this.mousepos[0] - this.points[0][0]);
     const dy = Math.abs(this.mousepos[1] - this.points[0][1]);
 
-    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / this.scale;
   }
   
   /**
@@ -133,16 +133,18 @@ export default class ImRubberbandPolygon extends ToolLike {
    * the polygon would be closed on click
    */ 
   isClosable = () => {
-    if (this.points.length < 3)
-      return; // Can't close unless at least 3 points
+    const d = this.getDistanceToStart();
+    return d < 6 * this.scale;
+  }
 
-    const dx = Math.abs(this.mousepos[0] - this.points[0][0]);
-    const dy = Math.abs(this.mousepos[1] - this.points[0][1]);
+  onScaleChanged = scale => {
+    const inner = this.closeHandle.querySelector('.a9s-handle-inner');
+    const outer = this.closeHandle.querySelector('.a9s-handle-outer');
 
-    const dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    const radius = scale * (this.config.handleRadius || 6);
 
-    // Make closable if dist < 6 pix
-    return dist < 6 * this.scale;
+    inner.setAttribute('r', radius);
+    outer.setAttribute('r', radius);
   }
 
   /** Removes last corner **/
