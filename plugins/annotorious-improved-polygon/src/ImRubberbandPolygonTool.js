@@ -17,14 +17,16 @@ export default class ImRubberbandPolygonTool extends Tool {
     super(g, config, env);
 
     this._isDrawing = false;
+    this._startOnSingleClick = false;
   }
 
   get isDrawing() {
     return this._isDrawing;
   }
 
-  startDrawing = (x, y) => {
+  startDrawing = (x, y, startOnSingleClick) => {
     this._isDrawing = true;
+    this._startOnSingleClick = startOnSingleClick;
 
     this.attachListeners({
       mouseMove: this.onMouseMove,
@@ -39,7 +41,7 @@ export default class ImRubberbandPolygonTool extends Tool {
       shape.annotation = selection;
       this.emit('complete', shape);  
       this.stop();
-    });
+    }); 
   }
 
   stop = () => {
@@ -72,7 +74,7 @@ export default class ImRubberbandPolygonTool extends Tool {
     
     if (width >= minWidth || height >= minHeight) {
       this.rubberband.addPoint();
-    } else {
+    } else if (!this._startOnSingleClick) {
       this.emit('cancel');
       this.stop();
     }
