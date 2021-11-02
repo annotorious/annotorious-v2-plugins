@@ -92,14 +92,23 @@ export default class ImRubberbandPolygon extends ToolLike {
 
     this.mousepos = xy;
 
-    // Shape is points + mousepos
-    this.setPoints([ ...this.points, xy ]);
-    this.mask.redraw();
+    const d = this.getDistanceToStart();
 
-    if (this.isClosable())
+    // Display close handle if distance < 40px
+    if (d < 40) {
       this.closeHandle.style.display = null;
-    else 
+    } else { 
       this.closeHandle.style.display = 'none';
+    }
+
+    // Snap if nearby
+    if (d < 20) {
+      this.mousepos = this.points[0];
+    }
+
+    // Shape is points + (snapped) mousepos
+    this.setPoints([ ...this.points, this.mousepos ]);
+    this.mask.redraw();
   }
 
   get element() {
@@ -109,6 +118,16 @@ export default class ImRubberbandPolygon extends ToolLike {
   getBoundingClientRect = () =>
     this.rubberband.getBoundingClientRect();
 
+  getDistanceToStart = () => {
+    if (this.points.length < 3)
+      return; // Just return if not at least 3 points
+
+    const dx = Math.abs(this.mousepos[0] - this.points[0][0]);
+    const dy = Math.abs(this.mousepos[1] - this.points[0][1]);
+
+    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+  }
+  
   /**
    * Tests if the mouse is over the first point, meaning that
    * the polygon would be closed on click
