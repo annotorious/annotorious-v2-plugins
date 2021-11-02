@@ -57,6 +57,8 @@ export default class ImEditablePolygon extends EditableShape {
 
     // Selected corners
     this.selected = [];
+
+    this.lastMouseDown = null;
   }
 
   createCornerHandle = pt => {
@@ -180,6 +182,7 @@ export default class ImEditablePolygon extends EditableShape {
 
     this.grabbedElement = element;
     this.grabbedAt = this.getSVGPoint(evt);
+    this.lastMouseDown = new Date().getTime();
   }
 
   onKeyDown = ({ which }) => {
@@ -207,11 +210,45 @@ export default class ImEditablePolygon extends EditableShape {
     this.setPoints(updatedPoints);
   }
 
-  onMoveCornerHandle = pos => {
+  onMoveCornerHandle = (pos, evt) => {
     const handleIdx = this.cornerHandles.indexOf(this.grabbedElement);
+    
+    // Update selection
+    if (evt.ctrlKey) {
+      this.selected = Array.from(new Set([...this.selected, handleIdx]));
+    } else if (!this.selected.includes(handleIdx)) {
+      this.selected = [ handleIdx ];
+    }
 
-    const updatedPoints = getPoints(this.shape).map((pt, idx) =>
-      (idx === handleIdx) ? pos : pt);
+    // Compute offsets between selected points from current selected
+    const points = getPoints(this.shape);
+
+    const distances = this.selected.map(idx => {
+      const handleXY = points[handleIdx];
+      const thisXY = points[idx];
+
+      return {
+        index: idx,
+        dx: thisXY.x - handleXY.x,
+        dy: thisXY.y - handleXY.y
+      }
+    });
+
+    const updatedPoints = getPoints(this.shape).map((pt, idx) => {
+      if (idx === handleIdx) {
+        // The dragged point
+        return pos;
+      } else if (this.selected.includes(idx)) {
+        const { dx, dy } = distances.find(d => d.index === idx);
+        return {
+          x: pos.x + dx,
+          y: pos.y + dy
+        }
+      } else {
+        // Unchanged
+        return pt;
+      }
+    });
 
     this.setPoints(updatedPoints);
   }
@@ -223,7 +260,7 @@ export default class ImEditablePolygon extends EditableShape {
       if (this.grabbedElement === this.shape) {
         this.onMoveShape(pos);
       } else if (hasClass(this.grabbedElement, 'a9s-handle')) {
-        this.onMoveCornerHandle(pos);
+        this.onMoveCornerHandle(pos, evt);
       } else if (hasClass(this.grabbedElement, 'a9s-midpoint')) {
         this.onAddPoint(pos);
       }
@@ -239,26 +276,27 @@ export default class ImEditablePolygon extends EditableShape {
   }
 
   onSelectCorner = handle => evt => {
-    const idx = this.cornerHandles.indexOf(handle);
+    const isDrag = new Date().getTime() - this.lastMouseDown > 250;
 
-    if (evt?.ctrlKey) {
-      // Toggle
-      if (this.selected.includes(idx))
-        this.selected = this.selected.filter(i => i !== idx);
-      else 
-        this.selected = [...this.selected, idx];
-    } else {
-      this.selected = [ idx ];
-    }
+    if (!isDrag) {
+      const idx = this.cornerHandles.indexOf(handle);
 
-    this.cornerHandles.forEach((handle, i) => {
-      const isSelected = this.selected.includes(i);
-      if (isSelected && !hasClass(handle, 'selected')) {
-        addClass(handle, 'selected');
-      } else if (!isSelected && hasClass(handle, 'selected')) {
-        removeClass(handle, 'selected');
+      if (evt?.ctrlKey) {
+        // Toggle
+        if (this.selected.includes(idx))
+          this.selected = this.selected.filter(i => i !== idx);
+        else 
+          this.selected = [...this.selected, idx];
+      } else { 
+        if (this.selected.length === 1 && this.selected[0] === idx) {
+          this.selected = [];
+        } else {
+          this.selected = [ idx ];
+        }
       }
-    });
+
+      this.setPoints(getPoints(this.shape));
+    }
   }
 
   setPoints = points => {
@@ -278,6 +316,15 @@ export default class ImEditablePolygon extends EditableShape {
 
     // Corner handles
     points.forEach((pt, idx) => this.setHandleXY(this.cornerHandles[idx], pt.x, pt.y));
+
+    this.cornerHandles.forEach((handle, i) => {
+      const isSelected = this.selected.includes(i);
+      if (isSelected && !hasClass(handle, 'selected')) {
+        addClass(handle, 'selected');
+      } else if (!isSelected && hasClass(handle, 'selected')) {
+        removeClass(handle, 'selected');
+      }
+    });
 
     // Midpoints 
     for (let i=0; i<points.length; i++) {
