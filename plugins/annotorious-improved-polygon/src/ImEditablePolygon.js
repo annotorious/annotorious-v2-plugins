@@ -66,6 +66,8 @@ export default class ImEditablePolygon extends EditableShape {
     handle.addEventListener('mousedown', this.onGrab(handle));
     handle.addEventListener('click', this.onSelectCorner(handle));
 
+    this.scaleHandle(handle);
+
     this.shape.appendChild(handle);
     return handle;
   }
@@ -127,7 +129,7 @@ export default class ImEditablePolygon extends EditableShape {
     
     handle.setAttribute('cx', x);
     handle.setAttribute('cy', y);
-    handle.setAttribute('r', 5);
+    handle.setAttribute('r', 5 * this.scale);
 
     return handle;
   }
@@ -273,6 +275,14 @@ export default class ImEditablePolygon extends EditableShape {
   onMouseUp = evt => {
     this.grabbedElement = null;
     this.grabbedAt = null;
+  }
+
+  onScaleChanged = scale => {
+    this.cornerHandles.map(this.scaleHandle);
+
+    this.midpoints.map(midpoint => {
+      midpoint.setAttribute('r', 5 * this.scale);
+    });
   }
 
   onSelectCorner = handle => evt => {
