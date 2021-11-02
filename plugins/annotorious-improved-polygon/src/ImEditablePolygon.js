@@ -106,6 +106,7 @@ export default class ImEditablePolygon extends EditableShape {
       this.midpoints = this.midpoints.filter((_, idx) => !this.selected.includes(idx));
 
       this.setPoints(updatedPoints);
+      this.emit('update', toSVGTarget(updatedPoints.map(({x, y}) => [x, y]), this.env.image));
     }
   }
 
