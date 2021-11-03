@@ -56,7 +56,7 @@ export default class ImRubberbandPolygonTool extends Tool {
   }
 
   onDblClick = () => {
-    if (this.rubberband) {
+    if (this.rubberband?.points.length > 3) {
       this.rubberband.pop();
       this.rubberband.close();
       this.stop();
