@@ -10,8 +10,8 @@ const resolveAppPath = relativePath => path.resolve(APP_DIR, relativePath);
 module.exports = {
   entry: resolveAppPath('src'),
   output: {
-    filename: 'annotorious-improved-polygon.js',
-    library: ['Annotorious', 'ImprovedPolygon'],
+    filename: 'annotorious-better-polygon.js',
+    library: ['Annotorious', 'BetterPolygon'],
     libraryTarget: 'umd',
     libraryExport: 'default'
   },
