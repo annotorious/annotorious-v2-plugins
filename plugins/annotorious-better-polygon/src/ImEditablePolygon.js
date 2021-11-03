@@ -183,6 +183,8 @@ export default class ImEditablePolygon extends EditableShape {
   onGrab = element => evt => {
     if (evt.button !== 0) return;  // left click
 
+    evt.stopPropagation();
+
     this.grabbedElement = element;
     this.grabbedAt = this.getSVGPoint(evt);
     this.lastMouseDown = new Date().getTime();
