@@ -7,8 +7,16 @@
     "start": "webpack serve --open --mode=development",
     "build": "webpack --mode=production"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recogito/recogito-client-plugins.git"
+  },
   "author": "Rainer Simon",
   "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/recogito/recogito-client-plugins/issues"
+  },
+  "homepage": "https://github.com/recogito/recogito-client-plugins/tree/main/plugins/annotorious-better-polygon",
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
