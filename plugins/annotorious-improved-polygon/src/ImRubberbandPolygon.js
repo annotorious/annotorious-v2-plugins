@@ -138,6 +138,8 @@ export default class ImRubberbandPolygon extends ToolLike {
   }
 
   onScaleChanged = scale => {
+    this.scale = scale;
+
     const inner = this.closeHandle.querySelector('.a9s-handle-inner');
     const outer = this.closeHandle.querySelector('.a9s-handle-outer');
 

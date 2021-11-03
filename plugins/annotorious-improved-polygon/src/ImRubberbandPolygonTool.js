@@ -80,6 +80,11 @@ export default class ImRubberbandPolygonTool extends Tool {
     }
   }
 
+  onScaleChanged = scale => {
+    if (this.rubberband)
+      this.rubberband.onScaleChanged(scale);
+  }
+
   createEditableShape = annotation =>
     new ImEditablePolygon(annotation, this.g, this.config, this.env);
 
