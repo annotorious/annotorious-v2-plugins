@@ -360,4 +360,10 @@ export default class ImEditablePolygon extends EditableShape {
     setFormatterElSize(this.shape, x, y, width, height);
   }
 
+  updateState = annotation => {
+    const shape = drawEmbeddedSVG(annotation);
+    const points = getPoints(shape);
+    this.setPoints(points);
+  }
+
 }
