@@ -89,6 +89,8 @@ export default class ImRubberbandPolygonTool extends Tool {
   }
 
   onScaleChanged = scale => {
+    console.log('scale', scale);
+    
     if (this.rubberband)
       this.rubberband.onScaleChanged(scale);
   }
