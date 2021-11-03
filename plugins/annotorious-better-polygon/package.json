@@ -1,6 +1,6 @@
 {
   "name": "@recogito/annotorious-better-polygon",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "An improved polygon editing tool with more features and better usability",
   "main": "dist/annotorious-better-polygon.js",
   "scripts": {
