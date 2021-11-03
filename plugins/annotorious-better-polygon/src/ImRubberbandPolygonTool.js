@@ -1,7 +1,10 @@
 import Tool from '@recogito/annotorious/src/tools/Tool';
+import { isTouchDevice } from '@recogito/annotorious/src/util/Touch';
 
 import ImEditablePolygon from './ImEditablePolygon';
 import ImRubberbandPolygon from './ImRubberbandPolygon';
+
+const isTouch = isTouchDevice();
 
 export const toSVGTarget = (points, image) => ({
   source: image?.src,
@@ -56,8 +59,13 @@ export default class ImRubberbandPolygonTool extends Tool {
   }
 
   onDblClick = () => {
-    if (this.rubberband?.points.length > 3) {
-      this.rubberband.pop();
+    // Desktop device will have triggered click first, mobile won't!
+    const minPoints = isTouch ? 2 : 3;
+
+    if (this.rubberband?.points.length > minPoints) {
+      if (!isTouch)
+        this.rubberband.pop();
+
       this.rubberband.close();
       this.stop();
     }
