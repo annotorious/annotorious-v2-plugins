@@ -45,13 +45,13 @@ __Better Polygon__ requires Annotorious version 2.5.9 or higher.
 </html>
 ```
 
-Or via npm:
+__Or via npm:__
 
 ```
 $ npm i @recogito/annotorious-better-polygon
 ```
 
-Import and initialized:
+__Import and initialize:__
 
 ```js
 import BetterPolygon from '@recogito/annotorious-better-polygon';
