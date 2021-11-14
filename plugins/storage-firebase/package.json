@@ -1,8 +1,8 @@
 {
   "name": "@recogito/firebase-storage",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Google Firebase storage adapter for RecogitoJS, Annotorious and AnnotoriousOSD",
-  "main": "src/index.js",
+  "main": "dist/recogito-firebase-storage.js",
   "scripts": {
     "build": "webpack --mode=production"
   },
