@@ -6,8 +6,11 @@ export const rectFragmentToLegacy = selector => {
   const [ _, coords ] = selector.value.includes(':') ? 
     selector.value.split(':') : selector.value.split('=');
 
-    const [ x, y, w, h] = coords.split(',').map(parseFloat);
-  return `rect:x=${x},y=${y},w=${w},h=${h}`;
+  const [ x, y, w, h] = coords.split(',').map(parseFloat);
+
+  return w > 0 && h > 0 ? 
+    `rect:x=${x},y=${y},w=${w},h=${h}` :
+    `point:${x},${y}`;
 }
 
 /**
@@ -23,3 +26,13 @@ export const legacyRectToSelector = anchor => {
     value: `xywh=pixel:${x},${y},${w},${h}`
   }
 }
+
+export const legacyPointToSelector = anchor => {
+  const [ _, xy ] = anchor.split(':');
+  const [ x, y ] = xy.split(',').map(t => parseFloat(t));
+
+  return {
+    type: 'FragmentSelector',
+    conformsTo: 'http://www.w3.org/TR/media-frags/',
+    value: `xywh=pixel:${x},${y},0,0`
+  }}

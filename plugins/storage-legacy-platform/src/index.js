@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { rectFragmentToLegacy, legacyRectToSelector } from './FragmentSelector';
+import {
+  rectFragmentToLegacy, 
+  legacyRectToSelector,
+  legacyPointToSelector
+} from './FragmentSelector';
 import { 
   svgPolygonToLegacy, 
   legacyPolygonToSelector,
@@ -69,10 +73,10 @@ export const toLegacyAnnotation = (webanno, config, keepId) => {
 
   let anchor;
 
-  if (selector.value.startsWith('xywh=')) {
-    anchor = rectFragmentToLegacy(selector);
-  } else if (webanno.target.renderedVia?.name === 'annotorious-tilted-box') {
+  if (webanno.target.renderedVia?.name === 'annotorious-tilted-box') {
     anchor = tiltedBoxToLegacy(selector);
+  } else if (selector.value.startsWith('xywh=')) {
+    anchor = rectFragmentToLegacy(selector);
   } else if (selector.value.startsWith('<svg>')) {
     anchor = svgPolygonToLegacy(selector);
   } else {
@@ -144,6 +148,11 @@ export const fromLegacyAnnotation = legacy => {
 
   if (legacy.anchor.startsWith('rect:x=')) {
     target = { selector: legacyRectToSelector(legacy.anchor) };
+  } else if (legacy.anchor.startsWith('point:')) {
+    target = {
+      selector: legacyPointToSelector(legacy.anchor),
+      renderedVia: { name: 'point'}
+    }
   } else if (legacy.anchor.startsWith('svg.tbox:')) {
     target = { 
       selector: legacyPolygonToSelector(legacy.anchor),
