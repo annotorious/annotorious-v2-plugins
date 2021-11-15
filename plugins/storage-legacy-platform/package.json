@@ -1,8 +1,8 @@
 {
   "name": "@recogito/recogito-legacy-storage",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A storage adapator that works with the legacy Recogito v.3 annotation platform",
-  "main": "src/index.js",
+  "main": "dist/recogito-legacy-storage.js",
   "scripts": {
     "start": "webpack serve --open --mode=development",
     "build": "webpack --mode=production"
