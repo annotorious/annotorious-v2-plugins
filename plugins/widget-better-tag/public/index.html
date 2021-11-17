@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Annotorious | Better Tag Widget</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.5.9/dist/annotorious.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.5.9/dist/annotorious.min.js"></script>
+    <style>
+      #content {
+        width:100%;
+      }
+
+      img {
+        max-width:100%;
+      }
+
+      #content .a9s-selection-mask {
+        fill:rgba(0, 0, 0, 0.35);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">  
+      <img id="hallstatt" src="640px-Hallstatt.jpg" />
+    </div>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        var anno = Annotorious.init({
+          image: 'hallstatt',
+          allowEmpty: true
+        });
+
+        anno.on('createAnnotation', function(a) {
+          console.log('created', a);
+        });
+      }
+    </script>
+  </body>
+</html>
