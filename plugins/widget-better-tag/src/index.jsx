@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Autocomplete from './Autocomplete';
 
@@ -18,6 +18,32 @@ const BetterTagPlugin = config => props => {
 
   // All except draft tag
   const tags = all.filter(b => b != draftTag);
+
+  const [ showDelete, setShowDelete ] = useState(false);
+
+  const toggle = tag => _ => {
+    if (showDelete === tag) // Removes delete button
+      setShowDelete(false);
+    else
+      setShowDelete(tag); // Sets delete button on a different tag
+  }
+
+  const onDelete = tag => evt => {
+    evt.stopPropagation();
+    props.onRemoveBody(tag);
+  }
+
+  const onSubmit = tag => {
+    const { draft, ...toSubmit } = tag.label ? 
+      { ...draftTag, value: tag.label, source: tag.uri } :
+      { ...draftTag, value: tag }; 
+
+    if (draftTag.value.trim().length === 0) {
+      props.onAppendBody(toSubmit);
+    } else {
+      props.onUpdateBody(draftTag, toSubmit); 
+    }
+  }
 
   return (
     <div className="r6o-widget r6o-tag">
@@ -42,7 +68,8 @@ const BetterTagPlugin = config => props => {
       }
 
       {!props.readOnly &&
-        <Autocomplete />
+        <Autocomplete 
+          onSubmit={onSubmit}/>
       }
     </div>
   )
