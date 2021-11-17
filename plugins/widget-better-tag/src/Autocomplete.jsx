@@ -10,7 +10,7 @@ const Autocomplete = props => {
 
   const onKeyPress = evt => {
     if (evt.which === 13) {
-      // TODO handle { label, uri } tuples!
+      setValue('');
       props.onSubmit(value);
     }
   }

@@ -33,5 +33,9 @@
   "peerDependencies": {
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
+  },
+  "dependencies": {
+    "@recogito/recogito-client-core": "^1.5.4",
+    "react-transition-group": "^4.4.2"
   }
 }
