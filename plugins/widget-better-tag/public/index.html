@@ -27,7 +27,11 @@
       window.onload = function() {
         var anno = Annotorious.init({
           image: 'hallstatt',
-          allowEmpty: true
+          allowEmpty: true,
+          widgets: [
+            'COMMENT',
+            recogito.BetterTag()
+          ]
         });
 
         anno.on('createAnnotation', function(a) {

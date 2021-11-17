@@ -24,6 +24,10 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
+  },
   module: {
     rules: [
       { 
@@ -33,6 +37,7 @@ module.exports = {
           options: {
             "presets": [
               "@babel/preset-env",
+              "@babel/preset-react"
             ],
             "plugins": [
               [
