@@ -1,6 +1,6 @@
 {
   "name": "@recogito/widget-better-tag",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simpler tag widget implementation that also supports async tag sources",
   "main": "dist/widget-better-tag.js",
   "scripts": {
@@ -31,8 +31,8 @@
     "webpack-dev-server": "^4.3.1"
   },
   "peerDependencies": {
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "dependencies": {
     "@recogito/recogito-client-core": "^1.5.4",
