@@ -1,6 +1,6 @@
 {
   "name": "@recogito/widget-better-tag",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A simpler tag widget implementation that also supports async tag sources",
   "main": "dist/widget-better-tag.js",
   "scripts": {
