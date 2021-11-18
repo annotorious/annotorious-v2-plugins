@@ -1,42 +1,114 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Autocomplete = props => {
 
   const element = useRef();
 
+  // Current value of the input field
   const [ value, setValue ] = useState('');
 
-  const suggestions = [];
+  // Current list of suggestions    
+  const [ suggestions, setSuggestions ] = useState([]);
 
-  const onKeyPress = evt => {
+  // Highlighted suggestion, if any
+  const [ highlightedIndex, setHighlightedIndex ] = useState(null);
+
+  useEffect(() => {
+    if (props.focus)
+      element.current.querySelector('input').focus({ preventScroll: true });
+  }, []);
+
+  useEffect(() => {
+    props.onChange(value);
+  }, [ value ]);
+
+  const onSubmit = () => {
+    if (highlightedIndex !== null) {
+      // Submit highligted suggestion
+      props.onSubmit(suggestions[highlightedIndex]);
+    } else {
+      // Submit input value
+      const trimmed = value.trim();
+      if (trimmed)
+        props.onSubmit(trimmed);
+    }
+
+    setValue('');
+    setSuggestions([]);
+    setHighlightedIndex(null);
+  }
+
+  const onKeyDown = evt => {
     if (evt.which === 13) {
-      setValue('');
-      props.onSubmit(value);
+      // Enter
+      onSubmit();
+    } 
+    
+    if (suggestions.length > 0) {
+      if (evt.which === 38) {
+        // Key up
+        if (highlightedIndex === null) {
+          setHighlightedIndex(0);
+        } else {
+          const prev = Math.max(0, highlightedIndex - 1);
+          setHighlightedIndex(prev);
+        }
+      } else if (evt.which === 40) {
+        // Key down
+        if (highlightedIndex === null) {
+          setHighlightedIndex(0);
+        } else {
+          const next = Math.min(suggestions.length - 1, highlightedIndex + 1);
+          setHighlightedIndex(next);
+        }
+      }
+    } else {
+      // No suggestions: key down shows all vocab options
+      if (evt.which === 40) {
+        setSuggestions(props.vocabulary);
+      }
     }
   }
 
   const onChange = evt => {
-    setValue(evt.target.value);
+    const { value } = evt.target;
+
+    // Set controlled input value
+    setValue(value);
+
+    // Typing on the input resets the highlight
+    setHighlightedIndex(null);
+
+    // Match suggestions
+    const prefixMatches = props.vocabulary.filter(item => {
+      // Item could be string or { label, uri } tuple
+      const label = item.label ? item.label : item;
+      return label.toLowerCase().startsWith(value.toLowerCase());
+    });
+
+    setSuggestions(prefixMatches);
   }
 
   return (
-    <div className="r6o-autocomplete" ref={element}>
+    <div
+      ref={element}  
+      className="r6o-autocomplete">
       <div>
-        <input 
-          onKeyPress={onKeyPress}
+        <input
+          onKeyDown={onKeyDown}
           onChange={onChange}
           value={value}
           placeholder={props.placeholder} />
       </div>
       <ul>
         {suggestions.length > 0 && suggestions.map((item, index) => (
-          <li style={
+          <li 
+            key={`${item}${index}`}
+            style={
                 highlightedIndex === index
                   ? { backgroundColor: '#bde4ff' }
                   : {}
-              }
-              key={`${item}${index}`}
-              {...getItemProps({ item, index })}>
+              }>
             {item.label ? item.label : item}
           </li>
         ))}
@@ -44,6 +116,5 @@ const Autocomplete = props => {
     </div>
   )
 }
-
 
 export default Autocomplete;

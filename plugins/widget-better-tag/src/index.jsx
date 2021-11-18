@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { CloseIcon } from '@recogito/recogito-client-core/src/Icons';
+import i18n from '@recogito/recogito-client-core/src/i18n';
 
 import Autocomplete from './Autocomplete';
 
@@ -9,7 +10,7 @@ const getDraftTag = existingDraft =>
     type: 'TextualBody', value: '', purpose: 'tagging', draft: true
   };
 
-const BetterTagPlugin = config => props => {
+const BetterTagPlugin = props => {
 
   // All tags (draft + non-draft)
   const all = props.annotation ? 
@@ -28,6 +29,19 @@ const BetterTagPlugin = config => props => {
       setShowDelete(false);
     else
       setShowDelete(tag); // Sets delete button on a different tag
+  }
+
+  const onDraftChange = value => {
+    const prev = draftTag.value.trim();
+    const updated = value.trim();
+
+    if (prev.length === 0 && updated.length > 0) {
+      props.onAppendBody({ ...draftTag, value: updated });
+    } else if (prev.length > 0 && updated.length === 0) {
+      props.onRemoveBody(draftTag);
+    } else {
+      props.onUpdateBody(draftTag, { ...draftTag, value: updated });
+    }
   }
 
   const onDelete = tag => evt => {
@@ -71,6 +85,10 @@ const BetterTagPlugin = config => props => {
 
       {!props.readOnly &&
         <Autocomplete 
+          focus={props.focus}
+          placeholder={i18n.t('Add tag...')}
+          vocabulary={props.vocabulary || []}
+          onChange={onDraftChange}
           onSubmit={onSubmit}/>
       }
     </div>

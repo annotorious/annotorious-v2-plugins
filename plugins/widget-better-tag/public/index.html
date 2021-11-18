@@ -29,8 +29,7 @@
           image: 'hallstatt',
           allowEmpty: true,
           widgets: [
-            'COMMENT',
-            recogito.BetterTag()
+            { widget: recogito.BetterTag, vocabulary: [ 'Foo', 'Bar', 'Baz'] }
           ]
         });
 
