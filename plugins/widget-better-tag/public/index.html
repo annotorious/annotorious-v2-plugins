@@ -24,12 +24,19 @@
     </div>
 
     <script type="text/javascript">
+      var asyncVocabulary = function(query) {
+        return new Promise(function(resolve, reject) {
+          setTimeout(function() { resolve(['Foo', 'Bar', 'Async']); }, 500);
+        });
+      }
+
       window.onload = function() {
         var anno = Annotorious.init({
           image: 'hallstatt',
           allowEmpty: true,
           widgets: [
             { widget: recogito.BetterTag, vocabulary: [ 'Foo', 'Bar', 'Baz'] }
+            // { widget: recogito.BetterTag, vocabulary: asyncVocabulary }
           ]
         });
 

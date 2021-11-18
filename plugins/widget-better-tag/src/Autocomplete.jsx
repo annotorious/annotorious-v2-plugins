@@ -1,5 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+const getSuggestionsSync = (query, vocabulary) =>
+  vocabulary.filter(item => {
+    // Item could be string or { label, uri } tuple
+    const label = item.label ? item.label : item;
+    return label.toLowerCase().startsWith(query.toLowerCase());
+  });
+
+const getSuggestionsAsync = (query, fn) => fn(query);
+
 const Autocomplete = props => {
 
   const element = useRef();
@@ -22,6 +31,16 @@ const Autocomplete = props => {
     props.onChange(value);
   }, [ value ]);
 
+  const getSuggestions = value => {
+    if (typeof props.vocabulary === 'function') {
+      getSuggestionsAsync(value, props.vocabulary)
+        .then(setSuggestions);
+    } else {
+      const suggestions = getSuggestionsSync(value, props.vocabulary);
+      setSuggestions(suggestions);
+    }
+  }
+
   const onSubmit = () => {
     if (highlightedIndex !== null) {
       // Submit highligted suggestion
@@ -42,30 +61,33 @@ const Autocomplete = props => {
     if (evt.which === 13) {
       // Enter
       onSubmit();
-    } 
-    
-    if (suggestions.length > 0) {
-      if (evt.which === 38) {
-        // Key up
-        if (highlightedIndex === null) {
-          setHighlightedIndex(0);
-        } else {
-          const prev = Math.max(0, highlightedIndex - 1);
-          setHighlightedIndex(prev);
-        }
-      } else if (evt.which === 40) {
-        // Key down
-        if (highlightedIndex === null) {
-          setHighlightedIndex(0);
-        } else {
-          const next = Math.min(suggestions.length - 1, highlightedIndex + 1);
-          setHighlightedIndex(next);
-        }
-      }
+    } else if (evt.which === 27) {
+      props.onCancel && props.onCancel();
     } else {
-      // No suggestions: key down shows all vocab options
-      if (evt.which === 40) {
-        setSuggestions(props.vocabulary);
+      // Neither enter nor cancel
+      if (suggestions.length > 0) {
+        if (evt.which === 38) {
+          // Key up
+          if (highlightedIndex === null) {
+            setHighlightedIndex(0);
+          } else {
+            const prev = Math.max(0, highlightedIndex - 1);
+            setHighlightedIndex(prev);
+          }
+        } else if (evt.which === 40) {
+          // Key down
+          if (highlightedIndex === null) {
+            setHighlightedIndex(0);
+          } else {
+            const next = Math.min(suggestions.length - 1, highlightedIndex + 1);
+            setHighlightedIndex(next);
+          }
+        }
+      } else {
+        // No suggestions: key down shows all vocab options
+        if (evt.which === 40) {
+          setSuggestions(props.vocabulary);
+        }
       }
     }
   }
@@ -79,14 +101,10 @@ const Autocomplete = props => {
     // Typing on the input resets the highlight
     setHighlightedIndex(null);
 
-    // Match suggestions
-    const prefixMatches = props.vocabulary.filter(item => {
-      // Item could be string or { label, uri } tuple
-      const label = item.label ? item.label : item;
-      return label.toLowerCase().startsWith(value.toLowerCase());
-    });
-
-    setSuggestions(prefixMatches);
+    if (value)
+      getSuggestions(value);
+    else
+      setSuggestions([]);
   }
 
   return (
