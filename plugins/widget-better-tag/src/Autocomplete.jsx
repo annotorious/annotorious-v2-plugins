@@ -121,7 +121,9 @@ const Autocomplete = props => {
       <ul>
         {suggestions.length > 0 && suggestions.map((item, index) => (
           <li 
-            key={`${item}${index}`}
+            key={`${item.label ? item.label : item}${index}`}
+            onClick={onSubmit}
+            onMouseEnter={() => setHighlightedIndex(index)}
             style={
                 highlightedIndex === index
                   ? { backgroundColor: '#bde4ff' }
