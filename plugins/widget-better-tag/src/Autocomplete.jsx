@@ -48,8 +48,22 @@ const Autocomplete = props => {
     } else {
       // Submit input value
       const trimmed = value.trim();
-      if (trimmed)
-        props.onSubmit(trimmed);
+
+      if (trimmed) {
+        // If there is a vocabulary with the same label, use that
+        const matchingTerm = Array.isArray(props.vocabulary) ?
+          props.vocabulary.find(t => {
+            const label = t.label || t;
+            return label.toLowerCase() === trimmed.toLowerCase();
+          }) : null;
+
+        if (matchingTerm) {
+          props.onSubmit(matchingTerm);
+        } else {
+          // Otherwise, just use as a freetext tag
+          props.onSubmit(trimmed);
+        }
+      }
     }
 
     setValue('');

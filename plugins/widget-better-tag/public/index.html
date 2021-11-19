@@ -35,7 +35,7 @@
           image: 'hallstatt',
           allowEmpty: true,
           widgets: [
-            { widget: recogito.BetterTag, vocabulary: [ 'Foo', 'Bar', 'Baz'] }
+            { widget: recogito.BetterTag, vocabulary: [ 'Foo', { label: 'Bar', uri: 'http://example.com/bar' }, 'Baz'] }
             // { widget: recogito.BetterTag, vocabulary: asyncVocabulary }
           ]
         });
