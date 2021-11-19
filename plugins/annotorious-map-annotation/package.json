@@ -1,6 +1,6 @@
 {
   "name": "@recogito/annotorious-map-annotation",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "An Annotorious plugin for annotating maps",
   "main": "src/index.js",
   "scripts": {
