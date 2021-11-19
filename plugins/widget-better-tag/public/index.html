@@ -30,13 +30,18 @@
         });
       }
 
+      var syncVocabulary = function(query) {
+        return [ 'sync1', 'sync2', 'sync3' ];
+      }
+
       window.onload = function() {
         var anno = Annotorious.init({
           image: 'hallstatt',
           allowEmpty: true,
           widgets: [
-            { widget: recogito.BetterTag, vocabulary: [ 'Foo', { label: 'Bar', uri: 'http://example.com/bar' }, 'Baz'] }
+            // { widget: recogito.BetterTag, vocabulary: [ 'Foo', { label: 'Bar', uri: 'http://example.com/bar' }, 'Baz'] }
             // { widget: recogito.BetterTag, vocabulary: asyncVocabulary }
+            // { widget: recogito.BetterTag, vocabulary: syncVocabulary }
           ]
         });
 

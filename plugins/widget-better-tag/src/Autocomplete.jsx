@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const getSuggestionsSync = (query, vocabulary) =>
+const getVocabSuggestions = (query, vocabulary) =>
   vocabulary.filter(item => {
     // Item could be string or { label, uri } tuple
     const label = item.label ? item.label : item;
     return label.toLowerCase().startsWith(query.toLowerCase());
   });
 
-const getSuggestionsAsync = (query, fn) => fn(query);
+const getFnSuggestions = (query, fn) =>
+  fn(query);
 
 const Autocomplete = props => {
 
@@ -33,10 +34,15 @@ const Autocomplete = props => {
 
   const getSuggestions = value => {
     if (typeof props.vocabulary === 'function') {
-      getSuggestionsAsync(value, props.vocabulary)
-        .then(setSuggestions);
+      const result = getFnSuggestions(value, props.vocabulary);
+
+      // Result could be suggestions or Promise
+      if (result.then)
+        result.then(setSuggestions);
+      else 
+        setSuggestions(result);
     } else {
-      const suggestions = getSuggestionsSync(value, props.vocabulary);
+      const suggestions = getVocabSuggestions(value, props.vocabulary);
       setSuggestions(suggestions);
     }
   }
@@ -98,9 +104,11 @@ const Autocomplete = props => {
           }
         }
       } else {
-        // No suggestions: key down shows all vocab options
+        // No suggestions: key down shows all vocab 
+        // options (only for hard-wired vocabs!)
         if (evt.which === 40) {
-          setSuggestions(props.vocabulary);
+          if (Array.isArray(props.vocabulary))
+            setSuggestions(props.vocabulary);
         }
       }
     }
