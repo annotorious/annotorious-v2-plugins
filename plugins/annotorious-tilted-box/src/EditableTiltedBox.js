@@ -127,7 +127,7 @@ export default class EditableTiltedBox extends EditableShape {
     this.setShape([ a, b, c, d ]);
   }
 
-  scaleHandles = scale => {
+  onScaleChanged = scale => {
     // Pivot
     const inner = this.pivotHandle.querySelector('.a9s-handle-inner');
     const outer = this.pivotHandle.querySelector('.a9s-handle-outer');

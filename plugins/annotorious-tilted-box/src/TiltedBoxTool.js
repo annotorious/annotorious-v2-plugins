@@ -14,7 +14,7 @@ export default class TiltedBoxTool extends Tool {
     this.rubberbandShape = null;
   }
 
-  scaleHandles = scale =>
+  onScaleChanged = scale => 
     this.rubberbandShape?.scalePivot(scale);
 
   startDrawing = (x, y, _) => {
