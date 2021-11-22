@@ -1,6 +1,6 @@
 {
   "name": "@recogito/annotorious-tilted-box",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "The Tilted Box selection tool from Recogito - now for Annotorious",
   "main": "src/index.js",
   "scripts": {
