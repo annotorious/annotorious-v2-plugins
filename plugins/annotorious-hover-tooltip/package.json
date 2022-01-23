@@ -1,6 +1,6 @@
 {
   "name": "@recogito/annotorious-hover-tooltip",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A hover tooltip plugin for Annotorious and AnnotoriousOSD",
   "main": "dist/annotorious-hover-tooltip.js",
   "scripts": {
