@@ -1,7 +1,13 @@
 import './index.css';
 
-const getFirstText = annotation => {
-  
+const getFirstTextBody = annotation => {
+  if (!annotation.body)
+    return;
+
+  const bodies = Array.isArray(annotation.body) ? 
+    annotation.body : [ annotation.body ];
+
+  return bodies.find(b => b.type === 'TextualBody');
 }
 
 export default anno => {
@@ -9,24 +15,28 @@ export default anno => {
   let tooltip = null;
 
   const onMouseMove = evt => {
-    tooltip.style.top = `${evt.clientY}px`;
-    tooltip.style.left = `${evt.clientX}px`;
+    tooltip.style.top = `${evt.offsetY}px`;
+    tooltip.style.left = `${evt.offsetX}px`;
   }
 
   const showTooltip = (annotation, shape) => {
-    // Create tooltip element
-    tooltip = document.createElement('div');
-    tooltip.setAttribute('class', 'a9s-hover-tooltip');
+    const body = getFirstTextBody(annotation);
 
-    // TODO get first TextualBody
-    tooltip.innerHTML = 'Hello World!';
+    if (body) {
+      // Create tooltip element
+      tooltip = document.createElement('div');
+      tooltip.setAttribute('class', 'a9s-hover-tooltip');
 
-    anno._element.appendChild(tooltip);
+      // TODO get first TextualBody
+      tooltip.innerHTML = body.value;
 
-    shape.addEventListener('mousemove', onMouseMove);
+      anno._element.appendChild(tooltip);
+
+      shape.addEventListener('mousemove', onMouseMove);
+    }
   }
 
-  const hideTooltip = (annotation, shape) => {
+  const hideTooltip = shape => {
     shape.removeEventListener('mousemove', onMouseMove);
 
     if (tooltip) {
@@ -38,7 +48,7 @@ export default anno => {
   anno.on('mouseEnterAnnotation', (annotation, shape) =>
     showTooltip(annotation, shape));
 
-  anno.on('mouseLeaveAnnotation', (annotation, shape) =>
-    hideTooltip(annotation, shape));
+  anno.on('mouseLeaveAnnotation', (_, shape) =>
+    hideTooltip(shape));
 
 }

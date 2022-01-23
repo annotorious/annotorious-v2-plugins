@@ -1,5 +1,8 @@
 .a9s-hover-tooltip {
   position:absolute;
   background-color:#fff;
-  padding:10px;
+  padding:8px 12px;
+  pointer-events:none;
+  border-radius:3px;
+  box-shadow:0 0 17px rgba(0, 0, 0, 0.4);
 }
