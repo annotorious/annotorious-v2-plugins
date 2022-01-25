@@ -64,7 +64,7 @@ export const toLegacyAnnotation = (webanno, config, keepId) => {
     }
 
     if (type === null) 
-      throw new Error(`Unsupported body type: ${body.type}`);
+      throw new Error('Unsupported body', body);
 
     return { 
       type, 
@@ -138,7 +138,7 @@ export const fromLegacyAnnotation = legacy => {
       purpose = 'commenting';
       value = body.value;
     } else {
-      throw new Error(`Body type ${body.type} not supported`); 
+      throw new Error('Body not supported', body); 
     }
 
     return {
