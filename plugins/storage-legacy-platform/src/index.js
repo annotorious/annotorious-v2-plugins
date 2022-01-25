@@ -49,7 +49,7 @@ export const toLegacyAnnotation = (webanno, config, keepId) => {
 
       case 'ordering':
         type = 'ORDERING';
-        value = body.value;
+        value = `${body.value}`; // Requires string
         break;
               
       case 'commenting':
@@ -133,7 +133,7 @@ export const fromLegacyAnnotation = legacy => {
       value = body.value;
     } else if (body.type === 'ORDERING') {
       purpose = 'ordering';
-      value = body.value;
+      value = Number.parseInt(body.value);
     } else if (body.type === 'COMMENT') {
       purpose = 'commenting';
       value = body.value;
