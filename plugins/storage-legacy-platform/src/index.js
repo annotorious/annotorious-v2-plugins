@@ -46,6 +46,11 @@ export const toLegacyAnnotation = (webanno, config, keepId) => {
         type = 'GROUPING';
         value = body.value;
         break;
+
+      case 'ordering':
+        type = 'ORDERING';
+        value = body.value;
+        break;
               
       case 'commenting':
         type = 'COMMENT';
@@ -125,6 +130,9 @@ export const fromLegacyAnnotation = legacy => {
       value = body.value;
     } else if (body.type === 'GROUPING') {
       purpose = 'grouping';
+      value = body.value;
+    } else if (body.type === 'ORDERING') {
+      purpose = 'ordering';
       value = body.value;
     } else if (body.type === 'COMMENT') {
       purpose = 'commenting';
