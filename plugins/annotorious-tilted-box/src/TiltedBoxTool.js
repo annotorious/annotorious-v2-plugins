@@ -77,7 +77,4 @@ export default class TiltedBoxTool extends Tool {
 
 TiltedBoxTool.identifier = 'annotorious-tilted-box';
 
-TiltedBoxTool.supports = annotation => {
-  console.log('supports', annotation);
-  return false;
-}
+TiltedBoxTool.supports = annotation => false;
