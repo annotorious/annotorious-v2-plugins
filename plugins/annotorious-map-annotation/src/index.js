@@ -29,9 +29,12 @@ const MapAnnotationPlugin = (anno, map) => {
   anno.getAnnotations = () =>
     _getAnnotations().map(a => rvs(a)); 
 
-  anno.getAnnotationById = id => {
+  anno.getAnnotationById = (id, skipCrosswalk) => {
+    if (skipCrosswalk)
+      return _getAnnotationById(id);
+
     const a = _getAnnotationById(id);
-    return a ? rvs(a) : null
+    return a ? rvs(a) : null;
   }
 
   // Monkey patch .on and .once 
