@@ -24,8 +24,8 @@ export const toLegacyAnnotation = (webanno, config, keepId) => {
     switch(body.purpose) {
       case 'tagging':
         type = 'TAG';
-        value = body.value;
-        uri = body.source;
+        value = body.source ? body.source.label : body.value;
+        uri = body.source.id;
         break;
 
       case 'geotagging':
@@ -115,9 +115,18 @@ export const fromLegacyAnnotation = legacy => {
   const toWebAnnoBody = body => {
     let purpose = null;
     let value = null;
-    
+    let source = null;
+
     if (body.type === 'TAG') {
       purpose = 'tagging';
+      if (body.uri) {
+        source = {
+          id: body.uri,
+          label: body.value
+        }
+      } else {
+        value = body.value
+      }
       value = body.value;
     } else if (body.type === 'ENTITY' || body.type === 'LABEL' || body.type === 'SYMBOL') {
       purpose = 'classifying';
@@ -145,6 +154,7 @@ export const fromLegacyAnnotation = legacy => {
       type: 'TextualBody',
       purpose,
       value,
+      source,
       creator: {
         id: body.last_modified_by
       },
