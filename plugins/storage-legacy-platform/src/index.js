@@ -25,7 +25,7 @@ export const toLegacyAnnotation = (webanno, config, keepId) => {
       case 'tagging':
         type = 'TAG';
         value = body.source ? body.source.label : body.value;
-        uri = body.source.id;
+        uri = body.source?.id;
         break;
 
       case 'geotagging':
