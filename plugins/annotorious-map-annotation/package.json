@@ -16,7 +16,8 @@
     "Annotation",
     "Maps",
     "WMTS",
-    "OpenSeadragon"
+    "OpenSeadragon",
+    "Map Annotation"
   ],
   "author": "Rainer Simon",
   "license": "BSD-3-Clause",
