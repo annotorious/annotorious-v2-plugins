@@ -4,10 +4,8 @@ A helper plugin for using Annotorious with maps and geo-referenced images. After
 plugin is installed, annotation shapes will use geographic coordinates (latitude, longitude)
 rather than image pixel coordinates.
 
- __Work in progress!__ 
-
-The plugin is currently aimed at the [Annotorious OpenSeadragon plugin](https://github.com/recogito/annotorious-openseadragon)
-and maps served via WMTS __only__.
+This plugin currently works with [Annotorious OpenSeadragon](https://github.com/recogito/annotorious-openseadragon)
+and WMTS maps __only__.
 
 The plugin depends on:
 - [OpenSeadragon](https://openseadragon.github.io/)
