@@ -1,8 +1,8 @@
 {
   "name": "@recogito/annotorious-tensorflow-tag-suggestions",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An automated tagging plugin for Annotorious and AnnotoriousOSD using MobileNet and TensorflowJS",
-  "main": "src/index.js",
+  "main": "dist/annotorious-tf-tag-suggestions.min.js",
   "scripts": {
     "build": "rollup --config"
   },

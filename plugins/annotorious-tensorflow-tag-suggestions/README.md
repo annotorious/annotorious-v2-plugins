@@ -6,7 +6,7 @@ After learning from at least two examples, the plugin provides tag suggestions a
 
 https://codelabs.developers.google.com/codelabs/tensorflowjs-teachablemachine-codelab/index.html#6
 
-![Animated screenshot](screenshot.gif)
+![Animated screenshot](https://raw.githubusercontent.com/recogito/recogito-client-plugins/main/plugins/annotorious-tensorflow-tag-suggestions/screenshot.gif)
 
 ## Installation
 
