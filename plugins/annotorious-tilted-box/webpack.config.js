@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: resolveAppPath('src'),
   output: {
-    filename: 'annotorious-tilted-box.min.js',
+    filename: 'annotorious-tilted-box.js',
     library: ['Annotorious', 'TiltedBox'],
     libraryTarget: 'umd',
     libraryExport: 'default',
