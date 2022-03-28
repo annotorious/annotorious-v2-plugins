@@ -20,7 +20,7 @@ export default class ImEditablePolygon extends EditableShape {
     this.svg.addEventListener('mousemove', this.onMouseMove);
     this.svg.addEventListener('mouseup', this.onMouseUp);
 
-    document.body.addEventListener('keydown', this.onKeyDown);
+    this.svg.addEventListener('keyup', this.onKeyUp);
 
     // Container wraps the mask + editable shape
     this.container = document.createElementNS(SVG_NAMESPACE, 'g');
@@ -107,7 +107,9 @@ export default class ImEditablePolygon extends EditableShape {
 
       this.setPoints(updatedPoints);
       this.emit('update', toSVGTarget(updatedPoints.map(({x, y}) => [x, y]), this.env.image));
+      return true;
     }
+    return false;
   }
 
   deselectCorners = () =>
@@ -119,7 +121,7 @@ export default class ImEditablePolygon extends EditableShape {
     this.svg.removeEventListener('mousemove', this.onMouseMove);
     this.svg.removeEventListener('mouseup', this.onMouseUp);
 
-    document.body.removeEventListener('keydown', this.onKeyDown);
+    this.svg.removeEventListener('keyup', this.onKeyUp);
 
     super.destroy();
   }
@@ -190,9 +192,10 @@ export default class ImEditablePolygon extends EditableShape {
     this.lastMouseDown = new Date().getTime();
   }
 
-  onKeyDown = ({ which }) => {
-    if (which === 46) {
-      this.deleteSelected();
+  onKeyUp = evt => {
+    if (evt.which === 46 && this.deleteSelected()) {
+      evt.preventDefault();
+      evt.stopImmediatePropagation();
     }
   }
 
