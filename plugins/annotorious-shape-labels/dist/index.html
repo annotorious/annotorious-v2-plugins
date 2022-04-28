@@ -1,24 +1,39 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Shape Labels Plugin</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@latest/dist/annotorious.min.js"></script>
-    <script src="annotorious-shape-labels.min.js"></script>
-  </head>
-  <body>
-    <img id="hallstatt" src="640px-Hallstatt.jpg" />
+<!doctype html><html><head><title>Shape Labels Plugin</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.6.1/dist/annotorious.min.css"><script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious@2.7.2/dist/annotorious.min.js"></script><script src="annotorious-shape-labels.min.js"></script><style>.container {
+        position:relative;
+        max-width:100%;
+        width: 420px;
+      }
 
-    <script type="text/javascript">
+      img {
+        width:100%;
+      }</style><script defer="defer" src="annotorious-shape-labels.min.js"></script></head><body><div class="container"><img id="hallstatt" src="640px-Hallstatt.jpg"/></div><script>var fixture = {
+        "@context":"http://www.w3.org/ns/anno.jsonld",
+        "type":"Annotation",
+        "id":"#07140773-aae9-4db7-896e-82232dad4574",
+        "body":[{
+          "type":"TextualBody",
+          "value":"Tag",
+          "purpose":"tagging"
+        }],
+        "target":{
+          "source":"http://localhost:3000/640px-Hallstatt.jpg",
+          "selector":{
+            "type":"FragmentSelector",
+            "conformsTo":"http://www.w3.org/TR/media-frags/",
+            "value":"xywh=pixel:260.5714416503906,156.95237731933594,152.38095092773438,121.90476989746094"
+          }
+        }
+      };
+
       (function() {
         var anno = Annotorious.init({
           image: 'hallstatt',
+          crosshair: true,
           formatter: Annotorious.ShapeLabelsFormatter(),
           widgets: [ 
             'TAG'
           ]
         });
-      })();
-    </script>
-  <script type="text/javascript" src="annotorious-shape-labels.min.js"></script></body>
-</html>
+
+        anno.addAnnotation(fixture);
+      })();</script></body></html>
