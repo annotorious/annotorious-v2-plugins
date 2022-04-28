@@ -1,6 +1,6 @@
 {
   "name": "@recogito/annotorious-shape-labels",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Shape label plugin for Annotorious and Annotorious OpenSeadragon",
   "main": "dist/annotorious-shape-labels.min.js",
   "scripts": {
