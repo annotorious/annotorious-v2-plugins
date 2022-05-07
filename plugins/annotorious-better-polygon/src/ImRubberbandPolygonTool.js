@@ -59,13 +59,7 @@ export default class ImRubberbandPolygonTool extends Tool {
   }
 
   onDblClick = () => {
-    // Desktop device will have triggered click first, mobile won't!
-    const minPoints = isTouch ? 2 : 3;
-
-    if (this.rubberband?.points.length > minPoints) {
-      if (!isTouch)
-        this.rubberband.pop();
-
+    if (this.rubberband?.points.length > 2) {
       this.rubberband.close();
       this.stop();
     }
