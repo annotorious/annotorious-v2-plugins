@@ -193,7 +193,7 @@ export default class ImEditablePolygon extends EditableShape {
   }
 
   onKeyUp = evt => {
-    if (evt.which === 46 && this.deleteSelected()) {
+    if ((evt.key == "Backspace" || evt.key == "Delete") && this.deleteSelected()) {
       evt.preventDefault();
       evt.stopImmediatePropagation();
     }
