@@ -195,6 +195,8 @@ const LegacyStoragePlugin = (client, config) => {
   // Fetch annotations
   const url = `/api/document/${config.documentId}/part/${config.partSequenceNo}/annotations`;
 
+  let onError = null;
+
   axios.get(url).then(response => {
     const annotations = response.data.map(fromLegacyAnnotation);
     client.setAnnotations(annotations);
@@ -204,7 +206,8 @@ const LegacyStoragePlugin = (client, config) => {
     axios.post('/api/annotation', toLegacyAnnotation(annotation, config)).then(response => {
       const { annotation_id } = response.data;
       overrideId(annotation_id);
-    });
+    }).catch(error =>
+      onError && onError(error));
   }
 
   /** 
@@ -213,15 +216,23 @@ const LegacyStoragePlugin = (client, config) => {
    * is that we don't need ot update the ID.
    */
   const onUpdateAnnotation = annotation =>
-    axios.post('/api/annotation', toLegacyAnnotation(annotation, config, true));
+    axios.post('/api/annotation', toLegacyAnnotation(annotation, config, true))
+      .catch(error =>
+        onError && onError(error));
 
   const onDeleteAnnotation = annotation =>
-    axios.delete(`/api/annotation/${annotation.id}`);
+    axios.delete(`/api/annotation/${annotation.id}`)
+      .catch(error =>
+        error && onError(error));
 
   // Attach lifecycle handlers
   client.on('createAnnotation', onCreateAnnotation);
   client.on('updateAnnotation', onUpdateAnnotation);
   client.on('deleteAnnotation', onDeleteAnnotation);
+
+  return {
+    onError: handler => { onError = handler }  
+  }
 
 }
 
