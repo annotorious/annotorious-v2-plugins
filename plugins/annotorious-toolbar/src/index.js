@@ -5,6 +5,7 @@ import createEllipse from './icons/Ellipse';
 import createFreehand from './icons/Freehand';
 import createPoint from './icons/Point';
 import createTiltedBox from './icons/TiltedBox';
+import createLine from './icons/Line';
 
 import './index.css';
 
@@ -15,7 +16,8 @@ const ICONS = {
   'ellipse': createEllipse(),
   'freehand': createFreehand(),
   'point': createPoint(), 
-  'annotorious-tilted-box': createTiltedBox()
+  'annotorious-tilted-box': createTiltedBox(),
+  'line': createLine()
 }
 
 // IE11 doesn't support adding/removing classes to SVG elements except 
