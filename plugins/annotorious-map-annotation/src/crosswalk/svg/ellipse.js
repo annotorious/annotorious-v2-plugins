@@ -20,7 +20,7 @@ const transform = (shape, fn) => {
 }
 
 export const ellipseForward = (shape, map) =>
-  transform(shape, map.lonLatToImageCoordinates);
+  transform(shape, map.lonLatToImage);
 
 export const ellipseReverse = (shape, map) =>
   transform(shape, map.imageToLonLat);

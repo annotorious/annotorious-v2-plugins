@@ -22,7 +22,7 @@ const transform = (shape, fn) => {
 }
 
 export const pathForward = (shape, map) =>
-  transform(shape, map.lonLatToImageCoordinates);
+  transform(shape, map.lonLatToImage);
 
 export const pathReverse = (shape, map) =>
   transform(shape, map.imageToLonLat);

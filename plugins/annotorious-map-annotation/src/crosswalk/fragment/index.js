@@ -27,7 +27,7 @@ const transform = (selector, fn) => {
 }
 
 export const fragmentForward = (selector, map) =>
-  transform(selector, map.lonLatToImageCoordinates);
+  transform(selector, map.lonLatToImage);
 
 /**
  * Converts the fragment from native map coordinates to lon/lat.

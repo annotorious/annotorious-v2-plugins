@@ -14,7 +14,7 @@ const transform = (shape, fn) => {
 }
 
 export const polygonForward = (shape, map) =>
-  transform(shape, map.lonLatToImageCoordinates);
+  transform(shape, map.lonLatToImage);
 
 export const polygonReverse = (shape, map) =>
   transform(shape, map.imageToLonLat);
