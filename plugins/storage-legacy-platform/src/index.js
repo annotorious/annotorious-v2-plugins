@@ -205,9 +205,10 @@ const LegacyStoragePlugin = (client, config) => {
 
   let onError = null;
 
-  axios.get(url).then(response => {
+  const init = () => axios.get(url).then(response => {
     const annotations = response.data.map(fromLegacyAnnotation);
     client.setAnnotations(annotations);
+    return annotations;
   });
 
   const onCreateAnnotation = (annotation, overrideId) => {
@@ -231,7 +232,7 @@ const LegacyStoragePlugin = (client, config) => {
   const onDeleteAnnotation = annotation =>
     axios.delete(`/api/annotation/${annotation.id}`)
       .catch(error =>
-        error && onError(error));
+        onError && onError(error));
 
   // Attach lifecycle handlers
   client.on('createAnnotation', onCreateAnnotation);
@@ -239,6 +240,7 @@ const LegacyStoragePlugin = (client, config) => {
   client.on('deleteAnnotation', onDeleteAnnotation);
 
   return {
+    init,
     onError: handler => { onError = handler }  
   }
 
