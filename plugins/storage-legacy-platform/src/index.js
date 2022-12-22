@@ -205,7 +205,7 @@ const LegacyStoragePlugin = (client, config) => {
 
   let onError = null;
 
-  let afterCreate = nul;
+  let afterCreate = null;
 
   const init = () => axios.get(url).then(response => {
     const annotations = response.data.map(fromLegacyAnnotation);
