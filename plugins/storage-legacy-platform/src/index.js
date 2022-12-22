@@ -216,8 +216,13 @@ const LegacyStoragePlugin = (client, config) => {
   const onCreateAnnotation = (annotation, overrideId) => {
     axios.post('/api/annotation', toLegacyAnnotation(annotation, config)).then(response => {
       const { annotation_id } = response.data;
-      const updated = overrideId(annotation_id);
+      overrideId(annotation_id);
 
+      const updated = {
+        ...annotation,
+        id: annotation_id
+      };
+      
       if (afterCreate)
         afterCreate(updated);
     }).catch(error =>
