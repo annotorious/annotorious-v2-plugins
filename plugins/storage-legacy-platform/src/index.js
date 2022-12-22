@@ -205,6 +205,8 @@ const LegacyStoragePlugin = (client, config) => {
 
   let onError = null;
 
+  let afterCreate = nul;
+
   const init = () => axios.get(url).then(response => {
     const annotations = response.data.map(fromLegacyAnnotation);
     client.setAnnotations(annotations);
@@ -214,7 +216,10 @@ const LegacyStoragePlugin = (client, config) => {
   const onCreateAnnotation = (annotation, overrideId) => {
     axios.post('/api/annotation', toLegacyAnnotation(annotation, config)).then(response => {
       const { annotation_id } = response.data;
-      overrideId(annotation_id);
+      const updated = overrideId(annotation_id);
+
+      if (afterCreate)
+        afterCreate(updated);
     }).catch(error =>
       onError && onError(error));
   }
@@ -241,7 +246,8 @@ const LegacyStoragePlugin = (client, config) => {
 
   return {
     init,
-    onError: handler => { onError = handler }  
+    onError: handler => { onError = handler },
+    afterCreate: handler => { afterCreate = handler}
   }
 
 }
