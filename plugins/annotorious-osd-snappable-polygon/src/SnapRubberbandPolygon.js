@@ -11,6 +11,8 @@ export default class SnapRubberbandPolygon extends ToolLike {
     // Needed later to construct the Selection
     this.env = env;
 
+    console.log(this.env.store);
+
     // UI scale
     this.scale = 1;
 

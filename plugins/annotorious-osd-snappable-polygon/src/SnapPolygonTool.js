@@ -10,7 +10,7 @@ export const toSVGTarget = (points, image) => ({
   }
 });
 
-export default class ImRubberbandPolygonTool extends Tool {
+export default class SnapPolygonTool extends Tool {
 
   constructor(g, config, env) {
     super(g, config, env);
@@ -88,9 +88,9 @@ export default class ImRubberbandPolygonTool extends Tool {
 
 }
 
-SnapRubberbandPolygonTool.identifier = 'polygon';
+SnapPolygonTool.identifier = 'polygon';
 
-SnapRubberbandPolygonTool.supports = annotation => {
+SnapPolygonTool.supports = annotation => {
   const selector = annotation.selector('SvgSelector');
   if (selector)
     return selector.value?.match(/^<svg.*<polygon/g);
