@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AnnotoriousOSD | Snap</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.7.9/dist/annotorious.min.css">
+    <script src="openseadragon-bin-3.0.0/openseadragon.3.0.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@recogito/annotorious-openseadragon@2.7.9/dist/openseadragon-annotorious.min.js"></script>
+    <style>
+      #osd {
+        width:800px;
+        height:600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="osd"></div>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        var viewer = OpenSeadragon({
+          id: "osd",
+          prefixUrl: "openseadragon-bin-2.4.2/images/",
+          tileSources: {
+            type: "image",
+            url: "Carta_Marina.jpeg"
+          }
+        });
+
+        var anno = OpenSeadragon.Annotorious(viewer, {
+          allowEmpty: true,
+          drawOnSingleClick: true,
+          crosshair: true
+        });
+        
+        Annotorious.OsdSnap(anno);
+
+        anno.setDrawingTool('polygon'); 
+      }
+    </script>
+  </body>
+</html>
