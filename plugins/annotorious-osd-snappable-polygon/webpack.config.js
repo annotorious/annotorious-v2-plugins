@@ -11,7 +11,7 @@ module.exports = {
   entry: resolveAppPath('src'),
   output: {
     filename: 'annotorious-osd-snap.js',
-    library: ['Annotorious', 'OsdSnap'],
+    library: ['Annotorious', 'SnapPolygon'],
     libraryTarget: 'umd',
     libraryExport: 'default'
   },

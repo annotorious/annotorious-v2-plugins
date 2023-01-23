@@ -1,7 +1,11 @@
-const OsdSnapPlugin = anno => {
+import SnapPolygonTool from './SnapPolygonTool';
 
-  console.log('Hello World');
+import './index.css';
+
+const SnappablePolygonPlugin = anno => {
+
+  anno.addDrawingTool(SnapPolygonTool);
 
 }
 
-export default OsdSnapPlugin;
+export default SnappablePolygonPlugin;

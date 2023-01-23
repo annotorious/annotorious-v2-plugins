@@ -30,5 +30,6 @@
     "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
+    "@recogito/annotorious": "^2.7.9"
   }
 }
