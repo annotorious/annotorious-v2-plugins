@@ -13,6 +13,8 @@
     </style>
   </head>
   <body>
+    <button id="toggle">RECTANGLE</button>
+
     <div id="osd"></div>
 
     <script type="text/javascript">
@@ -42,6 +44,18 @@
         });
 
         anno.loadAnnotations('annotations.json');
+
+        var toggleButton = document.getElementById('toggle');
+        
+        toggleButton.addEventListener('click', function() {
+          if (toggleButton.innerHTML === 'POLYGON') {
+            toggleButton.innerHTML = 'RECTANGLE';
+            anno.setDrawingTool('rect');
+          } else {
+            toggleButton.innerHTML = 'POLYGON';
+            anno.setDrawingTool('polygon');
+          }
+        });
       }
     </script>
   </body>

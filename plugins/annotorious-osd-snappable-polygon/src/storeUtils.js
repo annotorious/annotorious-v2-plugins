@@ -10,10 +10,23 @@ const dist = (a, b) => {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-export const getNearestSnappablePoint = (origin, annotations, threshold) => {
+export const getNearestSnappablePoint = (env, currentScale, xy, threshold = 20) => {
+  // Distance buffer for querying the store
+  const buffer = threshold * currentScale;
+
+  // Query bounds
+  const vicinity = {
+    minX: xy[0] - buffer, 
+    minY: xy[1] - buffer, 
+    maxX: xy[0] + buffer, 
+    maxY: xy[1] + buffer
+  };
+
+  // All annotations intersecting the vicinity
+  const nearby = env.store.getAnnotationsIntersecting(vicinity);
 
   // Parse annotations and extract corner points
-  const points = annotations.reduce((all, annotation) => {
+  const points = nearby.reduce((all, annotation) => {
     const { selector } = annotation.target;
 
     if (selector.type === 'SvgSelector') { 
@@ -49,11 +62,10 @@ export const getNearestSnappablePoint = (origin, annotations, threshold) => {
   }, []);
 
   // Remove all points further away than 'threshold'
-  const nearbyPoints = points.filter(xy => dist(origin, xy) <= threshold);
+  const nearbyPoints = points.filter(pt => dist(xy, pt) <= buffer);
 
   // Sort by distance
-  nearbyPoints.sort((a, b) => dist(origin, a) - dist(origin, b));
+  nearbyPoints.sort((a, b) => dist(xy, a) - dist(xy, b));
 
-  return nearbyPoints.length === 0 ? null : nearbyPoints[0];
-
+  return nearbyPoints.length === 0 ? null : nearbyPoints[0];  
 }

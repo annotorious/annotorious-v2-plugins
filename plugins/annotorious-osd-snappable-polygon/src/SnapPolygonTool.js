@@ -1,6 +1,8 @@
+import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import Tool from '@recogito/annotorious/src/tools/Tool';
 import SnapEditablePolygon from './SnapEditablePolygon';
 import SnapRubberbandPolygon from './SnapRubberbandPolygon';
+import { getNearestSnappablePoint } from './storeUtils';
 
 export const toSVGTarget = (points, image) => ({
   source: image?.src,
@@ -17,7 +19,30 @@ export default class SnapPolygonTool extends Tool {
 
     this._isDrawing = false;
     this._startOnSingleClick = false;
+
+    // Track mouse movement and draw the snapping cursor
+    this.svg.addEventListener('pointermove', this.onPointerMove);
+
+    this.cursor = this.drawHandle(0, 0);
+
+    g.appendChild(this.cursor);
   }
+
+  /**
+   * A pointer move handler that's ALWAYS on, not just when a 
+   * shape is being created. We use this to create the snapping 
+   * hover cursor.
+   */
+  onPointerMove = evt => {
+    const { x, y } = this.getSVGPoint(evt);
+    const snappablePoint = getNearestSnappablePoint(this.env, this.scale, [x,y]);
+
+    if (snappablePoint) {
+      this.setHandleXY(this.cursor, snappablePoint[0], snappablePoint[1]);
+    } else {
+      this.setHandleXY(this.cursor, x, y);
+    }
+  } 
 
   get isDrawing() {
     return this._isDrawing;
@@ -61,8 +86,10 @@ export default class SnapPolygonTool extends Tool {
     }
   }
 
-  onMouseMove = (x, y) =>
+  onMouseMove = (x, y) => {
+    console.log('dragTo');
     this.rubberband.dragTo([x, y]);
+  } 
 
   onMouseUp = () => {
     const { width, height } = this.rubberband.getBoundingClientRect();
@@ -79,12 +106,19 @@ export default class SnapPolygonTool extends Tool {
   }
 
   onScaleChanged = scale => {
+    this.scaleHandle(this.cursor);
+
     if (this.rubberband)
       this.rubberband.onScaleChanged(scale);
   }
 
   createEditableShape = annotation =>
     new SnapEditablePolygon(annotation, this.g, this.config, this.env);
+
+  destroy = () => {
+    super.destroy();
+    this.svg.removeEventListener('pointermove', this.onPointerMove);
+  }
 
 }
 
