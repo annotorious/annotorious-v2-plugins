@@ -107,10 +107,8 @@ export default class SnapRubberbandPolygon extends ToolLike {
 
     const nearby = this.env.store.getAnnotationsIntersecting(vicinity);
 
-    const snappablePoints = getNearestSnappablePoint(xy, nearby, buffer)
-
-    // TODO snap!
-
+    const snappablePoint = getNearestSnappablePoint(xy, nearby, buffer);
+  
     // Display close handle if distance < 40px
     if (d < 40) {
       this.closeHandle.style.display = null;
@@ -118,9 +116,11 @@ export default class SnapRubberbandPolygon extends ToolLike {
       this.closeHandle.style.display = 'none';
     }
 
-    // Snap if nearby
+    // Snap: close handle has priority
     if (d < 20) {
       this.mousepos = this.points[0];
+    } else if (snappablePoint) {
+      this.mousepos = snappablePoint;
     }
 
     // Shape is points + (snapped) mousepos
