@@ -35,13 +35,15 @@ export default class SnapPolygonTool extends Tool {
    */
   onPointerMove = evt => {
     const { x, y } = this.getSVGPoint(evt);
+    
     const snappablePoint = getNearestSnappablePoint(this.env, this.scale, [x,y]);
 
-    if (snappablePoint) {
-      this.setHandleXY(this.cursor, snappablePoint[0], snappablePoint[1]);
-    } else {
-      this.setHandleXY(this.cursor, x, y);
-    }
+    if (snappablePoint)
+      this.snappedPosition = snappablePoint;
+    else
+      this.snappedPosition = [x, y];
+
+    this.setHandleXY(this.cursor, this.snappedPosition[0], this.snappedPosition[1]);    
   } 
 
   get isDrawing() {
@@ -59,7 +61,7 @@ export default class SnapPolygonTool extends Tool {
     });
 
     this.rubberband =
-      new SnapRubberbandPolygon([x, y], this.g, this.config, this.env);
+      new SnapRubberbandPolygon(this.snappedPosition, this.g, this.config, this.env);
 
     this.rubberband.on('close', ({ shape, selection }) => {
       shape.annotation = selection;
@@ -87,8 +89,7 @@ export default class SnapPolygonTool extends Tool {
   }
 
   onMouseMove = (x, y) => {
-    console.log('dragTo');
-    this.rubberband.dragTo([x, y]);
+    this.rubberband.dragTo(this.snappedPosition);
   } 
 
   onMouseUp = () => {
