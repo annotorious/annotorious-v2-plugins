@@ -1,0 +1,83 @@
+[
+  {
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "type": "Annotation",
+    "body": [
+      {
+        "type": "TextualBody",
+        "value": "Annotation 01",
+        "purpose": "commenting"
+      }
+    ],
+    "target": {
+      "source": "http://localhost:3000/Carta_Marina.jpeg",
+      "selector": {
+        "type": "SvgSelector",
+        "value": "<svg><polygon points=\"2455.396728515625,1713.9866943359375 2863.054931640625,1709.7901611328125 2873.553955078125,1816.88037109375 2445.192626953125,1825.2796630859375\" /></svg>"
+      }
+    },
+    "id": "#875aeab4-6e00-47ed-afaf-8483f1d6762b"
+  },
+  {
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "type": "Annotation",
+    "body": [
+      {
+        "type": "TextualBody",
+        "value": "Annotation 02",
+        "purpose": "commenting"
+      }
+    ],
+    "target": {
+      "source": "http://localhost:3000/Carta_Marina.jpeg",
+      "selector": {
+        "type": "SvgSelector",
+        "value": "<svg><polygon points=\"696,1851.199951171875 1003.2000122070312,1575.300048828125 1448.4000244140625,1650.5999755859375 1661.5,1826.0999755859375 1661.5,2070.699951171875 1379.4000244140625,2271.300048828125 1272.800048828125,2365.39990234375 1197.5999755859375,2428.10009765625 1341.800048828125,2591.10009765625 1222.5999755859375,2735.300048828125 940.5,2653.800048828125 614.5,2409.300048828125 501.6000061035156,2102\" /></svg>"
+      }
+    },
+    "id": "#22d40c73-b9cb-4bb8-a935-a65df56442b9"
+  },
+  {
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "type": "Annotation",
+    "body": [
+      {
+        "type": "TextualBody",
+        "value": "Annotation 3",
+        "purpose": "commenting"
+      }
+    ],
+    "target": {
+      "source": "http://localhost:3000/Carta_Marina.jpeg",
+      "selector": {
+        "type": "FragmentSelector",
+        "conformsTo": "http://www.w3.org/TR/media-frags/",
+        "value": "xywh=pixel:1921.1610107421875,862.6381225585938,642.4395751953125,392.00738525390625"
+      }
+    },
+    "id": "#42b4d395-68be-4e04-a99f-67a68115f64a"
+  },
+  {
+    "@context": "http://www.w3.org/ns/anno.jsonld",
+    "type": "Annotation",
+    "body": [
+      {
+        "type": "TextualBody",
+        "value": "Annotation 04",
+        "purpose": "commenting"
+      }
+    ],
+    "target": {
+      "source": "http://localhost:3000/Carta_Marina.jpeg",
+      "selector": {
+        "type": "FragmentSelector",
+        "conformsTo": "http://www.w3.org/TR/media-frags/",
+        "value": "xywh=pixel:1536,2955,0,0"
+      },
+      "renderedVia": {
+        "name": "point"
+      }
+    },
+    "id": "#01d9c207-82f0-4a13-b24d-cd02fe080a78"
+  }
+]

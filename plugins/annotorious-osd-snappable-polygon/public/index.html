@@ -17,6 +17,7 @@
 
     <script type="text/javascript">
       window.onload = function() {
+        
         var viewer = OpenSeadragon({
           id: "osd",
           prefixUrl: "openseadragon-bin-2.4.2/images/",
@@ -34,7 +35,13 @@
         
         Annotorious.SnapPolygon(anno);
 
-        anno.setDrawingTool('polygon');
+        // anno.setDrawingTool('polygon');
+
+        anno.on('createAnnotation', function(a) {
+          console.log(JSON.stringify(a));
+        });
+
+        anno.loadAnnotations('annotations.json');
       }
     </script>
   </body>
