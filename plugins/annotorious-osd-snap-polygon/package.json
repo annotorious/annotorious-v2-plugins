@@ -1,5 +1,5 @@
 {
-  "name": "@recogito/annotorious-osd-snappable-polygon",
+  "name": "@recogito/annotorious-osd-snap-polygon",
   "version": "0.1.0",
   "description": "A plugin for Annotorious OSD which implements a polygon tool with mouse cursor snapping behavior",
   "main": "dist/annotorious-osd-snap.js",
