@@ -27,6 +27,8 @@ export default class SnapPolygonTool extends Tool {
 
     this._dragged = false; // tracks if drag has happend in between
 
+    this.snappedPosition = [0, 0];
+
     document.addEventListener('keydown', this.onKeyDown);
 
     this.svg.addEventListener('pointermove', this.onPointerMove);
