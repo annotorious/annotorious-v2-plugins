@@ -20,12 +20,11 @@ export default class SnapPolygonTool extends Tool {
     this._isDrawing = false;
     this._startOnSingleClick = false;
 
-    // Track mouse movement and draw the snapping cursor
-    this.svg.addEventListener('pointermove', this.onPointerMove);
+    // Track hotkey/toolbar enabled state
+    this._enabled = false;
 
-    this.cursor = this.drawHandle(0, 0);
-
-    g.appendChild(this.cursor);
+    // Track if drag happend in between
+    this._dragged = false;
   }
 
   /**
@@ -43,11 +42,26 @@ export default class SnapPolygonTool extends Tool {
     else
       this.snappedPosition = [x, y];
 
-    this.setHandleXY(this.cursor, this.snappedPosition[0], this.snappedPosition[1]);    
+    if (this.cursor)
+      this.setHandleXY(this.cursor, this.snappedPosition[0], this.snappedPosition[1]);    
   } 
 
   get isDrawing() {
     return this._isDrawing;
+  }
+
+  get enabled() {
+    return this._enabled;
+  }
+
+  set enabled(enabled) {
+    if (enabled && !this.cursor) {
+      this.cursor = this.drawHandle(0, 0);
+      this.svg.addEventListener('pointermove', this.onPointerMove);
+      this.g.appendChild(this.cursor);
+    }
+
+    this._enabled = enabled;
   }
 
   startDrawing = (x, y, startOnSingleClick) => {
@@ -75,6 +89,12 @@ export default class SnapPolygonTool extends Tool {
 
     this._isDrawing = false;
 
+    if (this.cursor) {
+      this.svg.addEventListener('pointermove', this.onPointerMove);
+      this.g.removeChild(this.cursor);
+      this.cursor = null;
+    }
+
     if (this.rubberband) {
       this.rubberband.destroy();
       this.rubberband = null;
@@ -93,21 +113,32 @@ export default class SnapPolygonTool extends Tool {
   } 
 
   onMouseUp = () => {
-    const { width, height } = this.rubberband.getBoundingClientRect();
+    // Ignore mouse up if drag happened in between
+    if (!this._dragged) {
+      const { width, height } = this.rubberband.getBoundingClientRect();
 
-    const minWidth = this.config.minSelectionWidth || 4;
-    const minHeight = this.config.minSelectionHeight || 4;
-    
-    if (width >= minWidth || height >= minHeight) {
-      this.rubberband.addPoint();
-    } else if (!this._startOnSingleClick) {
-      this.emit('cancel');
-      this.stop();
+      const minWidth = this.config.minSelectionWidth || 4;
+      const minHeight = this.config.minSelectionHeight || 4;
+      
+      if (width >= minWidth || height >= minHeight) {
+        this.rubberband.addPoint();
+      } else if (!this._startOnSingleClick) {
+        this.emit('cancel');
+        this.stop();
+      }
+    } else {
+      this._dragged = false;
     }
   }
 
+  /**
+   * When the user first drags after creating a point, the last point should  **/
+  onDragStart = () =>
+    this._dragged = true;
+
   onScaleChanged = scale => {
-    this.scaleHandle(this.cursor);
+    if (this.cursor)
+      this.scaleHandle(this.cursor);
 
     if (this.rubberband)
       this.rubberband.onScaleChanged(scale);
@@ -115,11 +146,6 @@ export default class SnapPolygonTool extends Tool {
 
   createEditableShape = annotation =>
     new SnapEditablePolygon(annotation, this.g, this.config, this.env);
-
-  destroy = () => {
-    super.destroy();
-    this.svg.removeEventListener('pointermove', this.onPointerMove);
-  }
 
 }
 
