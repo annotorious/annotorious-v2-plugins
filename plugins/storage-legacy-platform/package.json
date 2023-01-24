@@ -1,6 +1,6 @@
 {
   "name": "@recogito/recogito-legacy-storage",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "A storage adapator that works with the legacy Recogito v.3 annotation platform",
   "main": "dist/recogito-legacy-storage.js",
   "scripts": {
