@@ -58,7 +58,14 @@ export default class SnapPolygonTool extends Tool {
   set enabled(enabled) {
     if (enabled && !this.cursor) {
       this.cursor = this.drawHandle(this.snappedPosition[0], this.snappedPosition[1]);
+      this.cursor.setAttribute('class', 'a9s-snap-cursor');
+
+      this.scaleHandle(this.cursor);
+      
       this.g.appendChild(this.cursor);
+    } else if (!enabled && this.cursor) {
+      // this.g.removeChild(this.cursor);
+      // this.cursor = null;
     }
 
     this._enabled = enabled;
@@ -66,6 +73,7 @@ export default class SnapPolygonTool extends Tool {
 
   startDrawing = (x, y, startOnSingleClick) => {
     this._isDrawing = true;
+
     this._startOnSingleClick = startOnSingleClick;
 
     this.attachListeners({
@@ -107,7 +115,7 @@ export default class SnapPolygonTool extends Tool {
     }
   }
 
-  onMouseMove = (x, y) => {
+  onMouseMove = () => {
     this.rubberband.dragTo(this.snappedPosition);
   } 
 
@@ -145,7 +153,6 @@ export default class SnapPolygonTool extends Tool {
 
   destroy = () => {
     this.svg.removeEventListener('pointermove', this.onPointerMove);
-
     super.destroy();
   }
 
