@@ -6,15 +6,18 @@
     <script src="openseadragon-bin-3.0.0/openseadragon.3.0.0.min.js"></script>
     <script src="dev/openseadragon-annotorious.min.js"></script>
     <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+
       #osd {
-        width:800px;
-        height:600px;
+        width: 100vw;
+        height: 100vh;
       }
     </style>
   </head>
   <body>
-    <button id="toggle">RECTANGLE</button>
-
     <div id="osd"></div>
 
     <script type="text/javascript">
@@ -25,8 +28,9 @@
           prefixUrl: "openseadragon-bin-2.4.2/images/",
           tileSources: {
             type: "image",
-            url: "Carta_Marina.jpeg"
-          }
+            url: "default.jpg"
+          },
+          maxZoomPixelRatio: 4
         });
 
         var anno = OpenSeadragon.Annotorious(viewer, {

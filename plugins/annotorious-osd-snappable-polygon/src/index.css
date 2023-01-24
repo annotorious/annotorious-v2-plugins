@@ -8,7 +8,7 @@
 
 .a9s-snap-cursor .a9s-handle-outer {
   stroke-width: 0;
-  fill: rgba(0, 0, 0, 0.25);
+  fill: transparent;
 }
 
 /** Rubberband **/
