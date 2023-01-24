@@ -15,9 +15,19 @@
         width: 100vw;
         height: 100vh;
       }
+
+      #toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 999;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
+    <button id="toggle">DRAW</button>
+
     <div id="osd"></div>
 
     <script type="text/javascript">
@@ -52,13 +62,7 @@
         var toggleButton = document.getElementById('toggle');
         
         toggleButton.addEventListener('click', function() {
-          if (toggleButton.innerHTML === 'POLYGON') {
-            toggleButton.innerHTML = 'RECTANGLE';
-            anno.setDrawingTool('rect');
-          } else {
-            toggleButton.innerHTML = 'POLYGON';
-            anno.setDrawingTool('polygon');
-          }
+          anno.setDrawingEnabled(true);
         });
       }
     </script>

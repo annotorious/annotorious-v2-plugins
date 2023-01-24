@@ -1,14 +1,23 @@
 /** Cursor **/
-.a9s-snap-cursor .a9s-handle-inner {
+.a9s-snap-cursor .a9s-snap-cursor-inner {
   stroke-width: 1px;
   stroke: #000;
-  fill: transparent;
+  fill: none;
   vector-effect: non-scaling-stroke;
 }
 
-.a9s-snap-cursor .a9s-handle-outer {
-  stroke-width: 0;
-  fill: transparent;
+.a9s-snap-cursor .a9s-snap-cursor-outer {
+  opacity: 0;
+  stroke-width: 6px;
+  stroke: rgba(0, 0, 0, 0.35);
+  fill: none;
+  stroke-dasharray: 12.6, 6.1;
+  transform: rotateZ(11.25deg);
+  vector-effect: non-scaling-stroke;
+}
+
+.a9s-snap-cursor.active .a9s-snap-cursor-outer {
+  opacity: 1;
 }
 
 /** Rubberband **/

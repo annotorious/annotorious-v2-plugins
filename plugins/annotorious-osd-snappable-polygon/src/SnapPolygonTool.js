@@ -2,6 +2,7 @@ import Tool from '@recogito/annotorious/src/tools/Tool';
 import SnapEditablePolygon from './SnapEditablePolygon';
 import SnapRubberbandPolygon from './SnapRubberbandPolygon';
 import { getNearestSnappablePoint } from './storeUtils';
+import { drawCursor, setCursorXY, scaleCursor, setSnapEnabled } from './SnapCursor';
 
 export const toSVGTarget = (points, image) => ({
   source: image?.src,
@@ -17,15 +18,30 @@ export default class SnapPolygonTool extends Tool {
     super(g, config, env);
 
     this._isDrawing = false;
+
     this._startOnSingleClick = false;
 
-    // Track hotkey/toolbar enabled state
-    this._enabled = false;
+    this._isSnapEnabled = false;
 
-    // Track if drag happend in between
-    this._dragged = false;
+    this._enabled = false; // tracks hotkey/toolbar enabled state
+
+    this._dragged = false; // tracks if drag has happend in between
+
+    document.addEventListener('keydown', this.onKeyDown);
 
     this.svg.addEventListener('pointermove', this.onPointerMove);
+  }
+
+  onKeyDown = evt => {
+    // Prevent default OSD 'move down' behavior
+    evt.preventDefault();
+
+    if (evt.key === 'S' || evt.key === 's') {
+      this._isSnapEnabled = !this._isSnapEnabled;
+
+      if (this.cursor)
+        setSnapEnabled(this.cursor, this._isSnapEnabled);
+    }
   }
 
   /**
@@ -35,16 +51,20 @@ export default class SnapPolygonTool extends Tool {
    */
   onPointerMove = evt => {
     const { x, y } = this.getSVGPoint(evt);
-    
-    const snappablePoint = getNearestSnappablePoint(this.env, this.scale, [x,y]);
 
-    if (snappablePoint)
-      this.snappedPosition = snappablePoint;
-    else
+    if (this._isSnapEnabled) {
+      const snappablePoint = getNearestSnappablePoint(this.env, this.scale, [x,y]);
+
+      if (snappablePoint)
+        this.snappedPosition = snappablePoint;
+      else
+        this.snappedPosition = [x, y];  
+    } else {
       this.snappedPosition = [x, y];
+    }
 
     if (this.cursor)
-      this.setHandleXY(this.cursor, this.snappedPosition[0], this.snappedPosition[1]);    
+      setCursorXY(this.cursor, this.snappedPosition);    
   } 
 
   get isDrawing() {
@@ -57,15 +77,15 @@ export default class SnapPolygonTool extends Tool {
 
   set enabled(enabled) {
     if (enabled && !this.cursor) {
-      this.cursor = this.drawHandle(this.snappedPosition[0], this.snappedPosition[1]);
-      this.cursor.setAttribute('class', 'a9s-snap-cursor');
+      this.cursor = drawCursor(this.snappedPosition);
 
-      this.scaleHandle(this.cursor);
+      setSnapEnabled(this.cursor, this._isSnapEnabled);
+      scaleCursor(this.cursor, this.scale);
       
       this.g.appendChild(this.cursor);
     } else if (!enabled && this.cursor) {
-      // this.g.removeChild(this.cursor);
-      // this.cursor = null;
+      this.g.removeChild(this.cursor);
+      this.cursor = null;
     }
 
     this._enabled = enabled;
@@ -145,7 +165,7 @@ export default class SnapPolygonTool extends Tool {
 
   onScaleChanged = scale => {
     if (this.cursor)
-      this.scaleHandle(this.cursor);
+      scaleCursor(this.cursor, scale);
 
     if (this.rubberband)
       this.rubberband.onScaleChanged(scale);

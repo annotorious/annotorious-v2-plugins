@@ -2,7 +2,6 @@ import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import { Selection, ToolLike } from '@recogito/annotorious/src/tools/Tool';
 import Mask from '@recogito/annotorious/src/tools/polygon/PolygonMask';
 import { toSVGTarget } from './SnapPolygonTool';
-import { getNearestSnappablePoint } from './storeUtils';
 
 export default class SnapRubberbandPolygon extends ToolLike {
 
@@ -95,8 +94,6 @@ export default class SnapRubberbandPolygon extends ToolLike {
     // Distance to start
     const d = this.getDistanceToStart();
 
-    const snappablePoint = getNearestSnappablePoint(this.env, this.scale, xy);
-  
     // Display close handle if distance < 40px
     if (d < 40) {
       this.closeHandle.style.display = null;
@@ -104,12 +101,8 @@ export default class SnapRubberbandPolygon extends ToolLike {
       this.closeHandle.style.display = 'none';
     }
 
-    // Snap: close handle has priority
-    if (d < 20) {
+    if (d < 20)
       this.mousepos = this.points[0];
-    } else if (snappablePoint) {
-      this.mousepos = snappablePoint;
-    }
 
     // Shape is points + (snapped) mousepos
     this.setPoints([ ...this.points, this.mousepos ]);
