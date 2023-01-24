@@ -4,6 +4,7 @@ import { drawEmbeddedSVG } from '@recogito/annotorious/src/selectors/EmbeddedSVG
 import { format, setFormatterElSize } from '@recogito/annotorious/src/util/Formatting';
 import Mask from '@recogito/annotorious/src/tools/polygon/PolygonMask';
 import { toSVGTarget } from './SnapPolygonTool';
+import { getNearestSnappablePoint } from './storeUtils';
 
 const getPoints = shape =>
   Array.from(shape.querySelector('.a9s-inner').points);
@@ -13,8 +14,10 @@ const getBBox = shape =>
 
 export default class SnapEditablePolygon extends EditableShape {
 
-  constructor(annotation, g, config, env) {
+  constructor(annotation, g, config, env, onDestroy) {
     super(annotation, g, config, env);
+
+    this.onDestroy = onDestroy;
 
     this.svg.addEventListener('mousemove', this.onMouseMove);
     this.svg.addEventListener('mouseup', this.onMouseUp);
@@ -122,6 +125,8 @@ export default class SnapEditablePolygon extends EditableShape {
 
     this.svg.removeEventListener('keyup', this.onKeyUp);
 
+    this.onDestroy();
+
     super.destroy();
   }
 
@@ -217,8 +222,15 @@ export default class SnapEditablePolygon extends EditableShape {
     this.setPoints(updatedPoints);
   }
 
-  onMoveCornerHandle = (pos, evt) => {
+  onMoveCornerHandle = (xy, evt) => {
     const handleIdx = this.cornerHandles.indexOf(this.grabbedElement);
+
+    const nearestSnappable = getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]);
+
+    const pos = nearestSnappable ? { 
+      x: nearestSnappable[0],
+      y: nearestSnappable[1]
+    } : xy;
     
     // Update selection
     if (evt.ctrlKey) {

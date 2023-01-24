@@ -1,4 +1,3 @@
-import { SVG_NAMESPACE } from '@recogito/annotorious/src/util/SVG';
 import Tool from '@recogito/annotorious/src/tools/Tool';
 import SnapEditablePolygon from './SnapEditablePolygon';
 import SnapRubberbandPolygon from './SnapRubberbandPolygon';
@@ -25,6 +24,8 @@ export default class SnapPolygonTool extends Tool {
 
     // Track if drag happend in between
     this._dragged = false;
+
+    this.svg.addEventListener('pointermove', this.onPointerMove);
   }
 
   /**
@@ -56,8 +57,7 @@ export default class SnapPolygonTool extends Tool {
 
   set enabled(enabled) {
     if (enabled && !this.cursor) {
-      this.cursor = this.drawHandle(0, 0);
-      this.svg.addEventListener('pointermove', this.onPointerMove);
+      this.cursor = this.drawHandle(this.snappedPosition[0], this.snappedPosition[1]);
       this.g.appendChild(this.cursor);
     }
 
@@ -90,7 +90,6 @@ export default class SnapPolygonTool extends Tool {
     this._isDrawing = false;
 
     if (this.cursor) {
-      this.svg.addEventListener('pointermove', this.onPointerMove);
       this.g.removeChild(this.cursor);
       this.cursor = null;
     }
@@ -144,8 +143,14 @@ export default class SnapPolygonTool extends Tool {
       this.rubberband.onScaleChanged(scale);
   }
 
+  destroy = () => {
+    this.svg.removeEventListener('pointermove', this.onPointerMove);
+
+    super.destroy();
+  }
+
   createEditableShape = annotation =>
-    new SnapEditablePolygon(annotation, this.g, this.config, this.env);
+    new SnapEditablePolygon(annotation, this.g, this.config, this.env, () => this.destroy());
 
 }
 
