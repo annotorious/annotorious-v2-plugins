@@ -48,8 +48,18 @@
 /** Corner handles **/
 .a9s-selection.snap-polygon .a9s-handle .a9s-handle-outer,
 .a9s-annotation.snap-polygon.editable .a9s-handle .a9s-handle-outer {
-  stroke-width:1;
-  stroke:#000;  
+  opacity: 0;
+  stroke-width: 6px;
+  stroke: rgba(0, 0, 0, 0.35);
+  fill: none;
+  stroke-dasharray: 12.6, 6.1;
+  transform: rotateZ(11.25deg);
+  vector-effect: non-scaling-stroke;
+}
+
+.a9s-selection.snap-polygon.active .a9s-handle .a9s-handle-outer,
+.a9s-annotation.snap-polygon.active.editable .a9s-handle .a9s-handle-outer {
+  opacity: 1;
 }
 
 .a9s-selection.snap-polygon .a9s-handle .a9s-handle-inner,

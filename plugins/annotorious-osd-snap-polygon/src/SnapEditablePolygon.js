@@ -63,6 +63,15 @@ export default class SnapEditablePolygon extends EditableShape {
     this.lastMouseDown = null;
   }
 
+  setSnapEnabled = enabled => {
+    this._isSnapEnabled = enabled;
+
+    if (enabled)
+      addClass(this.shape, 'active');
+    else
+      removeClass(this.shape, 'active');
+  }
+
   createCornerHandle = pt => {
     const handle = this.drawHandle(pt.x, pt.y);
     handle.addEventListener('mousedown', this.onGrab(handle));
@@ -72,6 +81,16 @@ export default class SnapEditablePolygon extends EditableShape {
 
     this.shape.appendChild(handle);
     return handle;
+  }
+
+  scaleHandle = handle => {
+    const inner = handle.querySelector('.a9s-handle-inner');
+    const outer = handle.querySelector('.a9s-handle-outer');
+
+    const radius = this.scale * (this.config.handleRadius || 6);
+
+    inner.setAttribute('r', 6 * this.scale);
+    outer.setAttribute('r', 12 * this.scale);
   }
 
   createMidpoint = (corners, idx) => {
@@ -225,7 +244,8 @@ export default class SnapEditablePolygon extends EditableShape {
   onMoveCornerHandle = (xy, evt) => {
     const handleIdx = this.cornerHandles.indexOf(this.grabbedElement);
 
-    const nearestSnappable = getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]);
+    const nearestSnappable =
+      this._isSnapEnabled ? getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]) : null;
 
     const pos = nearestSnappable ? { 
       x: nearestSnappable[0],

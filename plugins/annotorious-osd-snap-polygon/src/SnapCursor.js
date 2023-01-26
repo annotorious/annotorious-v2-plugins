@@ -4,7 +4,7 @@ const CIRCLE_RADIUS = 6;
 
 const INDICATOR_RADIUS = 12;
 
-export const drawCursor = xy => {
+export const drawCursor = (xy, scale = 1) => {
   const [x, y] = xy;
 
   const containerGroup = document.createElementNS(SVG_NAMESPACE, 'g');
@@ -14,7 +14,7 @@ export const drawCursor = xy => {
     const c = document.createElementNS(SVG_NAMESPACE, 'circle');
     c.setAttribute('cx', x);
     c.setAttribute('cy', y);
-    c.setAttribute('r', r);
+    c.setAttribute('r', r * scale);
     c.setAttribute('transform-origin', `${x} ${y}`);
     return c;
   }

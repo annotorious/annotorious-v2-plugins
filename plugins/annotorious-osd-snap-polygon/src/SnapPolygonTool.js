@@ -29,7 +29,7 @@ export default class SnapPolygonTool extends Tool {
 
     this.snappedPosition = [0, 0];
 
-    document.addEventListener('keydown', this.onKeyDown);
+    this.svg.addEventListener('keypress', this.onKeyDown);
 
     this.svg.addEventListener('pointermove', this.onPointerMove);
   }
@@ -43,6 +43,9 @@ export default class SnapPolygonTool extends Tool {
 
       if (this.cursor)
         setSnapEnabled(this.cursor, this._isSnapEnabled);
+
+      if (this.editable)
+        this.editable.setSnapEnabled(this._isSnapEnabled);
     }
   }
 
@@ -79,10 +82,9 @@ export default class SnapPolygonTool extends Tool {
 
   set enabled(enabled) {
     if (enabled && !this.cursor) {
-      this.cursor = drawCursor(this.snappedPosition);
+      this.cursor = drawCursor(this.snappedPosition, this.scale);
 
       setSnapEnabled(this.cursor, this._isSnapEnabled);
-      scaleCursor(this.cursor, this.scale);
       
       this.g.appendChild(this.cursor);
     } else if (!enabled && this.cursor) {
@@ -178,8 +180,14 @@ export default class SnapPolygonTool extends Tool {
     super.destroy();
   }
 
-  createEditableShape = annotation =>
-    new SnapEditablePolygon(annotation, this.g, this.config, this.env, () => this.destroy());
+  createEditableShape = annotation => {
+    if (this.editable)
+      this.editable.destroy();
+
+    this.editable = new SnapEditablePolygon(annotation, this.g, this.config, this.env, () => this.destroy(), this.scale);
+    this.editable.setSnapEnabled(this._isSnapEnabled);
+    return this.editable;
+  }
 
 }
 
