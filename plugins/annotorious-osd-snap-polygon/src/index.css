@@ -1,17 +1,17 @@
 /** Cursor **/
 .a9s-snap-cursor .a9s-snap-cursor-inner {
-  stroke-width: 1px;
-  stroke: #000;
-  fill: none;
+  stroke-width: 1px !important;
+  stroke: #000 !important;
+  fill: none !important;
   vector-effect: non-scaling-stroke;
 }
 
 .a9s-snap-cursor .a9s-snap-cursor-outer {
   opacity: 0;
-  stroke-width: 6px;
-  stroke: rgba(0, 0, 0, 0.35);
-  fill: none;
-  stroke-dasharray: 12.6, 6.1;
+  stroke-width: 6px !important;
+  stroke: rgba(0, 0, 0, 0.35) !important;
+  fill: none !important;
+  stroke-dasharray: 12.6, 6.1 !important;
   transform: rotateZ(11.25deg);
   vector-effect: non-scaling-stroke;
 }
@@ -49,8 +49,8 @@
 .a9s-selection.snap-polygon .a9s-handle .a9s-handle-outer,
 .a9s-annotation.snap-polygon.editable .a9s-handle .a9s-handle-outer {
   opacity: 0;
-  stroke-width: 6px;
-  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 6px !important;
+  stroke: rgba(0, 0, 0, 0.35) !important;
   fill: none;
   stroke-dasharray: 12.6, 6.1;
   transform: rotateZ(11.25deg);

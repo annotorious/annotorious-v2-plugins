@@ -29,13 +29,13 @@ export default class SnapPolygonTool extends Tool {
 
     this.snappedPosition = [0, 0];
 
-    this.svg.addEventListener('keypress', this.onKeyDown);
+    this.svg.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('keydown', this.onKeyDown);
 
     this.svg.addEventListener('pointermove', this.onPointerMove);
   }
 
   onKeyDown = evt => {
-    // Prevent default OSD 'move down' behavior
     evt.preventDefault();
 
     if (evt.key === 'S' || evt.key === 's') {
@@ -177,6 +177,10 @@ export default class SnapPolygonTool extends Tool {
 
   destroy = () => {
     this.svg.removeEventListener('pointermove', this.onPointerMove);
+
+    this.svg.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('keydown', this.onKeyDown);
+
     super.destroy();
   }
 
