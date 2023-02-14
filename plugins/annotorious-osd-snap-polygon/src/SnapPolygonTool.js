@@ -36,7 +36,11 @@ export default class SnapPolygonTool extends Tool {
   }
 
   onKeyDown = evt => {
-    evt.preventDefault();
+    // Ignore keyboard events that come from the editor
+    const isEditor = evt.target.closest('.r6o-editor');
+    
+    if (isEditor)
+      return;
 
     if (evt.key === 'S' || evt.key === 's') {
       this._isSnapEnabled = !this._isSnapEnabled;
