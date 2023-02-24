@@ -61,7 +61,7 @@ export default class SnapRubberbandPolygon extends ToolLike {
   addPoint = () => {
     if (this.isClosable()) {
       // Close, don't add
-      this.close();
+      this.done(true);
     } else {
       // Don't add a new point if distance < 2 pixels
       const [x, y] = this.mousepos;
@@ -76,9 +76,9 @@ export default class SnapRubberbandPolygon extends ToolLike {
     }
   }
 
-  close = () => {
-    const selection = new Selection(toSVGTarget(this.points, this.env.image));
-    this.emit('close', { shape: this.selection, selection });
+  done = (close) => {
+    const selection = new Selection(toSVGTarget(this.points, this.env.image, close));
+    this.emit('done', { shape: this.selection, selection });
   }
 
   destroy = () => {
@@ -158,8 +158,8 @@ export default class SnapRubberbandPolygon extends ToolLike {
     const [head, ...tail]= arr;
 
     const path = 
-      `M ${head[0]} ${head[1]} ` + 
-      tail.map(([x,y]) => `L ${x} ${y}`).join(' ');
+      `M${head[0]} ${head[1]} ` + 
+      tail.map(([x,y]) => `L${x} ${y}`).join(' ');
 
     this.outerPath.setAttribute('d', path);
     this.innerPath.setAttribute('d', path);

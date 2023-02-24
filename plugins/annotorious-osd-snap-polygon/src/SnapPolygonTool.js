@@ -3,14 +3,22 @@ import SnapEditablePolygon from './SnapEditablePolygon';
 import SnapRubberbandPolygon from './SnapRubberbandPolygon';
 import { getNearestSnappablePoint } from './storeUtils';
 import { drawCursor, setCursorXY, scaleCursor, setSnapEnabled } from './SnapCursor';
+import SnapEditablePath from './SnapEditablePath';
 
-export const toSVGTarget = (points, image) => ({
-  source: image?.src,
-  selector: {
-    type: "SvgSelector",
-    value: `<svg><polygon points="${points.map(t => `${t[0]},${t[1]}`).join(' ')}" /></svg>`
+export const toSVGTarget = (points, image, closeShape) => {
+  const [head, ...tail]= points;
+
+  const value = closeShape ? 
+    `<svg><polygon points="${points.map(t => `${t[0]},${t[1]}`).join(' ')}" /></svg>` :
+    `<svg><path d="M${head[0]} ${head[1]} ${tail.map(([x,y]) => `L${x} ${y}`).join(' ')}"></path></svg>`;
+
+  return {
+    source: image?.src,
+    selector: {
+      type: "SvgSelector", value
+    }
   }
-});
+}
 
 export default class SnapPolygonTool extends Tool {
 
@@ -113,7 +121,7 @@ export default class SnapPolygonTool extends Tool {
     this.rubberband =
       new SnapRubberbandPolygon(this.snappedPosition, this.g, this.config, this.env);
 
-    this.rubberband.on('close', ({ shape, selection }) => {
+    this.rubberband.on('done', ({ shape, selection }) => {
       shape.annotation = selection;
       this.emit('complete', shape);  
       this.stop();
@@ -137,10 +145,10 @@ export default class SnapPolygonTool extends Tool {
   }
 
   onDblClick = () => {
-    if (this.rubberband?.points.length > 2) {
-      this.rubberband.close();
+    // if (this.rubberband?.points.length > 2) {
+      this.rubberband.done(false);
       this.stop();
-    }
+    // }
   }
 
   onMouseMove = () => {
@@ -192,7 +200,13 @@ export default class SnapPolygonTool extends Tool {
     if (this.editable)
       this.editable.destroy();
 
-    this.editable = new SnapEditablePolygon(annotation, this.g, this.config, this.env, () => this.destroy(), this.scale);
+    const isClosed = annotation.selector('SvgSelector').value.match(/^<svg.*<polygon/g);
+
+    if (isClosed)
+      this.editable = new SnapEditablePolygon(annotation, this.g, this.config, this.env, () => this.destroy());
+    else 
+      this.editable = new SnapEditablePath(annotation, this.g, this.config, this.env, () => this.destroy());
+
     this.editable.setSnapEnabled(this._isSnapEnabled);
     return this.editable;
   }
@@ -204,5 +218,5 @@ SnapPolygonTool.identifier = 'polygon';
 SnapPolygonTool.supports = annotation => {
   const selector = annotation.selector('SvgSelector');
   if (selector)
-    return selector.value?.match(/^<svg.*<polygon/g);
+    return selector.value?.match(/^<svg.*<polygon/g) || selector.value?.match(/^<svg.*<path/g);
 }
