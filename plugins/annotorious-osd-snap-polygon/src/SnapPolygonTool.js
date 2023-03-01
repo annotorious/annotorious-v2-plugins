@@ -145,10 +145,10 @@ export default class SnapPolygonTool extends Tool {
   }
 
   onDblClick = () => {
-    // if (this.rubberband?.points.length > 2) {
+    if (this.rubberband?.points.length > 2) {
       this.rubberband.done(false);
       this.stop();
-    // }
+    }
   }
 
   onMouseMove = () => {

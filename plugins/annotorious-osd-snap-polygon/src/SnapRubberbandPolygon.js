@@ -131,8 +131,12 @@ export default class SnapRubberbandPolygon extends ToolLike {
    * the polygon would be closed on click
    */ 
   isClosable = () => {
-    const d = this.getDistanceToStart();
-    return d < 6 * this.scale;
+    if (this.points.length > 2) {
+      const d = this.getDistanceToStart();
+      return d < 6 * this.scale;
+    } else {
+      return false;
+    }
   }
 
   onScaleChanged = scale => {
