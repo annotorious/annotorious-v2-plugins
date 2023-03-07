@@ -246,11 +246,28 @@ export default class SnapEditablePath extends EditableShape {
     this.setPoints(updatedPoints);
   }
 
+  getDistance = (a, b) => {
+    const dx = Math.abs(b.x - a.x);
+    const dy = Math.abs(b.y - a.y);
+
+    return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / this.scale;
+  }
+
   onMoveCornerHandle = (xy, evt) => {
+    const points = getPoints(this.shape);
+
     const handleIdx = this.cornerHandles.indexOf(this.grabbedElement);
 
-    const nearestSnappable =
-      this._isSnapEnabled ? getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]) : null;
+    const isClosable = 
+      handleIdx === this.cornerHandles.length - 1 && // last point in this path
+      this.getDistance(points[0], xy) < 6 * this.scale;
+
+    const nearestSnappable = isClosable ? 
+      [ points[0].x, points[0].y ] : (
+        this._isSnapEnabled ? getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]) : null
+      );
+
+    console.log(nearestSnappable);
 
     const pos = nearestSnappable ? { 
       x: nearestSnappable[0],
@@ -265,8 +282,6 @@ export default class SnapEditablePath extends EditableShape {
     }
 
     // Compute offsets between selected points from current selected
-    const points = getPoints(this.shape);
-
     const distances = this.selected.map(idx => {
       const handleXY = points[handleIdx];
       const thisXY = points[idx];
