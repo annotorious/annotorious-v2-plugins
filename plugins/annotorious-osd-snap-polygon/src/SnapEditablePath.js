@@ -266,14 +266,19 @@ export default class SnapEditablePath extends EditableShape {
 
     const handleIdx = this.cornerHandles.indexOf(this.grabbedElement);
 
-    const isClosable = 
-      handleIdx === this.cornerHandles.length - 1 && // last point in this path
-      this.getDistance(points[0], xy) < 10;
+    const isClosableStart = 
+      handleIdx === 0 && // first point on this path
+      this.getDistance(points[points.length - 1], xy) < 10; // distance to last point
+
+    const isClosableEnd = 
+      handleIdx === points.length - 1 && // last point in this path
+      this.getDistance(points[0], xy) < 10; // distance to first point
+
+    const isClosable = isClosableStart || isClosableEnd;
 
     const nearestSnappable = isClosable ? 
-      [ points[0].x, points[0].y ] : (
-        this._isSnapEnabled ? getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]) : null
-      );
+      ( isClosableStart ? [ points[points.length - 1].x, points[points.length - 1].y ] : [ points[0].x, points[0].y ] ) :
+      ( this._isSnapEnabled ? getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]) : null );
 
     const pos = nearestSnappable ? { 
       x: nearestSnappable[0],
