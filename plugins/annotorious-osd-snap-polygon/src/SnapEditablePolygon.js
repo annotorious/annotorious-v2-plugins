@@ -127,7 +127,7 @@ export default class SnapEditablePolygon extends EditableShape {
       this.midpoints = this.midpoints.filter((_, idx) => !this.selected.includes(idx));
 
       this.setPoints(updatedPoints);
-      this.emit('update', toSVGTarget(updatedPoints.map(({x, y}) => [x, y]), this.env.image));
+      this.emit('update', toSVGTarget(updatedPoints.map(({x, y}) => [x, y]), this.env.image, true));
       return true;
     }
     return false;
@@ -305,7 +305,7 @@ export default class SnapEditablePolygon extends EditableShape {
       }
 
       const points = getPoints(this.shape).map(({x, y}) => [x, y]);
-      this.emit('update', toSVGTarget(points, this.env.image));
+      this.emit('update', toSVGTarget(points, this.env.image, true));
     }
   }
 

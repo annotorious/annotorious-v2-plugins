@@ -54,7 +54,11 @@
         anno.setDrawingTool('polygon');
 
         anno.on('createAnnotation', function(a) {
-          console.log(JSON.stringify(a));
+          console.log(a);
+        });
+
+        anno.on('updateAnnotation', function(a) {
+          console.log(a);
         });
 
         anno.loadAnnotations('annotations.json');

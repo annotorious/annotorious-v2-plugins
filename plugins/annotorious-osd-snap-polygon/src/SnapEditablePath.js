@@ -2,9 +2,19 @@ import EditableShape from '@recogito/annotorious/src/tools/EditableShape';
 import { SVG_NAMESPACE, addClass, hasClass, removeClass } from '@recogito/annotorious/src/util/SVG';
 import { drawEmbeddedSVG } from '@recogito/annotorious/src/selectors/EmbeddedSVG';
 import { format, setFormatterElSize } from '@recogito/annotorious/src/util/Formatting';
-import Mask from '@recogito/annotorious/src/tools/polygon/PolygonMask';
 import { toSVGTarget } from './SnapPolygonTool';
 import { getNearestSnappablePoint } from './storeUtils';
+
+const toSVG = (points, image) => {
+  const first = points[0];
+  const last = points[points.length - 1];
+
+  const closeShape = first.x === last.x && first.y === last.y;
+
+  return closeShape ? 
+    toSVGTarget(points.slice(0, -1).map(({x, y}) => [x, y]), image, true) :
+    toSVGTarget(points.map(({x, y}) => [x, y]), image, false);
+}
 
 const getPoints = shape => {
   const path = shape.querySelector('.a9s-inner');
@@ -92,8 +102,6 @@ export default class SnapEditablePath extends EditableShape {
     const inner = handle.querySelector('.a9s-handle-inner');
     const outer = handle.querySelector('.a9s-handle-outer');
 
-    const radius = this.scale * (this.config.handleRadius || 6);
-
     inner.setAttribute('r', 6 * this.scale);
     outer.setAttribute('r', 12 * this.scale);
   }
@@ -132,7 +140,7 @@ export default class SnapEditablePath extends EditableShape {
       this.midpoints = this.midpoints.filter((_, idx) => !this.selected.includes(idx));
 
       this.setPoints(updatedPoints);
-      this.emit('update', toSVGTarget(updatedPoints.map(({x, y}) => [x, y]), this.env.image));
+      this.emit('update', toSVG(updatedPoints, this.env.image));
       return true;
     }
     return false;
@@ -260,14 +268,12 @@ export default class SnapEditablePath extends EditableShape {
 
     const isClosable = 
       handleIdx === this.cornerHandles.length - 1 && // last point in this path
-      this.getDistance(points[0], xy) < 6 * this.scale;
+      this.getDistance(points[0], xy) < 10;
 
     const nearestSnappable = isClosable ? 
       [ points[0].x, points[0].y ] : (
         this._isSnapEnabled ? getNearestSnappablePoint(this.env, this.scale, [xy.x, xy.y]) : null
       );
-
-    console.log(nearestSnappable);
 
     const pos = nearestSnappable ? { 
       x: nearestSnappable[0],
@@ -324,8 +330,7 @@ export default class SnapEditablePath extends EditableShape {
         this.onAddPoint(pos);
       }
 
-      const points = getPoints(this.shape).map(({x, y}) => [x, y]);
-      this.emit('update', toSVGTarget(points, this.env.image));
+      this.emit('update', toSVG(getPoints(this.shape), this.env.image));
     }
   }
 
