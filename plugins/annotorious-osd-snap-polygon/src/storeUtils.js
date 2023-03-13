@@ -38,7 +38,16 @@ export const getNearestSnappablePoint = (env, currentScale, xy, threshold = 20) 
           .split(' ')
           .map(xy => xy.split(',').map(d => parseFloat(d.trim())));
 
-        return [...all, ...points ];
+        return [...all, ...points];
+      } else if (nodeName === 'path') {
+        const d = shape.getAttribute('d');
+
+        const points = d.split(/[ML]/)
+          .map(str => str.trim())
+          .filter(str => str)
+          .map(str => str.split(' ').map(parseFloat));
+
+        return [...all, ...points];
       } else {
         return all;
       }
