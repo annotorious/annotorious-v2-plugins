@@ -100,11 +100,10 @@ const Toolbar = (anno, container, settings={}) => {
         }
 
         if (settings['infoElement']) {
-          const infoElement = document.getElementbyId(settings['infoElement']);
           if (toolId == 'polygon'){
-            infoElement.innerHTML = 'To stop Polygon annotation selection double click.';
+            settings['infoElement'].innerHTML = 'To stop Polygon annotation selection double click.';
           } else {
-            infoElement.innerHTML = '';
+            settings['infoElement'].innerHTML = '';
           }
         }
         enableDrawing(toolId, anno)
