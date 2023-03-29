@@ -98,6 +98,15 @@ const Toolbar = (anno, container, settings={}) => {
         if (toolId != 'mouse'){
           anno.setDrawingTool(toolId);
         }
+
+        if (settings['infoElement']) {
+          const infoElement = document.getElementbyId(settings['infoElement']);
+          if (toolId == 'polygon'){
+            infoElement.innerHTML = 'To stop Polygon annotation selection double click.';
+          } else {
+            infoElement.innerHTML = '';
+          }
+        }
         enableDrawing(toolId, anno)
       });
 
