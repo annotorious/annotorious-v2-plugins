@@ -6,6 +6,8 @@
   background-color:transparent;
   border-radius:4px;
   padding:8px;
+  width:45px;
+  height:45px;
 }
 
 .a9s-toolbar-btn:hover {
@@ -19,8 +21,8 @@
 
 .a9s-toolbar-btn svg {
   overflow:visible;
-  width:45px;
-  height:45px;
+  width:100%;
+  height:100%;
 }
 
 .a9s-toolbar-btn svg * {
