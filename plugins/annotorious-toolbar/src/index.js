@@ -6,10 +6,12 @@ import createFreehand from './icons/Freehand';
 import createPoint from './icons/Point';
 import createTiltedBox from './icons/TiltedBox';
 import createLine from './icons/Line';
+import createMouse from './icons/Mouse';
 
 import './index.css';
 
 const ICONS = {
+  'mouse': createMouse(),
   'rect': createRectangle(),
   'polygon': createPolygon(),
   'circle': createCircle(),
@@ -18,6 +20,18 @@ const ICONS = {
   'point': createPoint(), 
   'annotorious-tilted-box': createTiltedBox(),
   'line': createLine()
+}
+
+const ICONLABEL = {
+  'mouse': '',
+  'rect': 'Rectangle',
+  'polygon': 'Polygon',
+  'circle': 'Circle',
+  'ellipse': 'Ellipse',
+  'freehand': 'Freehand',
+  'point': 'Point',
+  'annotorious-tilted-box': 'Angled Box',
+  'line': 'Line'
 }
 
 // IE11 doesn't support adding/removing classes to SVG elements except 
@@ -33,7 +47,7 @@ const removeClass = (el, className) => {
   el.setAttribute('class', classNames.join(' '));
 }
 
-const Toolbar = (anno, container) => {
+const Toolbar = (anno, container, settings={}) => {
   // Bit of a hack...
   const isOSDPlugin = !!anno.fitBounds;
 
@@ -51,6 +65,14 @@ const Toolbar = (anno, container) => {
     addClass(button, 'active');
   }
 
+  const enableDrawing = (toolId, anno) => {
+    toolId = toolId ? toolId : toolbar.querySelector('.a9s-toolbar-btn.active').classList[1];
+    if (isOSDPlugin && toolId != 'mouse'){
+      anno.setDrawingEnabled(true);
+    } else if (isOSDPlugin && toolId == 'mouse') {
+      anno.setDrawingEnabled(false);
+    }
+  }
   // Helper to create one tool button 
   const createButton = (toolId, isActive) => {
     const icon = ICONS[toolId];
@@ -65,31 +87,63 @@ const Toolbar = (anno, container) => {
 
       const inner = document.createElement('span');
       inner.className = 'a9s-toolbar-btn-inner';
-
       inner.appendChild(icon);
 
+      if (settings['withLabel'] && ICONLABEL[toolId]) {
+        inner.innerHTML += `<span class="a9s-toolbar-btn-label">${ICONLABEL[toolId]}</span>`;
+      }
+ 
       button.addEventListener('click', () => {
         setActive(button);
-        anno.setDrawingTool(toolId);
+        if (toolId != 'mouse'){
+          anno.setDrawingTool(toolId);
+        }
 
-        if (isOSDPlugin)
-          anno.setDrawingEnabled(true);
+        if (settings['infoElement']) {
+          if (toolId == 'polygon'){
+            settings['infoElement'].innerHTML = 'To stop Polygon annotation selection double click.';
+          } else {
+            settings['infoElement'].innerHTML = '';
+          }
+        }
+        enableDrawing(toolId, anno)
       });
+
+
 
       button.appendChild(inner);
       toolbar.appendChild(button);
+      if (settings['withMouse']){
+        anno.on('cancelSelected', function() {
+          enableDrawing('', anno);
+        });
+        anno.on('createAnnotation', function(annotation) {
+          enableDrawing('', anno);
+        });
+      
+        anno.on('updateAnnotation', function(annotation) {
+          enableDrawing('', anno);
+        });
+
+        anno.on('deleteAnnotation', function(annotation) {
+          enableDrawing('', anno);
+        });
+      }
     }
   }
-  
+  if (settings['withMouse']){
+    createButton('mouse', true);
+  }
   anno.listDrawingTools().forEach((toolId, idx) => {
     // In standard version, activate first button
     const activateFirst = !isOSDPlugin && idx === 0; 
     createButton(toolId, activateFirst);        
   });
 
-  if (isOSDPlugin)
-    anno.on('createSelection', clearActive);
 
+  if (isOSDPlugin && !settings['withMouse']){
+      anno.on('createSelection', clearActive);
+  }
   container.appendChild(toolbar);
 }
 
