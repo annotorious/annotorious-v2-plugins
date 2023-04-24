@@ -85,6 +85,9 @@ const Toolbar = (anno, container, settings={}) => {
       else
         button.className = `a9s-toolbar-btn ${toolId}`;
 
+      const ariaLabel = ICONLABEL[toolId] ? `Create a ${ICONLABEL[toolId]} annotation` : toolId == 'mouse' ? 'Disable annotatation creation, move around the image' : `Create a ${toolId} annotation`;
+      button.setAttribute('aria-label', ariaLabel);
+
       const inner = document.createElement('span');
       inner.className = 'a9s-toolbar-btn-inner';
       inner.appendChild(icon);
@@ -134,7 +137,8 @@ const Toolbar = (anno, container, settings={}) => {
   if (settings['withMouse']){
     createButton('mouse', true);
   }
-  anno.listDrawingTools().forEach((toolId, idx) => {
+  const drawingTools = settings['drawingTools'] ? settings['drawingTools'].filter(elem => anno.listDrawingTools().indexOf(elem) != -1) : anno.listDrawingTools();
+  drawingTools.forEach((toolId, idx) => {
     // In standard version, activate first button
     const activateFirst = !isOSDPlugin && idx === 0; 
     createButton(toolId, activateFirst);        
