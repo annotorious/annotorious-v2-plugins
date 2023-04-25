@@ -85,7 +85,7 @@ const Toolbar = (anno, container, settings={}) => {
       else
         button.className = `a9s-toolbar-btn ${toolId}`;
 
-      const ariaLabel = ICONLABEL[toolId] ? `Create a ${ICONLABEL[toolId]} annotation` : toolId == 'mouse' ? 'Disable annotatation creation, move around the image' : `Create a ${toolId} annotation`;
+      const ariaLabel = ICONLABEL[toolId] ? `Create a ${ICONLABEL[toolId]} annotation` : toolId == 'mouse' ? 'Disable annotation creation, move around the image' : `Create a ${toolId} annotation`;
       button.setAttribute('aria-label', ariaLabel);
 
       const inner = document.createElement('span');
