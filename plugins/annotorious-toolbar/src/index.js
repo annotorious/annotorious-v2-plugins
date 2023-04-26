@@ -78,9 +78,9 @@ const Toolbar = (anno, container, settings={}) => {
     const osdcontanier = document.getElementsByClassName('openseadragon-container');
     if (osdcontanier.length > 0) {
       if (toolId == 'mouse'){
-        osdcontanier[0].parentElement.classList.add("moveable");
+        osdcontanier[0].classList.add("moveable");
       } else {
-        osdcontanier[0].parentElement.classList.remove("moveable");
+        osdcontanier[0].classList.remove("moveable");
       }
     }
   }
