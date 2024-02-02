@@ -76,6 +76,12 @@ Annotorious.Toolbar(anno, document.getElementById('my-toolbar-container'), {'inf
 Annotorious.Toolbar(anno, document.getElementById('my-toolbar-container'), {'withLabel': true});
 ```
 
+5. `withTooltip`: A setting that enables a tooltip(hover effect) over each button specifying the name of the button.
+
+```
+Annotorious.Toolbar(anno, document.getElementById('my-toolbar-container'), {'withTooltip': true});
+```
+
 Questions? Feedack? Feature requests? Join the [Annotorious chat on Gitter](https://gitter.im/recogito/annotorious).
 
 [![Join the chat at https://gitter.im/recogito/annotorious](https://badges.gitter.im/recogito/annotorious.svg)](https://gitter.im/recogito/annotorious?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

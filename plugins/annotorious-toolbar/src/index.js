@@ -132,6 +132,10 @@ const Toolbar = (anno, container, settings={}) => {
           enableDrawing('', anno);
         });
       }
+      // Tooltip Feature
+      if (settings['withTooltip'] && ICONLABEL[toolId]){
+        button.title=ICONLABEL[toolId];
+      }
     }
   }
   if (settings['withMouse']){
