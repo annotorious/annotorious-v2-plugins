@@ -79,6 +79,7 @@ const Toolbar = (anno, container, settings={}) => {
 
     if (icon) {
       const button = document.createElement('button');
+      button.type = "button";
 
       if (isActive)
         button.className = `a9s-toolbar-btn ${toolId} active`;
