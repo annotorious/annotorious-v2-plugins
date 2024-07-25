@@ -73,6 +73,18 @@ const Toolbar = (anno, container, settings={}) => {
       anno.setDrawingEnabled(false);
     }
   }
+
+  const osdContainer = (toolId) => {
+    const osdcontanier = document.getElementsByClassName('openseadragon-container');
+    if (osdcontanier.length > 0) {
+      if (toolId == 'mouse'){
+        osdcontanier[0].classList.add("moveable");
+      } else {
+        osdcontanier[0].classList.remove("moveable");
+      }
+    }
+  }
+
   // Helper to create one tool button 
   const createButton = (toolId, isActive) => {
     const icon = ICONS[toolId];
@@ -102,6 +114,8 @@ const Toolbar = (anno, container, settings={}) => {
         if (toolId != 'mouse'){
           anno.setDrawingTool(toolId);
         }
+
+        osdContainer(toolId);
 
         if (settings['infoElement']) {
           if (toolId == 'polygon'){
@@ -141,6 +155,7 @@ const Toolbar = (anno, container, settings={}) => {
   }
   if (settings['withMouse']){
     createButton('mouse', true);
+    osdContainer('mouse');
   }
   const drawingTools = settings['drawingTools'] ? settings['drawingTools'].filter(elem => anno.listDrawingTools().indexOf(elem) != -1) : anno.listDrawingTools();
   drawingTools.forEach((toolId, idx) => {
